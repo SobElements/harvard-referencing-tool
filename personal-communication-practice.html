@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Communications Practice - Harvard Referencing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='index.html'">🏠 Home</button>
+            <button class="nav-btn" onclick="window.history.back()">← Back</button>
+        </div>
+
+        <header>
+            <h1>Personal Communications Practice</h1>
+            <p class="subtitle">Test your knowledge with these practice questions</p>
+        </header>
+
+        <main>
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container"></div>
+
+            <!-- Results Container (hidden initially) -->
+            <div id="results-container" class="hidden">
+                <div class="results-box">
+                    <h2>🎉 Practice Complete!</h2>
+                    <p>Great work! You've completed all the personal communications questions.</p>
+                    <div class="section-buttons">
+                        <button class="section-button" onclick="window.location.reload()">
+                            🔄 Practice Again
+                        </button>
+                        <button class="section-button" onclick="window.location.href='personal-communication-tutorial.html'">
+                            📚 Review Tutorial
+                        </button>
+                        <button class="section-button" onclick="window.location.href='index.html'">
+                            🏠 Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="practice-handler.js"></script>
+    <script>
+        // Initialize the practice session for personal communications
+        // 2 from each of the 7 subsections = 14 total
+        initializePractice('personalCommunications', {
+            personalInterviews: 5,
+            emailCommunications: 5,
+            phoneConversations: 5,
+            lecturesAndPresentations: 5,
+            textMessages: 5,
+            referenceListExclusion: 5,
+            whenNotToUse: 5,
+            bestPractices: 5
+        });
+    </script>
+</body>
+</html>

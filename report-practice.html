@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Government Documents Practice - Harvard Referencing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='index.html'">🏠 Home</button>
+            <button class="nav-btn" onclick="window.history.back()">← Back</button>
+        </div>
+
+        <header>
+            <h1>Reports & Government Documents Practice</h1>
+            <p class="subtitle">Test your knowledge with these practice questions</p>
+        </header>
+
+        <main>
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container"></div>
+
+            <!-- Results Container (hidden initially) -->
+            <div id="results-container" class="hidden">
+                <div class="results-box">
+                    <h2>🎉 Practice Complete!</h2>
+                    <p>Great work! You've completed all the reports and government documents questions.</p>
+                    <div class="section-buttons">
+                        <button class="section-button" onclick="window.location.reload()">
+                            🔄 Practice Again
+                        </button>
+                        <button class="section-button" onclick="window.location.href='report-tutorial.html'">
+                            📚 Review Tutorial
+                        </button>
+                        <button class="section-button" onclick="window.location.href='index.html'">
+                            🏠 Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="practice-handler.js"></script>
+    <script>
+        // Initialize the practice session for reports
+        // 2 in-text + 2 gov reports + 2 gov reports with number + 2 international + 2 think tank = 10 total
+        initializePractice('reports', {
+            inTextCitations: 5,
+            governmentReports: 5,
+            governmentReportsWithNumber: 5,
+            internationalOrganisations: 5,
+            thinkTankReports: 5
+        });
+    </script>
+</body>
+</html>
