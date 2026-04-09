@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sources Practice - Harvard Referencing</title>
+    <link rel="stylesheet" href="../src/styles/styles.css">
+    <script src="../src/scripts/style-loader.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='../index.html'">🏠 Home</button>
+            <button class="nav-btn" onclick="window.history.back()">← Back</button>
+        </div>
+
+        <header>
+            <h1>AI Sources Practice</h1>
+            <p class="subtitle">Test your knowledge with these practice questions</p>
+        </header>
+
+        <main>
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container"></div>
+
+            <!-- Results Container (hidden initially) -->
+            <div id="results-container" class="hidden">
+                <div class="results-box">
+                    <h2>🎉 Practice Complete!</h2>
+                    <p>Great work! You've completed all the AI sources questions.</p>
+                    <div class="section-buttons">
+                        <button class="section-button" onclick="window.location.reload()">
+                            🔄 Practice Again
+                        </button>
+                        <button class="section-button" onclick="window.location.href='../tutorials/ai-sources-tutorial.html'">
+                            📚 Review Tutorial
+                        </button>
+                        <button class="section-button" onclick="window.location.href='../index.html'">
+                            🏠 Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../src/scripts/navbar.js"></script>
+    <script src="../src/scripts/practice-handler.js"></script>
+    <script>
+        // Initialize the practice session for AI sources
+        // 2 from each of the 8 subsections = 16 total
+        initializePractice('aiSources', {
+            whenToCite: 5,
+            directQuotes: 5,
+            paraphrasing: 5,
+            chatgptReferences: 5,
+            claudeReferences: 5,
+            otherAITools: 5,
+            ethics: 5,
+            transparency: 5,
+            institutionalPolicy: 5
+        });
+    </script>
+</body>
+</html>

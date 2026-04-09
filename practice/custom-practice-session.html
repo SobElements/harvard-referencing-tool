@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Practice Session - Harvard Referencing</title>
+    <link rel="stylesheet" href="../src/styles/styles.css">
+    <script src="../src/scripts/style-loader.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='../index.html'">🏠 Home</button>
+            <button class="nav-btn" onclick="window.location.href='../pages/custom-practice.html'">← Back to Selection</button>
+        </div>
+
+        <header>
+            <h1>Custom Practice</h1>
+            <p class="subtitle">Your personalised practice session</p>
+        </header>
+
+        <main>
+            <div id="progress-bar" style="background-color: #e0e0e0; height: 8px; border-radius: 4px; margin-bottom: 30px;">
+                <div id="progress-fill" style="background-color: #667eea; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 4px;"></div>
+            </div>
+
+            <div id="questions-container"></div>
+
+            <div id="results-container" class="hidden">
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px;">Practice Complete!</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 30px;">You've completed all your selected questions.</p>
+                    <div class="section-buttons">
+                        <button class="section-button" onclick="window.location.href='../pages/custom-practice.html'">
+                            🔄 Choose New Topics
+                        </button>
+                        <button class="section-button" onclick="window.location.href='../index.html'">
+                            🏠 Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../src/scripts/navbar.js"></script>
+    <script src="../src/scripts/practice-handler.js"></script>
+    <script>
+        async function startCustomSession() {
+            const stored = sessionStorage.getItem('customPractice');
+
+            if (!stored) {
+                window.location.href = 'custom-practice.html';
+                return;
+            }
+
+            const selectedSubtypes = JSON.parse(stored);
+
+            // Load the question bank
+            const loaded = await loadQuestions();
+            if (!loaded) {
+                document.getElementById('questions-container').innerHTML =
+                    '<p style="color: red; text-align: center; padding: 40px;">Error: Could not load questions.</p>';
+                return;
+            }
+
+            // Build the question list
+            // Each subtype contributes 5 questions
+            // Track which mode each question should use
+            const allQuestions = [];
+
+            for (const key of Object.keys(selectedSubtypes)) {
+                const { source, sub, mode } = selectedSubtypes[key];
+
+                if (!questionBank[source] || !questionBank[source][sub]) continue;
+
+                const questions = questionBank[source][sub].slice(0, 5);
+
+                // Tag each question with its mode so displayQuestion knows what to show
+                questions.forEach(q => {
+                    allQuestions.push({ ...q, _customMode: mode });
+                });
+            }
+
+            if (allQuestions.length === 0) {
+                document.getElementById('questions-container').innerHTML =
+                    '<p style="color: red; text-align: center; padding: 40px;">No questions found for your selection.</p>';
+                return;
+            }
+
+            // Set up the practice session using the existing practice handler variables
+            currentQuestions = allQuestions;
+            currentQuestionIndex = 0;
+            questionsAnswered = 0;
+
+            // Display first question using its tagged mode
+            practiceMode = currentQuestions[0]._customMode || 'beginner';
+            displayQuestion(currentQuestions[0]);
+            updateProgressBar();
+        }
+
+        // Override nextQuestion to handle per-question mode switching
+        const originalNextQuestion = nextQuestion;
+        nextQuestion = function() {
+            questionsAnswered++;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                // Switch mode to whatever this question requires
+                practiceMode = currentQuestions[currentQuestionIndex]._customMode || 'beginner';
+                displayQuestion(currentQuestions[currentQuestionIndex]);
+                updateProgressBar();
+            } else {
+                showResults();
+            }
+        };
+
+        startCustomSession();
+    </script>
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style Editor - Harvard Referencing Tool</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f3f4f6;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: white;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f2937;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .control-section {
+      margin-bottom: 2rem;
+    }
+
+    .control-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6b7280;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      font-size: 13px;
+    }
+
+    .control-label {
+      flex: 1;
+      color: #4b5563;
+      font-size: 13px;
+      min-width: 90px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #e5e7eb;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #6366f1;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #6366f1;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type="color"] {
+      width: 40px;
+      height: 36px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 2px;
+    }
+
+    .value-badge {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #6b7280;
+      min-width: 45px;
+      text-align: right;
+    }
+
+    .info-box {
+      background: #f0f4ff;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border-left: 3px solid #6366f1;
+      margin-bottom: 1rem;
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-top: 1px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .action-buttons button {
+      flex: 1;
+    }
+
+    button {
+      padding: 0.65rem 1rem;
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #1f2937;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    button:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    button.primary {
+      background: #6366f1;
+      color: white;
+      border-color: #6366f1;
+    }
+
+    button.primary:hover {
+      background: #4f46e5;
+      border-color: #4f46e5;
+    }
+
+    .preview-container {
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f2937;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-header-nav {
+      font-size: 12px;
+    }
+
+    .preview-header-nav a {
+      color: #6366f1;
+      text-decoration: none;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+
+    .preview-header-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .preview-content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      width: 560px;
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+      margin: 0;
+    }
+
+    .modal-hint {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .modal textarea {
+      width: 100%;
+      height: 280px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      resize: vertical;
+      color: #1f2937;
+      outline: none;
+    }
+
+    .modal textarea:focus {
+      border-color: #6366f1;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .modal-actions button {
+      flex: none;
+      padding: 0.5rem 1.25rem;
+    }
+
+    .contrast-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 12px;
+    }
+
+    .contrast-row:last-child {
+      border-bottom: none;
+    }
+
+    .contrast-swatch-pair {
+      display: flex;
+      flex-shrink: 0;
+    }
+
+    .contrast-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .contrast-swatch:last-child {
+      margin-left: -4px;
+    }
+
+    .contrast-label {
+      flex: 1;
+      color: #4b5563;
+      line-height: 1.3;
+    }
+
+    .contrast-ratio {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #6b7280;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    .contrast-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 3px;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .contrast-badge.pass {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .contrast-badge.fail {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .contrast-badge.large-pass {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    /* Help Modal Styles */
+    .help-modal {
+      width: 640px;
+      max-width: 90vw;
+    }
+
+    .help-modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .help-modal-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .help-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .help-step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #667eea;
+      color: white;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    .help-step-content h3 {
+      margin: 0 0 0.25rem 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .help-step-content p {
+      margin: 0;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .help-section-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 1.5rem 0;
+    }
+
+    .help-tips {
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 3px solid #667eea;
+    }
+
+    .help-tips h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1f2937;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .help-tips ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .help-tips li {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .help-tips li:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .help-modal-actions button {
+      flex: none;
+      padding: 0.65rem 1.5rem;
+    }
+
+    .help-button {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #667eea;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 50;
+    }
+
+    .help-button:hover {
+      background: #5568d3;
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Help Modal -->
+<div class="modal-overlay active" id="help-modal-overlay">
+  <div class="modal help-modal">
+    <h2 class="help-modal-title">Welcome to the Style Editor 🎨</h2>
+    <p class="help-modal-subtitle">Change how the Harvard Referencing Tool looks without touching any code</p>
+
+    <div class="help-steps">
+      <div class="help-step">
+        <div class="help-step-icon">1️⃣</div>
+        <div class="help-step-content">
+          <h3>Pick Your Colors</h3>
+          <p>Click any color box to choose a new color. Change buttons, text, and links to match your preference.</p>
+        </div>
+      </div>
+
+      <div class="help-step">
+        <div class="help-step-icon">2️⃣</div>
+        <div class="help-step-content">
+          <h3>Adjust Text Sizes</h3>
+          <p>Use the sliders to make headings and body text bigger or smaller. Changes appear instantly in the preview.</p>
+        </div>
+      </div>
+
+      <div class="help-step">
+        <div class="help-step-icon">3️⃣</div>
+        <div class="help-step-content">
+          <h3>See Changes Live</h3>
+          <p>The preview on the right updates as you adjust controls. Click page links (Home, Book, Journal) to see changes on different pages.</p>
+        </div>
+      </div>
+
+      <div class="help-step">
+        <div class="help-step-icon">4️⃣</div>
+        <div class="help-step-content">
+          <h3>Changes Save Automatically</h3>
+          <p>Your customizations are saved automatically and will appear across the whole site whenever you visit. No need to download or copy anything!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-section-divider"></div>
+
+    <div class="help-tips">
+      <h4>💡 Quick Tips</h4>
+      <ul>
+        <li>The contrast checker shows if colors are readable (AA = good)</li>
+        <li>Changes apply to the whole site automatically</li>
+        <li>Try different preview pages to see how changes look</li>
+        <li>You can change colors back anytime—just refresh the page</li>
+      </ul>
+    </div>
+
+    <div class="help-modal-actions">
+      <button onclick="closeHelpModal()">Got it! Let's go</button>
+      <button class="primary" onclick="closeHelpModal()">Start Customizing</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help Button -->
+<button class="help-button" onclick="openHelpModal()" title="How to use the Style Editor">?</button>
+
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      Style Editor
+      <div class="sidebar-header-subtitle">Customize the Harvard Referencing Tool colors and typography</div>
+    </div>
+    <div class="sidebar-content">
+
+      <div class="info-box">
+        💡 Your changes are automatically saved and will appear across the entire site. Start customizing to make it yours!
+      </div>
+
+      <div class="control-section">
+        <label class="control-section-title">Colours</label>
+        <div class="control-row">
+          <span class="control-label">Primary (buttons, links)</span>
+          <input type="color" id="primaryColor" value="#6366f1">
+          <span class="value-badge" id="primaryValue">#6366f1</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Headings &amp; body text</span>
+          <input type="color" id="textColor" value="#1f2937">
+          <span class="value-badge" id="textValue">#1f2937</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Muted/secondary text</span>
+          <input type="color" id="secondaryColor" value="#6b7280">
+          <span class="value-badge" id="secondaryValue">#6b7280</span>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <label class="control-section-title">Typography</label>
+        <div class="control-row">
+          <span class="control-label">Heading size</span>
+          <input type="range" id="headingSize" min="20" max="48" value="28" step="1">
+          <span class="value-badge" id="headingSizeValue">28px</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Body text size</span>
+          <input type="range" id="bodySize" min="12" max="20" value="16" step="1">
+          <span class="value-badge" id="bodySizeValue">16px</span>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <label class="control-section-title">Spacing &amp; Shape</label>
+        <div class="control-row">
+          <span class="control-label">Border radius</span>
+          <input type="range" id="borderRadius" min="0" max="50" value="6" step="1">
+          <span class="value-badge" id="borderRadiusValue">6px</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Padding</span>
+          <input type="range" id="padding" min="8" max="32" value="16" step="1">
+          <span class="value-badge" id="paddingValue">16px</span>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <label class="control-section-title">Accessibility</label>
+        <div id="contrast-checks"></div>
+        <p style="font-size:11px;color:#9ca3af;margin:0.5rem 0 0;">WCAG AA requires 4.5:1 for normal text. Check your color combinations above.</p>
+      </div>
+
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="resetStyles()">Reset to Default</button>
+      <button class="primary" onclick="downloadCSS()">Download CSS</button>
+    </div>
+  </div>
+
+  <div class="preview-container">
+    <div class="preview-header">
+      <span>Live Preview</span>
+      <div class="preview-header-nav">
+        <a onclick="loadPreviewPage('pages/book.html')">Book</a>
+        <a onclick="loadPreviewPage('pages/journal.html')">Journal</a>
+        <a onclick="loadPreviewPage('pages/website.html')">Website</a>
+        <a onclick="loadPreviewPage('index.html')">Home</a>
+      </div>
+    </div>
+    <div class="preview-content">
+      <iframe id="preview-frame"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+const controlIds = [
+  'primaryColor','textColor','secondaryColor',
+  'headingSize','bodySize',
+  'borderRadius','padding'
+];
+
+function getValues() {
+  const vals = {};
+  controlIds.forEach(id => {
+    vals[id] = document.getElementById(id).value;
+  });
+  return vals;
+}
+
+function saveToLocalStorage() {
+  const vals = getValues();
+  localStorage.setItem('harvardToolStyles', JSON.stringify(vals));
+}
+
+function loadFromLocalStorage() {
+  const saved = localStorage.getItem('harvardToolStyles');
+  if (saved) {
+    const vals = JSON.parse(saved);
+    controlIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (vals[id]) el.value = vals[id];
+    });
+  }
+}
+
+function buildCSSVars(vals) {
+  return `
+:root {
+  --primary-color: ${vals.primaryColor};
+  --text-color: ${vals.textColor};
+  --secondary-color: ${vals.secondaryColor};
+  --heading-size: ${vals.headingSize}px;
+  --body-size: ${vals.bodySize}px;
+  --border-radius: ${vals.borderRadius}px;
+  --padding-base: ${vals.padding}px;
+}
+
+/* Apply variables to existing styles */
+button, .btn-primary {
+  background: var(--primary-color);
+  border-radius: var(--border-radius);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  font-size: var(--heading-size);
+}
+
+body {
+  color: var(--text-color);
+  font-size: var(--body-size);
+}
+
+.section-button, .main-nav-button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border-radius: var(--border-radius);
+  padding: var(--padding-base);
+}
+
+.card, .accordion-item {
+  border-radius: var(--border-radius);
+  padding: var(--padding-base);
+}
+`;
+}
+
+function updatePreview() {
+  const vals = getValues();
+  const frame = document.getElementById('preview-frame');
+  const doc = frame.contentDocument || frame.contentWindow.document;
+
+  // Get the current page being previewed
+  const currentSrc = frame.src;
+  if (!currentSrc) {
+    loadPreviewPage('index.html');
+    return;
+  }
+
+  // Inject CSS variables
+  const cssVars = buildCSSVars(vals);
+  const style = doc.createElement('style');
+  style.id = 'css-vars';
+  style.textContent = cssVars;
+
+  // Remove old style if exists
+  const oldStyle = doc.getElementById('css-vars');
+  if (oldStyle) oldStyle.remove();
+
+  // Add new style
+  doc.head.appendChild(style);
+}
+
+function loadPreviewPage(pagePath) {
+  const frame = document.getElementById('preview-frame');
+  frame.src = pagePath;
+  frame.onload = () => {
+    setTimeout(updatePreview, 100);
+  };
+}
+
+function updateBadges() {
+  controlIds.forEach(id => {
+    const el = document.getElementById(id);
+    const badge = document.getElementById(id + 'Value');
+    if (!badge) return;
+    badge.textContent = el.type === 'color' ? el.value : el.value + 'px';
+  });
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return [r, g, b];
+}
+
+function relativeLuminance([r, g, b]) {
+  const s = [r, g, b].map(c => {
+    c = c / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * s[0] + 0.7152 * s[1] + 0.0722 * s[2];
+}
+
+function contrastRatio(hex1, hex2) {
+  const l1 = relativeLuminance(hexToRgb(hex1));
+  const l2 = relativeLuminance(hexToRgb(hex2));
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function updateContrastChecks() {
+  const vals = getValues();
+  const white = '#ffffff';
+
+  const pairs = [
+    { label: 'Primary color on white', fg: vals.primaryColor, bg: white },
+    { label: 'Headings on page', fg: vals.textColor, bg: '#f9fafb' },
+    { label: 'Body text on page', fg: vals.textColor, bg: '#f9fafb' },
+    { label: 'Secondary text on page', fg: vals.secondaryColor, bg: '#f9fafb' },
+  ];
+
+  const container = document.getElementById('contrast-checks');
+  container.innerHTML = pairs.map(p => {
+    const ratio = contrastRatio(p.fg, p.bg);
+    const ratioText = ratio.toFixed(1) + ':1';
+    let badgeClass, badgeText;
+    if (ratio >= 4.5) {
+      badgeClass = 'pass'; badgeText = 'AA';
+    } else if (ratio >= 3) {
+      badgeClass = 'large-pass'; badgeText = 'AA+';
+    } else {
+      badgeClass = 'fail'; badgeText = 'Fail';
+    }
+    return `<div class="contrast-row">
+      <div class="contrast-swatch-pair">
+        <div class="contrast-swatch" style="background:${p.fg};"></div>
+        <div class="contrast-swatch" style="background:${p.bg};"></div>
+      </div>
+      <span class="contrast-label">${p.label}</span>
+      <span class="contrast-ratio">${ratioText}</span>
+      <span class="contrast-badge ${badgeClass}">${badgeText}</span>
+    </div>`;
+  }).join('');
+}
+
+function downloadCSS() {
+  const vals = getValues();
+  const css = buildCSSVars(vals);
+  const blob = new Blob([css], { type: 'text/css' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'custom-styles.css';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function copyCSS() {
+  const vals = getValues();
+  const css = buildCSSVars(vals);
+  navigator.clipboard.writeText(css).then(() => {
+    alert('CSS copied to clipboard!');
+  }).catch(() => {
+    alert('Failed to copy. Try downloading instead.');
+  });
+}
+
+function resetStyles() {
+  if (confirm('Reset all styles to defaults? Your changes will be saved automatically when you refresh.')) {
+    localStorage.removeItem('harvardToolStyles');
+    location.reload();
+  }
+}
+
+controlIds.forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    updateBadges();
+    updatePreview();
+    updateContrastChecks();
+    saveToLocalStorage();
+  });
+});
+
+loadFromLocalStorage();
+updateBadges();
+updateContrastChecks();
+loadPreviewPage('index.html');
+
+// ============================================================================
+// Help Modal Functions
+// ============================================================================
+
+function openHelpModal() {
+  document.getElementById('help-modal-overlay').classList.add('active');
+}
+
+function closeHelpModal() {
+  document.getElementById('help-modal-overlay').classList.remove('active');
+}
+
+// Close modal if clicking outside of it
+document.getElementById('help-modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeHelpModal();
+  }
+});
+</script>
+
+</body>
+</html>
