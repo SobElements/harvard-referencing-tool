@@ -24,7 +24,7 @@ function createNavbar() {
     const styleEditorBtn = document.createElement('a');
     styleEditorBtn.className = 'navbar-button';
     styleEditorBtn.href = 'style-editor.html';
-    styleEditorBtn.textContent = '🎨 Customize Styles';
+    styleEditorBtn.textContent = '🎨 Customise Styles';
     links.appendChild(styleEditorBtn);
 
     navContent.appendChild(brand);
