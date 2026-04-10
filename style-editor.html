@@ -587,6 +587,36 @@
           <input type="color" id="secondaryColor" value="#6b7280">
           <span class="value-badge" id="secondaryValue">#6b7280</span>
         </div>
+        <div class="control-row">
+          <span class="control-label">Background</span>
+          <input type="color" id="backgroundColor" value="#f3f4f6">
+          <span class="value-badge" id="backgroundColorValue">#f3f4f6</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Card background</span>
+          <input type="color" id="cardColor" value="#ffffff">
+          <span class="value-badge" id="cardColorValue">#ffffff</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Navbar background</span>
+          <input type="color" id="navbarColor" value="#ffffff">
+          <span class="value-badge" id="navbarColorValue">#ffffff</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Link/hover colour</span>
+          <input type="color" id="linkColor" value="#667eea">
+          <span class="value-badge" id="linkColorValue">#667eea</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Border colour</span>
+          <input type="color" id="borderColor" value="#e5e7eb">
+          <span class="value-badge" id="borderColorValue">#e5e7eb</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Accent colour (gradient)</span>
+          <input type="color" id="accentColor" value="#764ba2">
+          <span class="value-badge" id="accentColorValue">#764ba2</span>
+        </div>
       </div>
 
       <div class="control-section">
@@ -649,7 +679,8 @@
 
 <script>
 const controlIds = [
-  'primaryColor','textColor','secondaryColor',
+  'primaryColor','textColor','secondaryColor','backgroundColor','cardColor',
+  'navbarColor','linkColor','borderColor','accentColor',
   'headingSize','bodySize',
   'borderRadius','padding'
 ];
@@ -684,6 +715,12 @@ function buildCSSVars(vals) {
   --primary-color: ${vals.primaryColor};
   --text-color: ${vals.textColor};
   --secondary-color: ${vals.secondaryColor};
+  --background-color: ${vals.backgroundColor};
+  --card-color: ${vals.cardColor};
+  --navbar-color: ${vals.navbarColor};
+  --link-color: ${vals.linkColor};
+  --border-color: ${vals.borderColor};
+  --accent-color: ${vals.accentColor};
   --heading-size: ${vals.headingSize}px;
   --body-size: ${vals.bodySize}px;
   --border-radius: ${vals.borderRadius}px;
@@ -694,6 +731,7 @@ function buildCSSVars(vals) {
 button, .btn-primary {
   background: var(--primary-color);
   border-radius: var(--border-radius);
+  border-color: var(--border-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -704,17 +742,70 @@ h1, h2, h3, h4, h5, h6 {
 body {
   color: var(--text-color);
   font-size: var(--body-size);
+  background: var(--background-color);
+}
+
+.navbar {
+  background: var(--navbar-color);
+  border-bottom-color: var(--border-color);
+}
+
+.navbar-brand, .navbar-link.active {
+  color: var(--link-color);
+}
+
+.navbar-link:hover {
+  color: var(--link-color);
+}
+
+.navbar-button {
+  background: var(--link-color);
+}
+
+.navbar-button:hover {
+  background: var(--primary-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--primary-color);
 }
 
 .section-button, .main-nav-button {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
   border-radius: var(--border-radius);
   padding: var(--padding-base);
 }
 
 .card, .accordion-item {
+  background: var(--card-color);
   border-radius: var(--border-radius);
   padding: var(--padding-base);
+  border-color: var(--border-color);
+}
+
+.accordion-header {
+  background-color: var(--background-color);
+}
+
+.accordion-header:hover {
+  background-color: var(--link-color);
+  opacity: 0.1;
+}
+
+.option-button {
+  border-color: var(--border-color);
+}
+
+.option-button:hover {
+  border-color: var(--link-color);
+}
+
+.accordion-item, .option-button {
+  border-color: var(--border-color);
 }
 `;
 }
@@ -787,13 +878,14 @@ function contrastRatio(hex1, hex2) {
 
 function updateContrastChecks() {
   const vals = getValues();
-  const white = '#ffffff';
 
   const pairs = [
-    { label: 'Primary color on white', fg: vals.primaryColor, bg: white },
-    { label: 'Headings on page', fg: vals.textColor, bg: '#f9fafb' },
-    { label: 'Body text on page', fg: vals.textColor, bg: '#f9fafb' },
-    { label: 'Secondary text on page', fg: vals.secondaryColor, bg: '#f9fafb' },
+    { label: 'Primary color on white', fg: vals.primaryColor, bg: vals.cardColor },
+    { label: 'Link colour on navbar', fg: vals.linkColor, bg: vals.navbarColor },
+    { label: 'Text on page background', fg: vals.textColor, bg: vals.backgroundColor },
+    { label: 'Headings on cards', fg: vals.textColor, bg: vals.cardColor },
+    { label: 'Secondary text on page', fg: vals.secondaryColor, bg: vals.backgroundColor },
+    { label: 'Accent color on white', fg: vals.accentColor, bg: vals.cardColor },
   ];
 
   const container = document.getElementById('contrast-checks');
