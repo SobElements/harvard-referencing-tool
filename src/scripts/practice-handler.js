@@ -25,8 +25,17 @@ let practiceMode = 'beginner'; // Tracks whether we're in beginner or intermedia
 
 // Fetch and load all questions from the JSON file (src/data/questions-bank.json)
 // This runs once at the start of each practice session
+// Checks localStorage for admin overrides first (set by admin.html)
 async function loadQuestions() {
     try {
+        // Check localStorage override first (set by admin.html)
+        const adminOverride = localStorage.getItem('harvardAdminQuestions');
+        if (adminOverride) {
+            questionBank = JSON.parse(adminOverride);
+            console.log('Questions loaded from admin override (localStorage)');
+            return true;
+        }
+        // Fall back to the static JSON file
         const response = await fetch('../src/data/questions-bank.json');
         if (!response.ok) {
             throw new Error('Failed to load questions-bank.json');

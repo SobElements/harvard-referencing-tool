@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Harvard Referencing Tool</title>
+
+    <!-- Quill Rich Text Editor CDN -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; height: 100%; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f3f4f6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header-subtitle {
+            font-size: 12px;
+            font-weight: 400;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .action-buttons {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .action-buttons button {
+            padding: 0.6rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .action-buttons button:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f3f4f6;
+        }
+
+        .main-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .main-header a {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .main-header a:hover {
+            text-decoration: underline;
+        }
+
+        .main-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .tab-switcher {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 0.6rem;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+            transition: all 0.15s;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .tab-btn:hover {
+            color: #374151;
+        }
+
+        .nav-item {
+            padding: 0.5rem 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .nav-item-count {
+            font-size: 11px;
+            color: #9ca3af;
+            background: #f3f4f6;
+            padding: 1px 6px;
+            border-radius: 9px;
+        }
+
+        .nav-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+            padding: 0.75rem 0.75rem 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .question-card, .section-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.15s;
+        }
+
+        .question-card:hover, .section-card:hover {
+            border-color: #6366f1;
+        }
+
+        .card-id {
+            font-size: 11px;
+            font-family: monospace;
+            color: #9ca3af;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-scenario, .card-title {
+            font-size: 13px;
+            color: #1f2937;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-preview {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .card-actions button {
+            flex: 1;
+            padding: 0.4rem 0.6rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .card-actions button:hover {
+            background: #f3f4f6;
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .card-actions button.delete {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .card-actions button.delete:hover {
+            background: #fee2e2;
+            border-color: #f87171;
+        }
+
+        .category-section {
+            margin-bottom: 2rem;
+        }
+
+        .category-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .category-heading h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .category-heading button {
+            padding: 0.4rem 0.75rem;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .category-heading button:hover {
+            background: #4f46e5;
+        }
+
+        .empty-state {
+            color: #9ca3af;
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            margin: 0 0 1.5rem;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .modal-form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea.modal-input {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            padding: 0.6rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .modal-actions button:hover {
+            background: #f3f4f6;
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .modal-actions button.primary {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .modal-actions button.primary:hover {
+            background: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        /* Quill editor customization */
+        #quill-editor-container {
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .ql-toolbar {
+            border-top: 1px solid #d1d5db;
+            border-left: 1px solid #d1d5db;
+            border-right: 1px solid #d1d5db;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .ql-container {
+            border: 1px solid #d1d5db;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            font-size: 13px;
+        }
+
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #059669;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2000;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+
+        /* Help Modal Styles */
+        .help-modal {
+            width: 640px;
+            max-width: 90vw;
+        }
+
+        .help-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .help-modal-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .help-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .help-step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .help-step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .help-step-content h3 {
+            margin: 0 0 0.25rem 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .help-step-content p {
+            margin: 0;
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .help-section-divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 1.5rem 0;
+        }
+
+        .help-tips {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #6366f1;
+        }
+
+        .help-tips h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .help-tips ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .help-tips li {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .help-tips li:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        .help-modal-actions button {
+            padding: 0.6rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .help-modal-actions button:hover {
+            background: #f3f4f6;
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .help-modal-actions button.primary {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .help-modal-actions button.primary:hover {
+            background: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        .help-button {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            z-index: 500;
+        }
+
+        .help-button:hover {
+            background: #4f46e5;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Help Modal -->
+    <div class="modal-overlay active" id="help-modal-overlay">
+        <div class="modal help-modal">
+            <h2 class="help-modal-title">Welcome to the Admin Panel 🎛️</h2>
+            <p class="help-modal-subtitle">Edit practice questions and tutorial content without touching code</p>
+
+            <div class="help-steps">
+                <div class="help-step">
+                    <div class="help-step-icon">1</div>
+                    <div class="help-step-content">
+                        <h3>Edit Practice Questions</h3>
+                        <p>Click "Questions" to browse by source type. Edit question scenarios, correct answers, and more. Each change is saved automatically.</p>
+                    </div>
+                </div>
+
+                <div class="help-step">
+                    <div class="help-step-icon">2</div>
+                    <div class="help-step-content">
+                        <h3>Edit Tutorial Content</h3>
+                        <p>Click "Tutorials" to edit accordion sections. Use the rich text editor to format content with bold, italics, lists, and links.</p>
+                    </div>
+                </div>
+
+                <div class="help-step">
+                    <div class="help-step-icon">3</div>
+                    <div class="help-step-content">
+                        <h3>Add & Delete Easily</h3>
+                        <p>Add new questions or tutorial sections with the "+ Add" buttons. Delete any item with the Delete button and confirm.</p>
+                    </div>
+                </div>
+
+                <div class="help-step">
+                    <div class="help-step-icon">4</div>
+                    <div class="help-step-content">
+                        <h3>Changes Appear Instantly</h3>
+                        <p>Your edits are saved to the browser and appear immediately on practice pages and tutorials. No refreshing needed!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-section-divider"></div>
+
+            <div class="help-tips">
+                <h4>💡 Quick Tips</h4>
+                <ul>
+                    <li>Correct Answers must be valid JSON: {"author": "Smith, J.", "year": "(2020)"}</li>
+                    <li>Use the Reset buttons to undo all your changes and restore defaults</li>
+                    <li>Tutorial section bodies support bold, italic, lists, and links</li>
+                    <li>Click the "?" button anytime to see this help again</li>
+                </ul>
+            </div>
+
+            <div class="help-modal-actions">
+                <button onclick="closeHelpModal()">Got it! Let's go</button>
+                <button class="primary" onclick="closeHelpModal()">Start Editing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <button class="help-button" onclick="openHelpModal()" title="How to use the Admin Panel">?</button>
+
+    <!-- Confirm/Alert Modal -->
+    <div class="modal-overlay" id="confirm-modal-overlay">
+        <div class="modal" style="max-width: 400px;">
+            <h3 class="modal-title" id="confirm-title">Confirm</h3>
+            <p id="confirm-message" style="margin: 0 0 1.5rem; color: #374151; font-size: 13px; line-height: 1.5;"></p>
+            <div class="modal-actions">
+                <button onclick="confirmCancel()">Cancel</button>
+                <button class="primary" onclick="confirmOk()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Edit Modal -->
+    <div class="modal-overlay" id="question-edit-modal-overlay">
+        <div class="modal" style="max-width: 600px;">
+            <h3 class="modal-title">Edit Question</h3>
+            <form onsubmit="saveQuestionEdit(); return false;">
+                <div class="modal-form-group">
+                    <label class="modal-label">Question ID (read-only)</label>
+                    <input type="text" id="q-edit-id" class="modal-input" readonly style="background: #f3f4f6;">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Scenario *</label>
+                    <textarea id="q-edit-scenario" class="modal-input" required></textarea>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Author</label>
+                    <input type="text" id="q-edit-author" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Title</label>
+                    <input type="text" id="q-edit-title" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Year</label>
+                    <input type="text" id="q-edit-year" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Publisher / Journal / Website</label>
+                    <input type="text" id="q-edit-publisher" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Page / URL</label>
+                    <input type="text" id="q-edit-page" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Fields (comma-separated) *</label>
+                    <input type="text" id="q-edit-fields" class="modal-input" required>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Correct Answers (JSON) *</label>
+                    <textarea id="q-edit-correct-answers" class="modal-input" required placeholder='{"author": "Smith, J.", "year": "(2020)"}'></textarea>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Correct Answer Full</label>
+                    <input type="text" id="q-edit-correct-answer-full" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Italic Fields (comma-separated)</label>
+                    <input type="text" id="q-edit-italic-fields" class="modal-input">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeQuestionEditModal()">Cancel</button>
+                    <button type="submit" class="primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Question Add Modal -->
+    <div class="modal-overlay" id="question-add-modal-overlay">
+        <div class="modal" style="max-width: 600px;">
+            <h3 class="modal-title">Add Question</h3>
+            <form onsubmit="saveNewQuestion(); return false;">
+                <div class="modal-form-group">
+                    <label class="modal-label">Scenario *</label>
+                    <textarea id="q-add-scenario" class="modal-input" required></textarea>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Author</label>
+                    <input type="text" id="q-add-author" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Title</label>
+                    <input type="text" id="q-add-title" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Year</label>
+                    <input type="text" id="q-add-year" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Publisher / Journal / Website</label>
+                    <input type="text" id="q-add-publisher" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Page / URL</label>
+                    <input type="text" id="q-add-page" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Fields (comma-separated) *</label>
+                    <input type="text" id="q-add-fields" class="modal-input" required>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Correct Answers (JSON) *</label>
+                    <textarea id="q-add-correct-answers" class="modal-input" required placeholder='{"author": "Smith, J.", "year": "(2020)"}'></textarea>
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Correct Answer Full</label>
+                    <input type="text" id="q-add-correct-answer-full" class="modal-input">
+                </div>
+                <div class="modal-form-group">
+                    <label class="modal-label">Italic Fields (comma-separated)</label>
+                    <input type="text" id="q-add-italic-fields" class="modal-input">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeQuestionAddModal()">Cancel</button>
+                    <button type="submit" class="primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Section Edit Modal -->
+    <div class="modal-overlay" id="section-edit-modal-overlay">
+        <div class="modal" style="width: 700px; max-width: 95vw;">
+            <h3 class="modal-title" id="section-edit-modal-title">Edit Section</h3>
+            <div style="margin-bottom: 1rem;">
+                <label class="modal-label">Section Title *</label>
+                <input type="text" id="section-edit-title" class="modal-input" required>
+            </div>
+            <div>
+                <label class="modal-label">Section Body *</label>
+                <div id="quill-editor-container" style="height: 300px;"></div>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeSectionEditModal()">Cancel</button>
+                <button class="primary" onclick="saveSectionEdit()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                Admin Panel
+                <div class="sidebar-header-subtitle">Edit questions and tutorials</div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="tab-switcher">
+                    <button id="tab-questions" class="tab-btn active" onclick="switchTab('questions')">Questions</button>
+                    <button id="tab-tutorials" class="tab-btn" onclick="switchTab('tutorials')">Tutorials</button>
+                </div>
+
+                <!-- Questions Navigation -->
+                <div id="panel-questions">
+                    <div id="source-type-list"></div>
+                </div>
+
+                <!-- Tutorials Navigation -->
+                <div id="panel-tutorials" style="display:none;">
+                    <div id="tutorial-file-list"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="resetQuestions()">Reset Questions</button>
+                <button onclick="resetTutorials()">Reset Tutorials</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="main-header">
+                <span id="main-title">Select a source type or tutorial file</span>
+                <a href="index.html">← Back to site</a>
+            </div>
+            <div class="main-body" id="main-body">
+                <div class="empty-state">Select a source type or tutorial file from the left sidebar to begin editing.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"></div>
+
+    <script>
+        // ====================================================================
+        // CONSTANTS & STATE
+        // ====================================================================
+
+        const SOURCE_TYPE_LABELS = {
+            books: 'Books',
+            journals: 'Academic Journals',
+            websites: 'Websites',
+            referenceList: 'Reference Lists',
+            newspapers: 'Newspapers',
+            reports: 'Reports',
+            media: 'Media',
+            personalCommunications: 'Personal Communications',
+            aiSources: 'AI Sources'
+        };
+
+        const TUTORIAL_FILE_LABELS = {
+            'book-tutorial.html': 'Books',
+            'journal-tutorial.html': 'Academic Journals',
+            'website-tutorial.html': 'Websites',
+            'newspaper-tutorial.html': 'Newspapers',
+            'report-tutorial.html': 'Reports',
+            'media-tutorial.html': 'Media',
+            'personal-communication-tutorial.html': 'Personal Communications',
+            'reference-list-tutorial.html': 'Reference Lists',
+            'ai-sources-tutorial.html': 'AI Sources'
+        };
+
+        const ID_PREFIX_MAP = {
+            books: {
+                directQuotes: 'book_dq',
+                paraphrasing: 'book_para',
+                referenceList: 'book_ref',
+                multipleAuthors: 'book_multi',
+                noAuthor: 'book_noauth',
+                editedBooks: 'book_edited',
+                chaptersInEditedBooks: 'book_chapter',
+                multipleEditions: 'book_edition'
+            },
+            journals: {
+                directQuotes: 'journal_dq',
+                paraphrasing: 'journal_para',
+                referenceList: 'journal_ref',
+                referenceListWithDOI: 'journal_doi',
+                multipleAuthorsQuote: 'journal_multi',
+                multipleAuthorsReference: 'journal_multiref'
+            },
+            websites: {
+                withAuthorCitations: 'web_auth',
+                organisationAsAuthor: 'web_org',
+                noAuthorCitations: 'web_noauth',
+                withAuthorReferences: 'web_authref',
+                organisationReferences: 'web_orgref',
+                noAuthorReferences: 'web_noauthref',
+                noDateReferences: 'web_nodate'
+            },
+            newspapers: {
+                withAuthorCitations: 'news_auth',
+                organisationAsAuthor: 'news_org',
+                noAuthorCitations: 'news_noauth',
+                printNewspapers: 'news_print',
+                printNewspapersNoAuthor: 'news_printna',
+                onlineNewspapers: 'news_online',
+                editorial: 'news_edit',
+                letterToEditor: 'news_letter'
+            },
+            reports: {
+                inTextCitations: 'report_cite',
+                governmentReports: 'report_govt',
+                governmentReportsWithNumber: 'report_govtno',
+                internationalOrganisations: 'report_intl',
+                thinkTankReports: 'report_think'
+            },
+            media: {
+                inTextCitations: 'media_cite',
+                youtubeVideos: 'media_youtube',
+                podcasts: 'media_podcast',
+                tvProgrammes: 'media_tv',
+                onlineStreaming: 'media_stream'
+            },
+            personalCommunications: {
+                personalInterviews: 'pc_interview',
+                emailCommunications: 'pc_email',
+                phoneConversations: 'pc_phone',
+                lecturesAndPresentations: 'pc_lecture',
+                textMessages: 'pc_text',
+                referenceListExclusion: 'pc_exclude',
+                whenNotToUse: 'pc_whennot',
+                bestPractices: 'pc_best'
+            },
+            aiSources: {
+                whenToCite: 'ai_when',
+                directQuotes: 'ai_dq',
+                paraphrasing: 'ai_para',
+                chatgptReferences: 'ai_chatgpt',
+                claudeReferences: 'ai_claude',
+                otherAITools: 'ai_other',
+                ethics: 'ai_ethics',
+                transparency: 'ai_trans',
+                institutionalPolicy: 'ai_policy',
+                promptDocumentation: 'ai_prompt',
+                inappropriateUse: 'ai_inapp'
+            },
+            referenceList: {
+                alphabeticalOrdering: 'reflist_alpha',
+                formattingMultipleAuthors: 'reflist_multi',
+                capitalisationFixing: 'reflist_cap',
+                mixedSourceTypes: 'reflist_mixed'
+            }
+        };
+
+        const QUILL_TOOLBAR = [
+            ['bold', 'italic', 'underline'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link'],
+            ['clean']
+        ];
+
+        let adminQuestions = null;
+        let adminTutorials = {};
+        let activeTab = 'questions';
+        let activeSourceType = null;
+        let activeTutorialFile = null;
+        let editingQuestionId = null;
+        let editingSourceType = null;
+        let editingCategory = null;
+        let addingToSourceType = null;
+        let addingToCategory = null;
+        let editingTutorialFile = null;
+        let editingSectionIndex = null;
+        let quillInstance = null;
+        let confirmCallback = null;
+
+        // ====================================================================
+        // INITIALIZATION
+        // ====================================================================
+
+        function initQuill() {
+            quillInstance = new Quill('#quill-editor-container', {
+                theme: 'snow',
+                modules: { toolbar: QUILL_TOOLBAR },
+                placeholder: 'Write section content here...'
+            });
+        }
+
+        async function loadAdminState() {
+            // Load questions from localStorage or fetch from file
+            const adminQuestionsRaw = localStorage.getItem('harvardAdminQuestions');
+            if (adminQuestionsRaw) {
+                try {
+                    adminQuestions = JSON.parse(adminQuestionsRaw);
+                } catch (e) {
+                    console.error('Failed to parse harvardAdminQuestions:', e);
+                    adminQuestions = null;
+                }
+            }
+
+            if (!adminQuestions) {
+                try {
+                    const response = await fetch('src/data/questions-bank.json');
+                    adminQuestions = await response.json();
+                } catch (e) {
+                    console.error('Failed to load questions:', e);
+                    adminQuestions = {};
+                }
+            }
+
+            // Load tutorials from localStorage
+            const adminTutorialsRaw = localStorage.getItem('harvardAdminTutorials');
+            if (adminTutorialsRaw) {
+                try {
+                    adminTutorials = JSON.parse(adminTutorialsRaw);
+                } catch (e) {
+                    console.error('Failed to parse harvardAdminTutorials:', e);
+                    adminTutorials = {};
+                }
+            }
+
+            renderQuestionsSidebar();
+            renderTutorialsSidebar();
+        }
+
+        // ====================================================================
+        // TAB SWITCHING
+        // ====================================================================
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const qPanel = document.getElementById('panel-questions');
+            const tPanel = document.getElementById('panel-tutorials');
+            const qBtn = document.getElementById('tab-questions');
+            const tBtn = document.getElementById('tab-tutorials');
+
+            if (tab === 'questions') {
+                qPanel.style.display = 'block';
+                tPanel.style.display = 'none';
+                qBtn.classList.add('active');
+                tBtn.classList.remove('active');
+            } else {
+                qPanel.style.display = 'none';
+                tPanel.style.display = 'block';
+                qBtn.classList.remove('active');
+                tBtn.classList.add('active');
+            }
+        }
+
+        // ====================================================================
+        // QUESTIONS TAB
+        // ====================================================================
+
+        function renderQuestionsSidebar() {
+            const container = document.getElementById('source-type-list');
+            container.innerHTML = '';
+
+            Object.keys(SOURCE_TYPE_LABELS).forEach(sourceType => {
+                const count = countQuestions(sourceType);
+                const div = document.createElement('div');
+                div.className = 'nav-item' + (activeSourceType === sourceType ? ' active' : '');
+                div.onclick = () => selectSourceType(sourceType);
+                div.innerHTML = `
+                    <span>${SOURCE_TYPE_LABELS[sourceType]}</span>
+                    <span class="nav-item-count">${count}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function countQuestions(sourceType) {
+            if (!adminQuestions[sourceType]) return 0;
+            let count = 0;
+            Object.keys(adminQuestions[sourceType]).forEach(cat => {
+                count += adminQuestions[sourceType][cat].length;
+            });
+            return count;
+        }
+
+        function selectSourceType(sourceType) {
+            activeSourceType = sourceType;
+            renderQuestionsSidebar();
+            renderQuestionsMain(sourceType);
+        }
+
+        function renderQuestionsMain(sourceType) {
+            const mainBody = document.getElementById('main-body');
+            const title = document.getElementById('main-title');
+            title.textContent = SOURCE_TYPE_LABELS[sourceType];
+
+            if (!adminQuestions[sourceType]) {
+                mainBody.innerHTML = '<div class="empty-state">No questions found for this source type.</div>';
+                return;
+            }
+
+            let html = '';
+            Object.keys(adminQuestions[sourceType]).forEach(category => {
+                const questions = adminQuestions[sourceType][category];
+                html += `
+                    <div class="category-section">
+                        <div class="category-heading">
+                            <h3>${category}</h3>
+                            <button onclick="openQuestionAddModal('${sourceType}', '${category}')">+ Add</button>
+                        </div>
+                `;
+
+                questions.forEach(q => {
+                    html += renderQuestionCard(q, sourceType, category);
+                });
+
+                html += '</div>';
+            });
+
+            mainBody.innerHTML = html;
+        }
+
+        function renderQuestionCard(q, sourceType, category) {
+            const truncatedScenario = q.scenario.substring(0, 100) + (q.scenario.length > 100 ? '...' : '');
+            return `
+                <div class="question-card">
+                    <div class="card-id">${q.id}</div>
+                    <div class="card-scenario">${truncatedScenario}</div>
+                    <div class="card-actions">
+                        <button onclick="openQuestionEditModal('${sourceType}', '${category}', '${q.id}')">Edit</button>
+                        <button class="delete" onclick="deleteQuestion('${sourceType}', '${category}', '${q.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openQuestionEditModal(sourceType, category, questionId) {
+            const questions = adminQuestions[sourceType][category];
+            const question = questions.find(q => q.id === questionId);
+            if (!question) return;
+
+            editingQuestionId = questionId;
+            editingSourceType = sourceType;
+            editingCategory = category;
+
+            document.getElementById('q-edit-id').value = question.id;
+            document.getElementById('q-edit-scenario').value = question.scenario;
+            document.getElementById('q-edit-author').value = question.source?.author || '';
+            document.getElementById('q-edit-title').value = question.source?.title || '';
+            document.getElementById('q-edit-year').value = question.source?.year || '';
+            document.getElementById('q-edit-publisher').value = question.source?.publisher || question.source?.journal || question.source?.website || '';
+            document.getElementById('q-edit-page').value = question.source?.page || question.source?.url || '';
+            document.getElementById('q-edit-fields').value = question.fields.join(', ');
+            document.getElementById('q-edit-correct-answers').value = JSON.stringify(question.correctAnswers, null, 2);
+            document.getElementById('q-edit-correct-answer-full').value = question.correctAnswerFull || '';
+            document.getElementById('q-edit-italic-fields').value = (question.italicFields || []).join(', ');
+
+            document.getElementById('question-edit-modal-overlay').classList.add('active');
+        }
+
+        function closeQuestionEditModal() {
+            document.getElementById('question-edit-modal-overlay').classList.remove('active');
+            editingQuestionId = null;
+            editingSourceType = null;
+            editingCategory = null;
+        }
+
+        function saveQuestionEdit() {
+            if (!editingQuestionId || !editingSourceType || !editingCategory) return;
+
+            const scenario = document.getElementById('q-edit-scenario').value.trim();
+            const fieldsRaw = document.getElementById('q-edit-fields').value.trim();
+            const correctAnswersRaw = document.getElementById('q-edit-correct-answers').value.trim();
+            const correctAnswerFull = document.getElementById('q-edit-correct-answer-full').value.trim();
+            const italicFieldsRaw = document.getElementById('q-edit-italic-fields').value.trim();
+
+            if (!scenario || !fieldsRaw || !correctAnswersRaw) {
+                showAlert('Scenario, Fields, and Correct Answers are required.');
+                return;
+            }
+
+            let correctAnswers;
+            try {
+                correctAnswers = JSON.parse(correctAnswersRaw);
+            } catch (e) {
+                showAlert('Correct Answers must be valid JSON. Example: {"author": "Smith, J.", "year": "(2020)"}');
+                return;
+            }
+
+            const fields = fieldsRaw.split(',').map(s => s.trim()).filter(Boolean);
+            const italicFields = italicFieldsRaw ? italicFieldsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+            const source = {
+                author: document.getElementById('q-edit-author').value || undefined,
+                title: document.getElementById('q-edit-title').value || undefined,
+                year: document.getElementById('q-edit-year').value || undefined,
+                publisher: document.getElementById('q-edit-publisher').value || undefined,
+                page: document.getElementById('q-edit-page').value || undefined
+            };
+
+            Object.keys(source).forEach(k => {
+                if (!source[k]) delete source[k];
+            });
+
+            const question = adminQuestions[editingSourceType][editingCategory].find(q => q.id === editingQuestionId);
+            if (question) {
+                question.scenario = scenario;
+                question.source = source;
+                question.fields = fields;
+                question.correctAnswers = correctAnswers;
+                question.correctAnswerFull = correctAnswerFull;
+                question.italicFields = italicFields;
+            }
+
+            saveQuestionsToLocalStorage();
+            closeQuestionEditModal();
+            renderQuestionsMain(editingSourceType);
+            showToast('Question saved successfully.');
+        }
+
+        function openQuestionAddModal(sourceType, category) {
+            addingToSourceType = sourceType;
+            addingToCategory = category;
+
+            document.getElementById('q-add-scenario').value = '';
+            document.getElementById('q-add-author').value = '';
+            document.getElementById('q-add-title').value = '';
+            document.getElementById('q-add-year').value = '';
+            document.getElementById('q-add-publisher').value = '';
+            document.getElementById('q-add-page').value = '';
+            document.getElementById('q-add-fields').value = '';
+            document.getElementById('q-add-correct-answers').value = '';
+            document.getElementById('q-add-correct-answer-full').value = '';
+            document.getElementById('q-add-italic-fields').value = '';
+
+            document.getElementById('question-add-modal-overlay').classList.add('active');
+        }
+
+        function closeQuestionAddModal() {
+            document.getElementById('question-add-modal-overlay').classList.remove('active');
+            addingToSourceType = null;
+            addingToCategory = null;
+        }
+
+        function saveNewQuestion() {
+            if (!addingToSourceType || !addingToCategory) return;
+
+            const scenario = document.getElementById('q-add-scenario').value.trim();
+            const fieldsRaw = document.getElementById('q-add-fields').value.trim();
+            const correctAnswersRaw = document.getElementById('q-add-correct-answers').value.trim();
+            const correctAnswerFull = document.getElementById('q-add-correct-answer-full').value.trim();
+            const italicFieldsRaw = document.getElementById('q-add-italic-fields').value.trim();
+
+            if (!scenario || !fieldsRaw || !correctAnswersRaw) {
+                showAlert('Scenario, Fields, and Correct Answers are required.');
+                return;
+            }
+
+            let correctAnswers;
+            try {
+                correctAnswers = JSON.parse(correctAnswersRaw);
+            } catch (e) {
+                showAlert('Correct Answers must be valid JSON. Example: {"author": "Smith, J.", "year": "(2020)"}');
+                return;
+            }
+
+            const fields = fieldsRaw.split(',').map(s => s.trim()).filter(Boolean);
+            const italicFields = italicFieldsRaw ? italicFieldsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+            const source = {
+                author: document.getElementById('q-add-author').value || undefined,
+                title: document.getElementById('q-add-title').value || undefined,
+                year: document.getElementById('q-add-year').value || undefined,
+                publisher: document.getElementById('q-add-publisher').value || undefined,
+                page: document.getElementById('q-add-page').value || undefined
+            };
+
+            Object.keys(source).forEach(k => {
+                if (!source[k]) delete source[k];
+            });
+
+            const existingIds = adminQuestions[addingToSourceType][addingToCategory].map(q => q.id);
+            const newId = generateUniqueId(addingToSourceType, addingToCategory, existingIds);
+
+            const newQuestion = {
+                id: newId,
+                scenario,
+                source,
+                fields,
+                correctAnswers,
+                correctAnswerFull,
+                italicFields
+            };
+
+            adminQuestions[addingToSourceType][addingToCategory].push(newQuestion);
+            saveQuestionsToLocalStorage();
+            closeQuestionAddModal();
+            renderQuestionsMain(addingToSourceType);
+            showToast('Question added successfully.');
+        }
+
+        function generateUniqueId(sourceType, category, existingIds) {
+            const prefixMap = ID_PREFIX_MAP[sourceType];
+            let prefix = prefixMap && prefixMap[category] ? prefixMap[sourceType][category] : `${sourceType}_${category}`;
+
+            let counter = 1;
+            let newId = `${prefix}_${counter}`;
+            while (existingIds.includes(newId)) {
+                counter++;
+                newId = `${prefix}_${counter}`;
+            }
+            return newId;
+        }
+
+        function deleteQuestion(sourceType, category, questionId) {
+            showConfirm(`Delete question "${questionId}"? This cannot be undone.`, function() {
+                const arr = adminQuestions[sourceType][category];
+                const idx = arr.findIndex(q => q.id === questionId);
+                if (idx !== -1) {
+                    arr.splice(idx, 1);
+                    saveQuestionsToLocalStorage();
+                    renderQuestionsMain(sourceType);
+                    showToast('Question deleted.');
+                }
+            });
+        }
+
+        function saveQuestionsToLocalStorage() {
+            localStorage.setItem('harvardAdminQuestions', JSON.stringify(adminQuestions));
+        }
+
+        function resetQuestions() {
+            showConfirm('Reset all question edits to defaults? This will remove all changes you have made.', async function() {
+                localStorage.removeItem('harvardAdminQuestions');
+                try {
+                    const response = await fetch('src/data/questions-bank.json');
+                    adminQuestions = await response.json();
+                } catch (e) {
+                    console.error('Failed to load questions:', e);
+                    adminQuestions = {};
+                }
+                renderQuestionsSidebar();
+                if (activeSourceType) renderQuestionsMain(activeSourceType);
+                showToast('Questions reset to defaults.');
+            });
+        }
+
+        // ====================================================================
+        // TUTORIALS TAB
+        // ====================================================================
+
+        function renderTutorialsSidebar() {
+            const container = document.getElementById('tutorial-file-list');
+            container.innerHTML = '';
+
+            Object.keys(TUTORIAL_FILE_LABELS).forEach(filename => {
+                const div = document.createElement('div');
+                div.className = 'nav-item' + (activeTutorialFile === filename ? ' active' : '');
+                div.onclick = () => selectTutorialFile(filename);
+                div.textContent = TUTORIAL_FILE_LABELS[filename];
+                container.appendChild(div);
+            });
+        }
+
+        async function selectTutorialFile(filename) {
+            activeTutorialFile = filename;
+            renderTutorialsSidebar();
+            await loadTutorialFromSource(filename);
+            renderTutorialsMain(filename);
+        }
+
+        async function loadTutorialFromSource(filename) {
+            if (adminTutorials[filename]) return;
+
+            try {
+                const response = await fetch(`tutorials/${filename}`);
+                const html = await response.text();
+                adminTutorials[filename] = parseTutorialHTML(html);
+            } catch (e) {
+                console.error('Could not load tutorial file:', filename, e);
+                adminTutorials[filename] = [];
+            }
+        }
+
+        function parseTutorialHTML(htmlString) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+            const items = doc.querySelectorAll('.accordion-item');
+            const sections = [];
+
+            items.forEach((item, index) => {
+                const h3 = item.querySelector('.accordion-header h3');
+                const body = item.querySelector('.accordion-body');
+                sections.push({
+                    index: index,
+                    title: h3 ? h3.textContent.trim() : `Section ${index + 1}`,
+                    body: body ? body.innerHTML.trim() : ''
+                });
+            });
+
+            return sections;
+        }
+
+        function renderTutorialsMain(filename) {
+            const mainBody = document.getElementById('main-body');
+            const title = document.getElementById('main-title');
+            title.textContent = TUTORIAL_FILE_LABELS[filename];
+
+            const sections = adminTutorials[filename] || [];
+
+            let html = `<div class="category-heading" style="margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;">Accordion Sections</h3>
+                <button onclick="addSection('${filename}')">+ Add Section</button>
+            </div>`;
+
+            sections.forEach((section, idx) => {
+                const preview = section.body.replace(/<[^>]*>/g, '').substring(0, 50);
+                html += `
+                    <div class="section-card">
+                        <div class="card-title">${section.title}</div>
+                        <div class="card-preview">${preview}</div>
+                        <div class="card-actions">
+                            <button onclick="openSectionEditModal('${filename}', ${idx})">Edit</button>
+                            <button class="delete" onclick="deleteSection('${filename}', ${idx})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            mainBody.innerHTML = html;
+        }
+
+        function openSectionEditModal(filename, sectionIndex) {
+            editingTutorialFile = filename;
+            editingSectionIndex = sectionIndex;
+
+            const section = adminTutorials[filename][sectionIndex];
+            document.getElementById('section-edit-title').value = section.title;
+            document.getElementById('section-edit-modal-title').textContent = 'Edit Section';
+            quillInstance.root.innerHTML = section.body;
+
+            document.getElementById('section-edit-modal-overlay').classList.add('active');
+        }
+
+        function closeSectionEditModal() {
+            document.getElementById('section-edit-modal-overlay').classList.remove('active');
+            editingTutorialFile = null;
+            editingSectionIndex = null;
+        }
+
+        function saveSectionEdit() {
+            if (!editingTutorialFile) return;
+
+            const title = document.getElementById('section-edit-title').value.trim();
+            const body = quillInstance.root.innerHTML.trim();
+
+            if (!title) {
+                showAlert('Section title cannot be empty.');
+                return;
+            }
+
+            if (editingSectionIndex === null) {
+                // Adding new section
+                adminTutorials[editingTutorialFile].push({
+                    index: adminTutorials[editingTutorialFile].length,
+                    title,
+                    body
+                });
+                reindexSections(editingTutorialFile);
+            } else {
+                // Editing existing section
+                adminTutorials[editingTutorialFile][editingSectionIndex].title = title;
+                adminTutorials[editingTutorialFile][editingSectionIndex].body = body;
+            }
+
+            saveTutorialsToLocalStorage();
+            closeSectionEditModal();
+            renderTutorialsMain(editingTutorialFile);
+            showToast('Section saved successfully.');
+        }
+
+        function addSection(filename) {
+            editingTutorialFile = filename;
+            editingSectionIndex = null;
+
+            document.getElementById('section-edit-title').value = '';
+            document.getElementById('section-edit-modal-title').textContent = 'Add Section';
+            quillInstance.root.innerHTML = '';
+
+            document.getElementById('section-edit-modal-overlay').classList.add('active');
+        }
+
+        function deleteSection(filename, sectionIndex) {
+            const section = adminTutorials[filename][sectionIndex];
+            showConfirm(`Delete section "${section.title}"? This cannot be undone.`, function() {
+                adminTutorials[filename].splice(sectionIndex, 1);
+                reindexSections(filename);
+                saveTutorialsToLocalStorage();
+                renderTutorialsMain(filename);
+                showToast('Section deleted.');
+            });
+        }
+
+        function reindexSections(filename) {
+            adminTutorials[filename].forEach((s, i) => {
+                s.index = i;
+            });
+        }
+
+        function saveTutorialsToLocalStorage() {
+            localStorage.setItem('harvardAdminTutorials', JSON.stringify(adminTutorials));
+        }
+
+        function resetTutorials() {
+            showConfirm('Reset all tutorial edits to defaults? This will remove all changes you have made.', function() {
+                localStorage.removeItem('harvardAdminTutorials');
+                adminTutorials = {};
+                renderTutorialsSidebar();
+                document.getElementById('main-body').innerHTML = '<div class="empty-state">Select a tutorial to edit.</div>';
+                showToast('Tutorial edits reset to defaults.');
+            });
+        }
+
+        // ====================================================================
+        // MODALS & UTILITIES
+        // ====================================================================
+
+        function showConfirm(message, onConfirm) {
+            document.getElementById('confirm-message').textContent = message;
+            confirmCallback = onConfirm;
+            document.getElementById('confirm-modal-overlay').classList.add('active');
+        }
+
+        function confirmOk() {
+            document.getElementById('confirm-modal-overlay').classList.remove('active');
+            if (confirmCallback) confirmCallback();
+            confirmCallback = null;
+        }
+
+        function confirmCancel() {
+            document.getElementById('confirm-modal-overlay').classList.remove('active');
+            confirmCallback = null;
+        }
+
+        function showAlert(message) {
+            document.getElementById('confirm-message').textContent = message;
+            confirmCallback = null;
+            document.getElementById('confirm-modal-overlay').classList.add('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ====================================================================
+        // HELP MODAL
+        // ====================================================================
+
+        function openHelpModal() {
+            document.getElementById('help-modal-overlay').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal-overlay').classList.remove('active');
+        }
+
+        // Close help modal when clicking outside (on the overlay)
+        document.addEventListener('click', function(event) {
+            const helpOverlay = document.getElementById('help-modal-overlay');
+            if (event.target === helpOverlay) {
+                closeHelpModal();
+            }
+        });
+
+        // ====================================================================
+        // PAGE LOAD
+        // ====================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuill();
+            loadAdminState();
+        });
+    </script>
+</body>
+</html>

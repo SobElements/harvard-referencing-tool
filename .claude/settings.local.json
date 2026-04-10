@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ':*)",
+      "Bash(node -e \"const fs = require\\('fs'\\); const data = JSON.parse\\(fs.readFileSync\\('C:\\\\\\\\\\\\\\\\Users\\\\\\\\\\\\\\\\E8910\\\\\\\\\\\\\\\\Documents\\\\\\\\\\\\\\\\harvard-referencing-tool\\\\\\\\\\\\\\\\src\\\\\\\\\\\\\\\\data\\\\\\\\\\\\\\\\questions-bank.json'\\)\\); let total = 0; for \\(const [sourceType, categories] of Object.entries\\(data\\)\\) { const catCounts = {}; for \\(const [cat, questions] of Object.entries\\(categories\\)\\) { catCounts[cat] = questions.length; total += questions.length; } console.log\\(sourceType + ': ' + JSON.stringify\\(catCounts\\)\\); } console.log\\('TOTAL: ' + total\\); const allCats = new Set\\(\\); for \\(const cats of Object.values\\(data\\)\\) { for \\(const cat of Object.keys\\(cats\\)\\) allCats.add\\(cat\\); } console.log\\('All category names: ' + [...allCats].join\\(', '\\)\\); const firstQ = data.books.directQuotes[0]; console.log\\('books.directQuotes[0] keys: ' + Object.keys\\(firstQ\\).join\\(', '\\)\\); console.log\\('source sub-keys: ' + Object.keys\\(firstQ.source\\).join\\(', '\\)\\);\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const d=JSON.parse\\(fs.readFileSync\\('src/data/questions-bank.json'\\)\\); let t=0; for\\(const [s,c] of Object.entries\\(d\\)\\){const cc={}; for\\(const [cat,q] of Object.entries\\(c\\)\\){cc[cat]=q.length;t+=q.length;} console.log\\(s+': '+JSON.stringify\\(cc\\)\\);} console.log\\('TOTAL: '+t\\); const ac=new Set\\(\\); for\\(const c of Object.values\\(d\\)\\){for\\(const k of Object.keys\\(c\\)\\) ac.add\\(k\\);} console.log\\('Categories: '+[...ac].join\\(', '\\)\\); const fq=d.books.directQuotes[0]; console.log\\('Q fields: '+Object.keys\\(fq\\).join\\(', '\\)\\); console.log\\('source fields: '+Object.keys\\(fq.source\\).join\\(', '\\)\\);\")",
+      "Bash(python3 -c ':*)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const data=JSON.parse\\(fs.readFileSync\\('C:/Users/E8910/Documents/harvard-referencing-tool/src/data/questions-bank.json'\\)\\); Object.entries\\(data\\).forEach\\(\\([k,v]\\)=>console.log\\(k+': '+Object.keys\\(v\\).join\\(', '\\)\\)\\);\")"
+    ]
+  }
+}

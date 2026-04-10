@@ -504,7 +504,7 @@
 
     <div class="help-steps">
       <div class="help-step">
-        <div class="help-step-icon">1️⃣</div>
+        <div class="help-step-icon">1</div>
         <div class="help-step-content">
           <h3>Pick Your Colours</h3>
           <p>Click any colour box to choose a new colour. Change buttons, text, and links to match your preference.</p>
@@ -512,7 +512,7 @@
       </div>
 
       <div class="help-step">
-        <div class="help-step-icon">2️⃣</div>
+        <div class="help-step-icon">2</div>
         <div class="help-step-content">
           <h3>Adjust Text Sizes</h3>
           <p>Use the sliders to make headings and body text bigger or smaller. Changes appear instantly in the preview.</p>
@@ -520,7 +520,7 @@
       </div>
 
       <div class="help-step">
-        <div class="help-step-icon">3️⃣</div>
+        <div class="help-step-icon">3</div>
         <div class="help-step-content">
           <h3>See Changes Live</h3>
           <p>The preview on the right updates as you adjust controls. Click page links (Home, Book, Journal) to see changes on different pages.</p>
@@ -528,7 +528,7 @@
       </div>
 
       <div class="help-step">
-        <div class="help-step-icon">4️⃣</div>
+        <div class="help-step-icon">4</div>
         <div class="help-step-content">
           <h3>Changes Save Automatically</h3>
           <p>Your customisations are saved automatically and will appear across the whole site whenever you visit. No need to download or copy anything!</p>
@@ -541,10 +541,10 @@
     <div class="help-tips">
       <h4>💡 Quick Tips</h4>
       <ul>
-        <li>The contrast checker shows if colours are readable (AA = good)</li>
+        <li>The contrast checker shows if colours are readable (AA = good, AAL = large text)</li>
         <li>Changes apply to the whole site automatically</li>
         <li>Try different preview pages to see how changes look</li>
-        <li>You can change colours back anytime—just refresh the page</li>
+        <li>Click "Reset to Default" to restore original colours</li>
       </ul>
     </div>
 
@@ -842,6 +842,9 @@ function loadPreviewPage(pagePath) {
   frame.onload = () => {
     setTimeout(updatePreview, 100);
   };
+  frame.onerror = () => {
+    console.error('Failed to load preview page:', pagePath);
+  };
 }
 
 function updateBadges() {
@@ -896,7 +899,7 @@ function updateContrastChecks() {
     if (ratio >= 4.5) {
       badgeClass = 'pass'; badgeText = 'AA';
     } else if (ratio >= 3) {
-      badgeClass = 'large-pass'; badgeText = 'AA+';
+      badgeClass = 'large-pass'; badgeText = 'AAL';
     } else {
       badgeClass = 'fail'; badgeText = 'Fail';
     }
