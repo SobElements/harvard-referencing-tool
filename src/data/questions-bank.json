@@ -2490,7 +2490,7 @@
     "fields": ["quote", "author", "year"],
     "correctAnswers": {
       "quote": "\"Economic recovery following the pandemic has been slower than initially predicted.\"",
-      "author": "Williamson,",
+      "author": "Williamson",
       "year": "2021"
     }
   },
@@ -2507,7 +2507,7 @@
     "fields": ["quote", "author", "year"],
     "correctAnswers": {
       "quote": "\"Technology companies face increasing regulatory scrutiny across multiple jurisdictions.\"",
-      "author": "Kowalski,",
+      "author": "Kowalski",
       "year": "2020"
     }
   },
@@ -2524,7 +2524,7 @@
     "fields": ["quote", "author", "year"],
     "correctAnswers": {
       "quote": "\"Urban housing shortages continue to drive property prices upward.\"",
-      "author": "Patterson,",
+      "author": "Patterson",
       "year": "2021"
     }
   },
@@ -2541,7 +2541,7 @@
     "fields": ["quote", "author", "year"],
     "correctAnswers": {
       "quote": "\"Small businesses report sustained challenges in securing adequate funding.\"",
-      "author": "Davidson,",
+      "author": "Davidson",
       "year": "2020"
     }
   },
@@ -2558,7 +2558,7 @@
     "fields": ["quote", "author", "year"],
     "correctAnswers": {
       "quote": "\"Community healthcare programmes demonstrate significant improvements in patient outcomes.\"",
-      "author": "Santos,",
+      "author": "Santos",
       "year": "2021"
     }
   }
@@ -2576,7 +2576,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Global temperatures have risen significantly over the past decade.\"",
-      "organisation": "The National Press,",
+      "organisation": "The National Press",
       "year": "2021"
     }
   },
@@ -2592,7 +2592,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Digital transformation initiatives require substantial investment and cultural change.\"",
-      "organisation": "The Daily Chronicle,",
+      "organisation": "The Daily Chronicle",
       "year": "2020"
     }
   },
@@ -2608,7 +2608,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Public transport usage has declined sharply during the pandemic period.\"",
-      "organisation": "The Metropolitan Times,",
+      "organisation": "The Metropolitan Times",
       "year": "2021"
     }
   },
@@ -2624,7 +2624,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Corporate sustainability practices have become central to investment decisions.\"",
-      "organisation": "The Business Herald,",
+      "organisation": "The Business Herald",
       "year": "2020"
     }
   },
@@ -2640,7 +2640,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Local education initiatives demonstrate improved literacy outcomes.\"",
-      "organisation": "The Regional Gazette,",
+      "organisation": "The Regional Gazette",
       "year": "2021"
     }
   }
@@ -2650,7 +2650,7 @@
     "id": "news_noauth_1",
     "scenario": "Include this information from a newspaper article in your essay: \"High street shopping has declined dramatically as online retail continues to grow.\"",
     "source": {
-      "title": "Retail transformation",
+      "title": "Retail Transformation",
       "newspaper": "The Business Herald",
       "year": "2021"
     },
@@ -2658,7 +2658,7 @@
     "fields": ["quote", "title", "year"],
     "correctAnswers": {
       "quote": "\"High street shopping has declined dramatically as online retail continues to grow.\"",
-      "title": "Retail transformation,",
+      "title": "Retail Transformation",
       "year": "2021"
     }
   },
@@ -2666,7 +2666,7 @@
     "id": "news_noauth_2",
     "scenario": "Include this information from a newspaper article in your essay: \"Breakthrough treatments offer new hope for chronic conditions.\"",
     "source": {
-      "title": "Medical innovation",
+      "title": "Medical Innovation",
       "newspaper": "The National Press",
       "year": "2020"
     },
@@ -2674,7 +2674,7 @@
     "fields": ["quote", "title", "year"],
     "correctAnswers": {
       "quote": "\"Breakthrough treatments offer new hope for chronic conditions.\"",
-      "title": "Medical innovation,",
+      "title": "Medical Innovation",
       "year": "2020"
     }
   },
@@ -2682,7 +2682,7 @@
     "id": "news_noauth_3",
     "scenario": "Include this information from a newspaper article in your essay: \"Urban parks and recreational areas are being significantly expanded.\"",
     "source": {
-      "title": "Green space expansion",
+      "title": "Green Space Expansion",
       "newspaper": "The Metropolitan Times",
       "year": "2021"
     },
@@ -2690,7 +2690,7 @@
     "fields": ["quote", "title", "year"],
     "correctAnswers": {
       "quote": "\"Urban parks and recreational areas are being significantly expanded.\"",
-      "title": "Green space expansion,",
+      "title": "Green Space Expansion",
       "year": "2021"
     }
   },
@@ -2698,7 +2698,7 @@
     "id": "news_noauth_4",
     "scenario": "Include this information from a newspaper article in your essay: \"Historic buildings require increased funding to ensure proper preservation.\"",
     "source": {
-      "title": "Heritage protection",
+      "title": "Heritage Protection",
       "newspaper": "The Regional Gazette",
       "year": "2020"
     },
@@ -2706,7 +2706,7 @@
     "fields": ["quote", "title", "year"],
     "correctAnswers": {
       "quote": "\"Historic buildings require increased funding to ensure proper preservation.\"",
-      "title": "Heritage protection,",
+      "title": "Heritage Protection",
       "year": "2020"
     }
   },
@@ -2714,7 +2714,7 @@
     "id": "news_noauth_5",
     "scenario": "Include this information from a newspaper article in your essay: \"New transport infrastructure projects promise to reduce commute times substantially.\"",
     "source": {
-      "title": "Transit improvements",
+      "title": "Transit Improvements",
       "newspaper": "The Daily Chronicle",
       "year": "2021"
     },
@@ -2722,7 +2722,7 @@
     "fields": ["quote", "title", "year"],
     "correctAnswers": {
       "quote": "\"New transport infrastructure projects promise to reduce commute times substantially.\"",
-      "title": "Transit improvements,",
+      "title": "Transit Improvements",
       "year": "2021"
     }
   }
@@ -2839,9 +2839,10 @@
       "newspaper": "The National Press",
       "page": "7"
     },
-    "fields": ["title", "year", "newspaper", "date", "page"],
+    "fields": ["anon", "title", "year", "newspaper", "date", "page"],
     "correctAnswers": {
-      "title": "'Retail transformation accelerates nationwide'",
+      "anon": "Anon.",
+      "title": "'Retail transformation accelerates nationwide',",
       "year": "(2021)",
       "newspaper": "The National Press,",
       "date": "12 April,",
@@ -2857,9 +2858,10 @@
       "newspaper": "The Daily Chronicle",
       "page": "1"
     },
-    "fields": ["title", "year", "newspaper", "date", "page"],
+    "fields": ["anon", "title", "year", "newspaper", "date", "page"],
     "correctAnswers": {
-      "title": "'Medical innovation offers hope for cancer patients'",
+      "anon": "Anon.",
+      "title": "'Medical innovation offers hope for cancer patients',",
       "year": "(2020)",
       "newspaper": "The Daily Chronicle,",
       "date": "8 September,",
@@ -2875,9 +2877,10 @@
       "newspaper": "The Metropolitan Times",
       "page": "5"
     },
-    "fields": ["title", "year", "newspaper", "date", "page"],
+    "fields": ["anon", "title", "year", "newspaper", "date", "page"],
     "correctAnswers": {
-      "title": "'Green space expansion approved by council'",
+      "anon": "Anon.",
+      "title": "'Green space expansion approved by council',",
       "year": "(2021)",
       "newspaper": "The Metropolitan Times,",
       "date": "20 July,",
@@ -2893,9 +2896,10 @@
       "newspaper": "The Business Herald",
       "page": "11"
     },
-    "fields": ["title", "year", "newspaper", "date", "page"],
+    "fields": ["anon", "title", "year", "newspaper", "date", "page"],
     "correctAnswers": {
-      "title": "'Heritage protection secured for historic landmark'",
+      "anon": "Anon.",
+      "title": "'Heritage protection secured for historic landmark',",
       "year": "(2020)",
       "newspaper": "The Business Herald,",
       "date": "14 January,",
@@ -2911,9 +2915,10 @@
       "newspaper": "The Regional Gazette",
       "page": "2"
     },
-    "fields": ["title", "year", "newspaper", "date", "page"],
+    "fields": ["anon", "title", "year", "newspaper", "date", "page"],
     "correctAnswers": {
-      "title": "'Transit improvements coming to suburban routes'",
+      "anon": "Anon.",
+      "title": "'Transit improvements coming to suburban routes',",
       "year": "(2021)",
       "newspaper": "The Regional Gazette,",
       "date": "25 May,",
@@ -3040,7 +3045,7 @@
     "source": {
       "title": "Technology regulation urgently needed",
       "date": "May 15, 2021",
-      "newspaper": "The National Press",
+      "newspaper": "The National Press,",
       "type": "Editorial",
       "page": "14"
     },
@@ -3050,7 +3055,7 @@
       "year": "(2021)",
       "type": "[Editorial]",
       "newspaper": "The National Press,",
-      "date": "15 May,",
+      "date": "15 May",
       "page": "p. 14."
     }
   },
@@ -3070,7 +3075,7 @@
       "year": "(2020)",
       "type": "[Editorial]",
       "newspaper": "The Daily Chronicle,",
-      "date": "8 October,",
+      "date": "8 October",
       "page": "p. 16."
     }
   },
@@ -3090,7 +3095,7 @@
       "year": "(2021)",
       "type": "[Editorial]",
       "newspaper": "The Metropolitan Times,",
-      "date": "22 March,",
+      "date": "22 March",
       "page": "p. 18."
     }
   },
@@ -3110,7 +3115,7 @@
       "year": "(2020)",
       "type": "[Editorial]",
       "newspaper": "The Business Herald,",
-      "date": "14 July,",
+      "date": "14 July",
       "page": "p. 12."
     }
   },
@@ -3130,7 +3135,7 @@
       "year": "(2021)",
       "type": "[Editorial]",
       "newspaper": "The Regional Gazette,",
-      "date": "3 December,",
+      "date": "3 December",
       "page": "p. 10."
     }
   }
@@ -3152,9 +3157,9 @@
       "author": "Williamson, R.",
       "year": "(2021)",
       "title": "'Response to climate article'",
-      "type": "[Letter to the editor],",
+      "type": "[Letter to the editor]",
       "newspaper": "The National Press,",
-      "date": "8 July,",
+      "date": "8 July",
       "page": "p. 15."
     }
   },
@@ -3174,9 +3179,9 @@
       "author": "Kowalski, J.",
       "year": "(2020)",
       "title": "'Economic policy concerns'",
-      "type": "[Letter to the editor],",
+      "type": "[Letter to the editor]",
       "newspaper": "The Daily Chronicle,",
-      "date": "12 September,",
+      "date": "12 September",
       "page": "p. 17."
     }
   },
@@ -3196,9 +3201,9 @@
       "author": "Patterson, M.",
       "year": "(2021)",
       "title": "'Education system feedback'",
-      "type": "[Letter to the editor],",
+      "type": "[Letter to the editor]",
       "newspaper": "The Metropolitan Times,",
-      "date": "20 November,",
+      "date": "20 November",
       "page": "p. 19."
     }
   },
@@ -3218,9 +3223,9 @@
       "author": "Davidson, S.",
       "year": "(2020)",
       "title": "'Healthcare access commentary'",
-      "type": "[Letter to the editor],",
+      "type": "[Letter to the editor]",
       "newspaper": "The Business Herald,",
-      "date": "25 February,",
+      "date": "25 February",
       "page": "p. 13."
     }
   },
@@ -3240,9 +3245,9 @@
       "author": "Santos, L.",
       "year": "(2021)",
       "title": "'Housing policy suggestions'",
-      "type": "[Letter to the editor],",
+      "type": "[Letter to the editor]",
       "newspaper": "The Regional Gazette,",
-      "date": "15 April,",
+      "date": "15 April",
       "page": "p. 11."
     }
   }

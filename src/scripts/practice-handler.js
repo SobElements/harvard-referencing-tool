@@ -152,6 +152,7 @@ function displayQuestion(question) {
                     <p style="margin-bottom: 10px;"><strong>Source Information:</strong></p>
                     <ul style="list-style: none; padding-left: 0;">
                         ${question.source.author ? `<li><strong>Author:</strong> ${question.source.author}</li>` : ''}
+                        ${question.source.organisation ? `<li><strong>Organisation:</strong> ${question.source.organisation}</li>` : ''}
                         ${question.source.chapter ? `<li><strong>Chapter:</strong> ${question.source.chapter}</li>` : ''}
                         ${question.source.editor ? `<li><strong>Editor:</strong> ${question.source.editor}</li>` : ''}
                         ${question.source.title ? `<li><strong>Title:</strong> ${question.source.title}</li>` : ''}
@@ -167,6 +168,10 @@ function displayQuestion(question) {
                         ${question.source.url ? `<li><strong>URL:</strong> ${question.source.url}</li>` : ''}
                         ${question.source.doi ? `<li><strong>DOI:</strong> ${question.source.doi}</li>` : ''}
                         ${question.source.authors ? `<li><strong>Authors:</strong> ${question.source.authors}</li>` : ''}
+                        ${question.source.newspaper ? `<li><strong>Newspaper:</strong> ${question.source.newspaper}</li>` : ''}
+                        ${question.source.date ? `<li><strong>Date:</strong> ${question.source.date}</li>` : ''}
+                        ${question.source.accessed ? `<li><strong>Accessed:</strong> ${question.source.accessed}</li>` : ''}
+                        ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
                     </ul>
                 </div>
             `;
@@ -259,8 +264,9 @@ function displayQuestion(question) {
         questionHTML += `
             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
                 <p style="margin-bottom: 10px;"><strong>Source Information:</strong></p>
-                <ul style="list-style: none; padding-left: 0;">
+                <ul style="list-style: none; padding-left: 0;"> 
                     ${question.source.author ? `<li><strong>Author:</strong> ${question.source.author}</li>` : ''}
+                    ${question.source.organisation ? `<li><strong>Organisation:</strong> ${question.source.organisation}</li>` : ''}
                     ${question.source.chapter ? `<li><strong>Chapter:</strong> ${question.source.chapter}</li>` : ''}
                     ${question.source.editor ? `<li><strong>Editor:</strong> ${question.source.editor}</li>` : ''}
                     ${question.source.title ? `<li><strong>Title:</strong> ${question.source.title}</li>` : ''}
@@ -276,6 +282,11 @@ function displayQuestion(question) {
                     ${question.source.url ? `<li><strong>URL:</strong> ${question.source.url}</li>` : ''}
                     ${question.source.doi ? `<li><strong>DOI:</strong> ${question.source.doi}</li>` : ''}
                     ${question.source.authors ? `<li><strong>Authors:</strong> ${question.source.authors}</li>` : ''}
+                    ${question.source.newspaper ? `<li><strong>Newspaper:</strong> ${question.source.newspaper}</li>` : ''}
+                    ${question.source.date ? `<li><strong>Date:</strong> ${question.source.date}</li>` : ''}
+                    ${question.source.accessed ? `<li><strong>Accessed:</strong> ${question.source.accessed}</li>` : ''}
+                    ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
+                    ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
                 </ul>
             </div>
         `;
@@ -384,8 +395,9 @@ if (question.options) {
             </div>
         `;
     } else if (question.fields.includes('quote')) {
-    // Check if this is a multiple authors quote
+    // Check if this is a multiple authors question
     const isMultipleAuthors = question.fields.includes('authors');
+    const hasPage = question.fields.includes('page');
     
     questionHTML += `
         <div style="margin-bottom: 25px;">
@@ -396,23 +408,40 @@ if (question.options) {
     `;
     
     if (isMultipleAuthors) {
-        // Multiple authors format: (Author1 and Author2, Year, p. X)
+        // Multiple authors format
         questionHTML += `
                 <input type="text" id="field-authors" placeholder="Author1 and Author2," style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                 <input type="text" id="field-year" placeholder="Year," style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
-                <input type="text" id="field-page" placeholder="p. X" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
         `;
+        if (hasPage) {
+            questionHTML += `
+                <input type="text" id="field-page" placeholder="p. X" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+            `;
+        }
     } else {
-        // Single author format: (Author, Year, p. X)
+        // Single author, organisation, or title (no author) format
+        const isOrganisation = question.fields.includes('organisation');
+        const isTitle = question.fields.includes('title');
+        const fieldId = isOrganisation ? 'field-organisation' : isTitle ? 'field-title' : 'field-author';
+        const placeholder = isOrganisation ? 'Organisation' : isTitle ? 'Title' : 'Author';
         questionHTML += `
-                <input type="text" id="field-author" placeholder="Author" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <input type="text" id="${fieldId}" placeholder="${placeholder}" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                 <span>,</span>
                 <input type="text" id="field-year" placeholder="Year" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+        `;
+        if (hasPage) {
+            questionHTML += `
                 <span>, p.</span>
                 <input type="text" id="field-page" placeholder="Page" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
-        `;
+            `;
+        }
     }
     
+    questionHTML += `
+                <span>).</span>
+            </div>
+        </div>
+    `;
     questionHTML += `
                 <span>).</span>
             </div>
@@ -562,6 +591,48 @@ if (question.options) {
                 </div>
             </div>
             ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('newspaper')) {
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                ${question.fields.includes('author') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-author" placeholder="Author (Surname, I.)" style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : question.fields.includes('anon') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-anon" placeholder="Anon." style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>`}
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="'Article title in sentence case'" style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                ${question.fields.includes('type') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-type" placeholder="[Editorial] or [Letter to the editor]" style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-newspaper" placeholder="Newspaper Name" style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                    <input type="text" id="field-date" placeholder="Day Month" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                ${question.fields.includes('page') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-page" placeholder="p. X." style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                ${question.fields.includes('url') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-url" placeholder="Available at: https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+            </div>
         </div>
     `;
     } else if (question.fields.includes('title') && question.fields.includes('publisher')) {
