@@ -104,6 +104,60 @@ function getRandomQuestions(sourceType, distribution) {
 // SECTION 3: DISPLAYING QUESTIONS
 // ============================================================================
 
+// Build the source information HTML block for all source types
+// Used by both beginner and intermediate modes to avoid duplication
+function buildSourceInfoHTML(source) {
+    const rows = [];
+    if (source.author)       rows.push(['Author', source.author]);
+    if (source.authors)      rows.push(['Authors', source.authors]);
+    if (source.organisation) rows.push(['Organisation', source.organisation]);
+    if (source.department)   rows.push(['Department', source.department]);
+    if (source.creator)      rows.push(['Creator', source.creator]);
+    if (source.host)         rows.push(['Host', source.host]);
+    if (source.director)     rows.push(['Director', source.director]);
+    if (source.person)       rows.push(['Person', source.person]);
+    if (source.company)      rows.push(['Company', source.company]);
+    if (source.ai)           rows.push(['AI Tool', source.ai]);
+    if (source.aiName)       rows.push(['AI Name', source.aiName]);
+    if (source.version)      rows.push(['Version', source.version]);
+    if (source.chapter)      rows.push(['Chapter', source.chapter]);
+    if (source.editor)       rows.push(['Editor', source.editor]);
+    if (source.title)        rows.push(['Title', source.title]);
+    if (source.episode)      rows.push(['Episode', source.episode]);
+    if (source.podcast)      rows.push(['Podcast', source.podcast]);
+    if (source.programme)    rows.push(['Programme', source.programme]);
+    if (source.edition)      rows.push(['Edition', source.edition]);
+    if (source.website)      rows.push(['Website', source.website]);
+    if (source.journal)      rows.push(['Journal', source.journal]);
+    if (source.newspaper)    rows.push(['Newspaper', source.newspaper]);
+    if (source.reportNumber) rows.push(['Report Number', source.reportNumber]);
+    if (source.month) {
+        rows.push(['Date', `${source.month} ${source.day ? source.day + ', ' : ''}${source.year}`]);
+    } else if (source.date) {
+        rows.push(['Date', source.date]);
+    } else if (source.year) {
+        rows.push(['Year', source.year]);
+    }
+    if (source.volume)       rows.push(['Volume', `${source.volume}${source.issue ? `(${source.issue})` : ''}`]);
+    if (source.pages)        rows.push(['Pages', source.pages]);
+    if (source.page)         rows.push(['Page', source.page]);
+    if (source.platform)     rows.push(['Platform', source.platform]);
+    if (source.production)   rows.push(['Production', source.production]);
+    if (source.publisher)    rows.push(['Publisher', source.publisher]);
+    if (source.type)         rows.push(['Type', source.type]);
+    if (source.url)          rows.push(['URL', source.url]);
+    if (source.doi)          rows.push(['DOI', source.doi]);
+    if (source.accessed)     rows.push(['Accessed', source.accessed]);
+    const items = rows.map(([label, val]) => `<li><strong>${label}:</strong> ${val}</li>`).join('\n                        ');
+    return `
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <p style="margin-bottom: 10px;"><strong>Source Information:</strong></p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        ${items}
+                    </ul>
+                </div>`;
+}
+
 // Display a question to the user
 // Takes a question object and renders it as HTML in the questions-container
 // Has two modes:
@@ -134,7 +188,8 @@ function displayQuestion(question) {
     }
 
     // INTERMEDIATE MODE - show single rich text box instead of fields
-    if (practiceMode === 'intermediate' && !question.options && !question.fields.includes('position1')) {
+    // Excludes: MCQ (options), ordering (position1), correction exercises (correctedReference), and multi-entry exercises (bookEntry)
+    if (practiceMode === 'intermediate' && !question.options && !question.fields.includes('position1') && !question.fields.includes('correctedReference') && !question.fields.includes('bookEntry')) {
         let questionHTML = `
     <div class="question-container" id="question-${currentQuestionIndex}">
         ${sourceLabel ? `<p style="font-size: 0.85rem; font-weight: bold; color: #667eea; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.05em;">${sourceLabel}</p>` : ''}
@@ -147,34 +202,7 @@ function displayQuestion(question) {
         `;
 
         if (question.source) {
-            questionHTML += `
-                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                    <p style="margin-bottom: 10px;"><strong>Source Information:</strong></p>
-                    <ul style="list-style: none; padding-left: 0;">
-                        ${question.source.author ? `<li><strong>Author:</strong> ${question.source.author}</li>` : ''}
-                        ${question.source.organisation ? `<li><strong>Organisation:</strong> ${question.source.organisation}</li>` : ''}
-                        ${question.source.chapter ? `<li><strong>Chapter:</strong> ${question.source.chapter}</li>` : ''}
-                        ${question.source.editor ? `<li><strong>Editor:</strong> ${question.source.editor}</li>` : ''}
-                        ${question.source.title ? `<li><strong>Title:</strong> ${question.source.title}</li>` : ''}
-                        ${question.source.edition ? `<li><strong>Edition:</strong> ${question.source.edition}</li>` : ''}
-                        ${question.source.website ? `<li><strong>Website:</strong> ${question.source.website}</li>` : ''}
-                        ${question.source.journal ? `<li><strong>Journal:</strong> ${question.source.journal}</li>` : ''}
-                        ${question.source.year ? `<li><strong>Year:</strong> ${question.source.year}</li>` : ''}
-                        ${question.source.month ? `<li><strong>Date:</strong> ${question.source.month} ${question.source.day}, ${question.source.year}</li>` : ''}
-                        ${question.source.volume ? `<li><strong>Volume:</strong> ${question.source.volume}${question.source.issue ? `(${question.source.issue})` : ''}</li>` : ''}
-                        ${question.source.pages ? `<li><strong>Pages:</strong> ${question.source.pages}</li>` : ''}
-                        ${question.source.page ? `<li><strong>Page:</strong> ${question.source.page}</li>` : ''}
-                        ${question.source.publisher ? `<li><strong>Publisher:</strong> ${question.source.publisher}</li>` : ''}
-                        ${question.source.url ? `<li><strong>URL:</strong> ${question.source.url}</li>` : ''}
-                        ${question.source.doi ? `<li><strong>DOI:</strong> ${question.source.doi}</li>` : ''}
-                        ${question.source.authors ? `<li><strong>Authors:</strong> ${question.source.authors}</li>` : ''}
-                        ${question.source.newspaper ? `<li><strong>Newspaper:</strong> ${question.source.newspaper}</li>` : ''}
-                        ${question.source.date ? `<li><strong>Date:</strong> ${question.source.date}</li>` : ''}
-                        ${question.source.accessed ? `<li><strong>Accessed:</strong> ${question.source.accessed}</li>` : ''}
-                        ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
-                    </ul>
-                </div>
-            `;
+            questionHTML += buildSourceInfoHTML(question.source);
         }
 
         questionHTML += `
@@ -183,7 +211,7 @@ function displayQuestion(question) {
 
                 <!-- Italic toolbar -->
                 <div style="margin-bottom: 8px;">
-                    <button 
+                    <button
                         onclick="document.execCommand('italic', false, null); document.getElementById('rich-answer').focus(); this.style.backgroundColor = document.queryCommandState('italic') ? '#e0e0e0' : 'white'; this.style.borderColor = document.queryCommandState('italic') ? '#999' : '#ccc';"
                         style="
                             font-style: italic;
@@ -202,7 +230,7 @@ function displayQuestion(question) {
                 </div>
 
                 <!-- Rich text typing area -->
-                <div 
+                <div
                     id="rich-answer"
                     contenteditable="true"
                     style="
@@ -248,7 +276,7 @@ function displayQuestion(question) {
         container.innerHTML = questionHTML;
         return; // Stop here - don't run the beginner field code below
     }
-    
+
     let questionHTML = `
     <div class="question-container" id="question-${currentQuestionIndex}">
         ${sourceLabel ? `<p style="font-size: 0.85rem; font-weight: bold; color: #667eea; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.05em;">${sourceLabel}</p>` : ''}
@@ -256,78 +284,51 @@ function displayQuestion(question) {
                 <h3 style="color: #2c3e50;">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</h3>
                 <span style="color: #7f8c8d; font-size: 0.9rem;">${getCategoryLabel(question.id)}</span>
             </div>
-            
+
             <p style="margin-bottom: 20px; font-size: 1.1rem;"><strong>Scenario:</strong> ${question.scenario}</p>
     `;
-    
+
     if (question.source) {
-        questionHTML += `
-            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                <p style="margin-bottom: 10px;"><strong>Source Information:</strong></p>
-                <ul style="list-style: none; padding-left: 0;"> 
-                    ${question.source.author ? `<li><strong>Author:</strong> ${question.source.author}</li>` : ''}
-                    ${question.source.organisation ? `<li><strong>Organisation:</strong> ${question.source.organisation}</li>` : ''}
-                    ${question.source.chapter ? `<li><strong>Chapter:</strong> ${question.source.chapter}</li>` : ''}
-                    ${question.source.editor ? `<li><strong>Editor:</strong> ${question.source.editor}</li>` : ''}
-                    ${question.source.title ? `<li><strong>Title:</strong> ${question.source.title}</li>` : ''}
-                    ${question.source.edition ? `<li><strong>Edition:</strong> ${question.source.edition}</li>` : ''}
-                    ${question.source.website ? `<li><strong>Website:</strong> ${question.source.website}</li>` : ''}
-                    ${question.source.journal ? `<li><strong>Journal:</strong> ${question.source.journal}</li>` : ''}
-                    ${question.source.year ? `<li><strong>Year:</strong> ${question.source.year}</li>` : ''}
-                    ${question.source.month ? `<li><strong>Date:</strong> ${question.source.month} ${question.source.day}, ${question.source.year}</li>` : ''}
-                    ${question.source.volume ? `<li><strong>Volume:</strong> ${question.source.volume}${question.source.issue ? `(${question.source.issue})` : ''}</li>` : ''}
-                    ${question.source.pages ? `<li><strong>Pages:</strong> ${question.source.pages}</li>` : ''}
-                    ${question.source.page ? `<li><strong>Page:</strong> ${question.source.page}</li>` : ''}
-                    ${question.source.publisher ? `<li><strong>Publisher:</strong> ${question.source.publisher}</li>` : ''}
-                    ${question.source.url ? `<li><strong>URL:</strong> ${question.source.url}</li>` : ''}
-                    ${question.source.doi ? `<li><strong>DOI:</strong> ${question.source.doi}</li>` : ''}
-                    ${question.source.authors ? `<li><strong>Authors:</strong> ${question.source.authors}</li>` : ''}
-                    ${question.source.newspaper ? `<li><strong>Newspaper:</strong> ${question.source.newspaper}</li>` : ''}
-                    ${question.source.date ? `<li><strong>Date:</strong> ${question.source.date}</li>` : ''}
-                    ${question.source.accessed ? `<li><strong>Accessed:</strong> ${question.source.accessed}</li>` : ''}
-                    ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
-                    ${question.source.type ? `<li><strong>Type:</strong> ${question.source.type}</li>` : ''}
-                </ul>
-            </div>
-        `;
+        questionHTML += buildSourceInfoHTML(question.source);
     }
+
     // Check if this is a multiple choice question
-if (question.options) {
-    questionHTML += `
+    if (question.options) {
+        questionHTML += `
         <div style="margin-bottom: 25px;">
             <p style="margin-bottom: 15px;"><strong>Select your answer:</strong></p>
             <div style="display: flex; flex-direction: column; gap: 12px;">
     `;
-    
-    // Split options by letter (A), B), C), D))
-    const optionsList = question.options.split(/(?=[A-D]\))/);
-    
-    optionsList.forEach((option, index) => {
-        if (option.trim()) {
-            const optionLetter = option.trim().charAt(0);
-            const optionText = option.trim().substring(3); // Remove "A) " part
-            
-            questionHTML += `
-                <label style="display: flex; align-items: center; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-                    <input type="radio" name="answer" value="${optionLetter}" id="field-answer-${optionLetter}" style="margin-right: 10px; cursor: pointer;">
-                    <span><strong>${optionLetter})</strong> ${optionText}</span>
-                </label>
-            `;
-        }
-    });
-    
-    questionHTML += `
+
+        // Split options by letter (A), B), C), D))
+        const optionsList = question.options.split(/(?=[A-D]\))/);
+
+        optionsList.forEach((option, index) => {
+            if (option.trim()) {
+                const optionLetter = option.trim().charAt(0);
+                const optionText = option.trim().substring(3); // Remove "A) " part
+
+                questionHTML += `
+                    <label style="display: flex; align-items: center; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                        <input type="radio" name="answer" value="${optionLetter}" id="field-answer-${optionLetter}" style="margin-right: 10px; cursor: pointer;">
+                        <span><strong>${optionLetter})</strong> ${optionText}</span>
+                    </label>
+                `;
+            }
+        });
+
+        questionHTML += `
+                </div>
             </div>
-        </div>
-    `;
-} else if (question.fields.includes('position1')) {
-    
+        `;
+    } else if (question.fields.includes('position1')) {
+
         questionHTML += `
             <div style="margin-bottom: 25px;">
                 <p style="margin-bottom: 15px;"><strong>Select the correct source for each position:</strong></p>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
         `;
-        
+
         question.fields.forEach((field, index) => {
             const positionNumber = index + 1;
             questionHTML += `
@@ -336,17 +337,17 @@ if (question.options) {
                     <select id="field-${field}" style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; background-color: white;">
                         <option value="">-- Select a source --</option>
             `;
-            
+
             question.sources.forEach((source, sourceIndex) => {
                 questionHTML += `<option value="${source}">Source ${sourceIndex + 1}: ${source}</option>`;
             });
-            
+
             questionHTML += `
                     </select>
                 </div>
             `;
         });
-        
+
         questionHTML += `
                 </div>
                 ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
@@ -398,7 +399,7 @@ if (question.options) {
     // Check if this is a multiple authors question
     const isMultipleAuthors = question.fields.includes('authors');
     const hasPage = question.fields.includes('page');
-    
+
     questionHTML += `
         <div style="margin-bottom: 25px;">
             <p style="margin-bottom: 15px;"><strong>Complete the in-text citation:</strong></p>
@@ -406,7 +407,7 @@ if (question.options) {
                 <input type="text" id="field-quote" placeholder="Quote" style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;" disabled value="${question.quote}">
                 <span>(</span>
     `;
-    
+
     if (isMultipleAuthors) {
         // Multiple authors format
         questionHTML += `
@@ -419,13 +420,29 @@ if (question.options) {
             `;
         }
     } else {
-        // Single author, organisation, or title (no author) format
-        const isOrganisation = question.fields.includes('organisation');
-        const isTitle = question.fields.includes('title');
-        const fieldId = isOrganisation ? 'field-organisation' : isTitle ? 'field-title' : 'field-author';
-        const placeholder = isOrganisation ? 'Organisation' : isTitle ? 'Title' : 'Author';
+        // Detect which "name" field this citation question uses
+        let citationFieldId, citationPlaceholder;
+        if (question.fields.includes('organisation')) {
+            citationFieldId = 'field-organisation'; citationPlaceholder = 'Organisation';
+        } else if (question.fields.includes('department')) {
+            citationFieldId = 'field-department'; citationPlaceholder = 'Department';
+        } else if (question.fields.includes('ai')) {
+            citationFieldId = 'field-ai'; citationPlaceholder = 'AI name';
+        } else if (question.fields.includes('creator')) {
+            citationFieldId = 'field-creator'; citationPlaceholder = 'Creator';
+        } else if (question.fields.includes('host')) {
+            citationFieldId = 'field-host'; citationPlaceholder = 'Host';
+        } else if (question.fields.includes('director')) {
+            citationFieldId = 'field-director'; citationPlaceholder = 'Director';
+        } else if (question.fields.includes('programme')) {
+            citationFieldId = 'field-programme'; citationPlaceholder = 'Programme';
+        } else if (question.fields.includes('title')) {
+            citationFieldId = 'field-title'; citationPlaceholder = 'Title';
+        } else {
+            citationFieldId = 'field-author'; citationPlaceholder = 'Author';
+        }
         questionHTML += `
-                <input type="text" id="${fieldId}" placeholder="${placeholder}" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <input type="text" id="${citationFieldId}" placeholder="${citationPlaceholder}" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                 <span>,</span>
                 <input type="text" id="field-year" placeholder="Year" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
         `;
@@ -436,12 +453,7 @@ if (question.options) {
             `;
         }
     }
-    
-    questionHTML += `
-                <span>).</span>
-            </div>
-        </div>
-    `;
+
     questionHTML += `
                 <span>).</span>
             </div>
@@ -503,22 +515,28 @@ if (question.options) {
                 <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        ${question.fields.includes('author') ? 
-                            `<input type="text" id="field-author" placeholder="Author or Organisation." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` : 
+                        ${question.fields.includes('author') ?
+                            `<input type="text" id="field-author" placeholder="Author." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
+                          question.fields.includes('organisation') ?
+                            `<input type="text" id="field-organisation" placeholder="Organisation." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
                             ''}
-                        ${question.fields.includes('title') ? 
-                            `<input type="text" id="field-title" placeholder="Title of webpage." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` : 
+                        ${question.fields.includes('title') ?
+                            `<input type="text" id="field-title" placeholder="Title of webpage." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
                             ''}
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="field-year" placeholder="(Year, Month Day)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                        <input type="text" id="field-year" placeholder="(Year)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <input type="text" id="field-website" placeholder="Website Name." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="field-url" placeholder="https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                        <input type="text" id="field-url" placeholder="Available at: https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                     </div>
+                    ${question.fields.includes('accessed') ? `
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    </div>` : ''}
                 </div>
                 ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
             </div>
@@ -635,20 +653,191 @@ if (question.options) {
             </div>
         </div>
     `;
+    } else if (question.fields.includes('department')) {
+    // Reports with a government department as author
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-department" placeholder="Government department" style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="Report title." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>
+                ${question.fields.includes('reportNumber') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-reportNumber" placeholder="Report no. XXX." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-publisher" placeholder="Publisher." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('episode')) {
+    // Podcast reference list
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-host" placeholder="Host (Surname, I.)" style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-episode" placeholder="'Episode title'," style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-podcast" placeholder="Podcast Name," style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-date" placeholder="Day Month." style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-platform" placeholder="Platform." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('production')) {
+    // TV/documentary reference list
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-director" placeholder="Director (Surname, I.)" style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="Film or documentary title." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-production" placeholder="Production company." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('creator') || question.fields.includes('director')) {
+    // YouTube videos and streaming documentaries
+    const isCreator = question.fields.includes('creator');
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    ${isCreator ?
+                        `<input type="text" id="field-creator" placeholder="Creator or channel name" style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
+                        `<input type="text" id="field-director" placeholder="Director (Surname, I.)" style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">`}
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="Video or film title" style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-platform" placeholder="Platform." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-url" placeholder="Available at: https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('person')) {
+    // Personal communications in-text citation
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the in-text citation:</strong></p>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 1.1rem;">
+                <span>(</span>
+                <input type="text" id="field-person" placeholder="Initial. Surname," style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <input type="text" id="field-communication" placeholder="personal communication," style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <input type="text" id="field-date" placeholder="Month DD, YYYY" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <span>).</span>
+            </div>
+        </div>
+    `;
+    } else if (question.fields.includes('company')) {
+    // AI reference list
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-company" placeholder="Company name." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-aiName" placeholder="AI tool name." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                ${question.fields.includes('version') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-version" placeholder="(Version number)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-type" placeholder="[Large language model]." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-url" placeholder="Available at:https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                ${question.fields.includes('accessed') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
+    } else if (question.fields.includes('organisation') && question.fields.includes('title')) {
+    // Organisation as author with title (international org reports, think tanks, website org references)
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-organisation" placeholder="Organisation" style="flex: 1; min-width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-year" placeholder="(Year)" style="width: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="Report or page title." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>
+                ${question.fields.includes('publisher') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-publisher" placeholder="Publisher." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                ${question.fields.includes('url') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-url" placeholder="Available at: https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                ${question.fields.includes('accessed') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
     } else if (question.fields.includes('title') && question.fields.includes('publisher')) {
-    // Check if this is a multiple authors question or no author question
+    // Books (with author, multiple authors, or no author)
     const isMultipleAuthors = question.id.includes('_multi_');
     const hasAuthor = question.fields.includes('author');
-    const authorPlaceholder = isMultipleAuthors 
-        ? "Authors (Surname, I. & Surname, I.)" 
+    const authorPlaceholder = isMultipleAuthors
+        ? "Authors (Surname, I. & Surname, I.)"
         : "Author (Surname, I.)";
-    
+
     questionHTML += `
         <div style="margin-bottom: 25px;">
             <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
             <div style="display: flex; flex-direction: column; gap: 15px;">
     `;
-    
+
     // If NO author, show: Title, Year, Publisher
     if (!hasAuthor) {
         questionHTML += `
@@ -677,19 +866,66 @@ if (question.options) {
                 </div>
         `;
     }
-    
+
     questionHTML += `
             </div>
             ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
         </div>
     `;
+    } else if (question.fields.includes('url')) {
+    // Catch-all for remaining URL-based references (no-author websites, etc.)
+    questionHTML += `
+        <div style="margin-bottom: 25px;">
+            <p style="margin-bottom: 15px;"><strong>Complete the reference list entry:</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                ${question.fields.includes('title') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-title" placeholder="Title of page." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
+                </div>` : ''}
+                ${question.fields.includes('year') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-year" placeholder="(Year)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-url" placeholder="Available at: https://..." style="flex: 1; min-width: 400px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>
+                ${question.fields.includes('accessed') ? `
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="field-accessed" placeholder="(Accessed: Day Month Year)." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                </div>` : ''}
+            </div>
+            ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
+        </div>
+    `;
     } else {
+        // Default: simple in-text citation (paraphrasing)
+        // Detect which "name" field to use
+        const nameFieldOrder = [
+            ['author', 'Author'],
+            ['organisation', 'Organisation'],
+            ['ai', 'AI name'],
+            ['creator', 'Creator'],
+            ['host', 'Host'],
+            ['director', 'Director'],
+            ['programme', 'Programme'],
+            ['title', 'Title'],
+        ];
+        let nameField = 'author';
+        let namePlaceholder = 'Author';
+        for (const [f, label] of nameFieldOrder) {
+            if (question.fields.includes(f)) {
+                nameField = f;
+                namePlaceholder = label;
+                break;
+            }
+        }
+
         questionHTML += `
             <div style="margin-bottom: 25px;">
                 <p style="margin-bottom: 15px;"><strong>Complete the in-text citation:</strong></p>
                 <div style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem;">
                     <span>(</span>
-                    <input type="text" id="field-author" placeholder="Author" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    <input type="text" id="field-${nameField}" placeholder="${namePlaceholder}" style="width: 150px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                     <span>,</span>
                     <input type="text" id="field-year" placeholder="Year" style="width: 100px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
                     <span>)</span>
@@ -697,7 +933,7 @@ if (question.options) {
             </div>
         `;
     }
-    
+
    questionHTML += `
     <div style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
         <button class="section-button" onclick="checkAnswer()" style="flex: 1; min-width: 150px;">
@@ -713,7 +949,7 @@ if (question.options) {
             Next Question →
         </button>
     </div>
-    
+
     <div id="feedback" class="feedback"></div>
     <div id="answer-display" class="hidden" style="margin-top: 20px; padding: 20px; background-color: #fff3cd; border: 2px solid #ffc107; border-radius: 8px;">
         <h4 style="margin-top: 0; color: #856404;">📝 Correct Answer:</h4>
@@ -721,7 +957,7 @@ if (question.options) {
     </div>
 </div>
 `;
-    
+
     container.innerHTML = questionHTML;
 }
 
@@ -735,117 +971,294 @@ function getTipsForField(field, userAnswer, correctAnswer) {
     const tips = [];
     const question = currentQuestions[currentQuestionIndex];
     const isMultipleAuthors = question.id.includes('_multi_');
-    
+
     if (field.includes('position')) {
         tips.push('Alphabetical order is by author surname (A-Z)');
         tips.push('If surnames are the same, order by first initial');
         return tips;
     }
-    
+
     if (field === 'author') {
         if (isMultipleAuthors) {
-            // Tips specific to multiple authors
-            if (!userAnswer.includes(',')) {
-                tips.push('Author format: Surname, I. & Surname, I.');
-            }
-            if (!userAnswer.includes('&')) {
-                tips.push('Use ampersand (&) to separate authors, not "and"');
-            }
-            // Check if authors might be in wrong order
-            if (userAnswer.includes('&') && userAnswer !== correctAnswer) {
-                tips.push('Ensure authors are listed in alphabetical order by surname');
+            if (!userAnswer.includes(',')) tips.push('Author format: Surname, I. & Surname, I.');
+            if (!userAnswer.includes('&')) tips.push('Use ampersand (&) to separate authors, not "and"');
+            if (userAnswer.includes('&') && userAnswer !== correctAnswer) tips.push('Ensure authors are listed in alphabetical order by surname');
+        } else {
+            if (!userAnswer.includes(',')) tips.push('Author format: Surname, I.');
+        }
+    }
+
+    if (field === 'anon') {
+        if (!userAnswer.startsWith('A') || !userAnswer.endsWith('.')) {
+            tips.push('For anonymous articles use: Anon. (capital A, full stop)');
+        }
+    }
+
+    if (field === 'year') {
+        if (correctAnswer.includes('(') && !userAnswer.includes('(')) {
+            tips.push('Year needs brackets: (2024)');
+        } else if (!correctAnswer.includes('(') && userAnswer.includes('(')) {
+            tips.push('In-text citations use the year without brackets: 2024');
+        }
+    }
+
+    if (field === 'title') {
+        const isNewspaper = question.id.startsWith('news');
+        if (isNewspaper) {
+            if (!userAnswer.startsWith("'")) {
+                tips.push("Newspaper article titles go in single quotes: 'Article title',");
+            } else if (!userAnswer.endsWith("',")) {
+                tips.push("Title should end with a comma after the closing quote: 'Article title',");
             }
         } else {
-            // Tips for single author
-            if (!userAnswer.includes(',')) {
-                tips.push('Author format: Surname, I.');
-            }
-        }
-    }
-    
-    if (field === 'year' && !userAnswer.includes('(')) {
-        tips.push('Year needs brackets: (2020)');
-    }
-    
-    if (field === 'title') {
-        if (!userAnswer.includes('.')) {
-            tips.push('Add full stop at end');
-        }
-        // Check if title starts with uppercase but has wrong capitalisation
-        if (userAnswer !== correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-            tips.push('Title should be in sentence case (only first word and proper nouns capitalised)');
-            tips.push(`Correct: "${correctAnswer}"`);
-        }
-    }
-    if (field === 'editor') {
-        if (!userAnswer.includes(',')) {
-            tips.push('Editor format: Surname, I. (Ed.).');
-        }
-        if (!userAnswer.includes('(Ed.)')) {
-            tips.push('Don\'t forget to add (Ed.). at the end');
-        }
-    }
-    if (field === 'chapter') {
-        if (!userAnswer.includes('.')) {
-            tips.push('Chapter title needs a full stop at the end');
-        }
-        if (userAnswer !== correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-            tips.push('Chapter title should be in sentence case');
-        }
-    }
-    if (field === 'edition') {
-        if (!userAnswer.includes('ed.')) {
-            tips.push('Edition format: 3rd ed. (use "ed." not "edition")');
-        }
-        if (userAnswer.includes('edition')) {
-            tips.push('Use abbreviated form: "ed." not "edition"');
-        }
-    }
-    
-    if (field === 'pages') {
-        if (!userAnswer.includes('pp.')) {
-            tips.push('Pages format: (pp. x-y).');
-        }
-        if (!userAnswer.includes('(') || !userAnswer.includes(')')) {
-            tips.push('Pages need brackets: (pp. 45-68).');
-        }
-    }
-    if (field === 'doi') {
-        if (!userAnswer.includes('https://doi.org/')) {
-            tips.push('DOI format: https://doi.org/10.xxxx/xxxxx');
-        }
-        if (!userAnswer.startsWith('https://')) {
-            tips.push('DOI must start with https://doi.org/');
-        }
-    }
-    
-    if (field === 'volume') {
-        if (question.fields.includes('doi') || question.fields.includes('journal')) {
-            if (!userAnswer.includes('(') && !userAnswer.includes(')')) {
-                tips.push('Volume format: Volume(Issue), - e.g., 34(2),');
+            if (!userAnswer.includes('.')) tips.push('Add a full stop at the end of the title');
+            if (userAnswer !== correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                tips.push('Title should be in sentence case (only first word and proper nouns capitalised)');
+                tips.push(`Correct: "${correctAnswer}"`);
             }
         }
     }
 
-    if (field === 'authors') {
-        if (!userAnswer.includes('and')) {
-            tips.push('Format for two authors: Surname1 and Surname2,');
-        }
-        if (userAnswer.includes('&')) {
-            tips.push('Use "and" not "&" in citations (ampersand is only for reference lists)');
-        }
-        if (!userAnswer.includes(',')) {
-            tips.push('Don\'t forget the comma after the authors');
+    if (field === 'editor') {
+        if (!userAnswer.includes(',')) tips.push('Editor format: Surname, I. (Ed.).');
+        if (!userAnswer.includes('(Ed.)')) tips.push("Don't forget to add (Ed.). at the end");
+    }
+
+    if (field === 'chapter') {
+        if (!userAnswer.includes('.')) tips.push('Chapter title needs a full stop at the end');
+        if (userAnswer !== correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            tips.push('Chapter title should be in sentence case');
         }
     }
-    
+
+    if (field === 'edition') {
+        if (!userAnswer.includes('ed.')) tips.push('Edition format: 3rd ed. (use "ed." not "edition")');
+        if (userAnswer.includes('edition')) tips.push('Use abbreviated form: "ed." not "edition"');
+    }
+
+    if (field === 'publisher') {
+        if (!userAnswer.endsWith('.')) tips.push('Publisher name should end with a full stop: HMSO.');
+    }
+
+    if (field === 'website') {
+        if (!userAnswer.endsWith('.')) tips.push('Website name should end with a full stop');
+    }
+
+    if (field === 'journal') {
+        if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
+            tips.push('Journal name should end with a comma: Journal of Psychology,');
+        }
+    }
+
+    if (field === 'newspaper') {
+        if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
+            tips.push('Newspaper name should end with a comma: The Guardian,');
+        }
+    }
+
+    if (field === 'date') {
+        if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
+            tips.push('Date should end with a comma: 15 March,');
+        } else if (correctAnswer.endsWith('.') && !userAnswer.endsWith('.')) {
+            tips.push('Date should end with a full stop: 15 March.');
+        }
+    }
+
+    if (field === 'page') {
+        if (!userAnswer.toLowerCase().includes('p.')) {
+            tips.push('Single page format: p. 4. (use "p." not "pp.")');
+        }
+        if (!userAnswer.endsWith('.')) tips.push('Page number should end with a full stop: p. 4.');
+    }
+
+    if (field === 'pages') {
+        if (!userAnswer.includes('pp.')) tips.push('Pages format: pp. 45-68. (use "pp." for a range)');
+        if (!userAnswer.includes('(') || !userAnswer.includes(')')) {
+            tips.push('Pages need brackets: (pp. 45-68).');
+        }
+    }
+
+    if (field === 'doi') {
+        if (!userAnswer.startsWith('doi:')) tips.push('DOI format: doi:10.xxxx/xxxxx — must start with doi: (no https://)');
+    }
+
+    if (field === 'volume') {
+        if (question.fields.includes('doi') || question.fields.includes('journal')) {
+            if (!userAnswer.includes('(') || !userAnswer.includes(')')) {
+                tips.push('Volume format: 34(2), — issue number in brackets, followed by a comma');
+            }
+            if (userAnswer.includes('(') && !userAnswer.endsWith(',')) {
+                tips.push('Volume should end with a comma: 34(2),');
+            }
+        }
+    }
+
+    if (field === 'url') {
+        if (correctAnswer.startsWith('Available at:') && !userAnswer.toLowerCase().startsWith('available at:')) {
+            tips.push('URL should start with "Available at: " followed by the full web address');
+        }
+    }
+
+    if (field === 'accessed') {
+        if (!userAnswer.startsWith('(Accessed:')) {
+            tips.push('Format: (Accessed: Day Month Year). — begin with "(Accessed:"');
+        } else if (!userAnswer.endsWith(').')) {
+            tips.push('End with closing bracket and full stop: (Accessed: 15 March 2024).');
+        }
+    }
+
+    if (field === 'version') {
+        if (!userAnswer.includes('(') || !userAnswer.includes(')')) {
+            tips.push('Version goes in brackets: (4) or (3.5)');
+        }
+    }
+
+    if (field === 'type') {
+        if (!userAnswer.includes('[')) {
+            tips.push('Type goes in square brackets: [Large language model].');
+        } else if (!userAnswer.endsWith('].')) {
+            tips.push('Add a full stop after the closing bracket: [Large language model].');
+        }
+    }
+
+    if (field === 'authors') {
+        if (!userAnswer.includes('and')) tips.push('Format for two authors: Surname1 and Surname2,');
+        if (userAnswer.includes('&')) tips.push('Use "and" not "&" in citations (ampersand is only for reference lists)');
+        if (!userAnswer.includes(',')) tips.push("Don't forget the comma after the authors");
+    }
+
+    if (field === 'creator' || field === 'host' || field === 'director') {
+        if (!userAnswer.includes(',')) tips.push('Name format: Surname, I. (same as author format)');
+    }
+
+    if (field === 'platform') {
+        if (!userAnswer.endsWith('.')) tips.push('Platform name should end with a full stop: YouTube.');
+    }
+
+    if (field === 'production') {
+        if (!userAnswer.endsWith('.')) tips.push('Production company should end with a full stop: BBC Films.');
+    }
+
+    if (field === 'podcast') {
+        if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
+            tips.push('Podcast name should end with a comma: Tech Insights Weekly,');
+        }
+    }
+
+    if (field === 'episode') {
+        if (!userAnswer.startsWith("'")) {
+            tips.push("Episode title goes in single quotes: 'Episode title',");
+        } else if (!userAnswer.endsWith("',")) {
+            tips.push("Episode title should end with a comma after the closing quote: 'Title',");
+        }
+    }
+
+    if (field === 'person') {
+        if (!userAnswer.includes('.') && !userAnswer.includes(',')) {
+            tips.push('Name format: Initial. Surname, — e.g. S. Johnson,');
+        } else if (!userAnswer.endsWith(',')) {
+            tips.push('Person name should end with a comma: S. Johnson,');
+        }
+    }
+
+    if (field === 'communication') {
+        if (userAnswer.length > 0 && /^[A-Z]/.test(userAnswer)) {
+            tips.push('Communication type should be lowercase: personal communication,');
+        }
+        if (!userAnswer.endsWith(',')) {
+            tips.push('Communication type should end with a comma: personal communication,');
+        }
+    }
+
+    if (field === 'ai') {
+        if (userAnswer.includes('(') || userAnswer.includes(')')) {
+            tips.push('Just the AI tool name here — no brackets: ChatGPT');
+        }
+        if (/openai|anthropic|google|microsoft/i.test(userAnswer)) {
+            tips.push('Use the tool name (e.g. ChatGPT), not the company name (e.g. OpenAI)');
+        }
+    }
+
     return tips;
 }
 function normaliseQuotes(str) {
     return str
-        .replace(/[\u201C\u201D]/g, '"')  // curly double quotes → straight
-        .replace(/[\u2018\u2019]/g, "'")  // curly single quotes → straight
+        .replace(/[“”]/g, '"')  // curly double quotes → straight
+        .replace(/[‘’]/g, "'")  // curly single quotes → straight
         .trim();
+}
+
+// Build field-aware hints for intermediate mode wrong answers
+function getIntermediateHints(question) {
+    const fields = question.fields;
+    const hints = [];
+
+    if (fields.includes('author') || fields.includes('authors')) {
+        hints.push('Author: Surname, I. — check comma and initial placement');
+    }
+    if (fields.includes('creator') || fields.includes('host') || fields.includes('director')) {
+        hints.push('Creator/Host/Director: Surname, I. — same format as author');
+    }
+    if (fields.includes('year')) {
+        const needsBrackets = question.correctAnswers && question.correctAnswers.year && question.correctAnswers.year.includes('(');
+        hints.push(needsBrackets ? 'Year in brackets: (2024)' : 'In-text year without brackets: 2024');
+    }
+    if (fields.includes('title') && fields.includes('newspaper')) {
+        hints.push("Newspaper article title in single quotes ending with comma: 'Article title',");
+    } else if (fields.includes('title') && fields.includes('journal')) {
+        hints.push("Article title in single quotes ending with full stop: 'Article title.'");
+        hints.push('Journal name in italics, followed by a comma');
+    } else if (fields.includes('title')) {
+        hints.push('Title: sentence case, full stop at end — italicise book/journal/newspaper/media titles');
+    }
+    if (fields.includes('newspaper') && !fields.includes('title')) {
+        hints.push('Newspaper name in italics, followed by a comma');
+    }
+    if (fields.includes('date')) {
+        const dateCorrAns = question.correctAnswers && question.correctAnswers.date || '';
+        hints.push(dateCorrAns.endsWith(',') ? 'Date ends with a comma: 15 March,' : 'Date ends with a full stop: 15 March.');
+    }
+    if (fields.includes('page')) {
+        hints.push('Single page: p. 4. — "p." prefix, full stop at end');
+    }
+    if (fields.includes('pages')) {
+        hints.push('Page range: pp.45-68. — "pp." prefix, full stop at end');
+    }
+    if (fields.includes('volume')) {
+        hints.push('Volume and issue: 34(2), — issue in brackets, comma after');
+    }
+    if (fields.includes('doi')) {
+        hints.push('DOI: doi:10.xxxx/... — must start with doi: (no https://)');
+    }
+    if (fields.includes('url')) {
+        hints.push('URL: Available at: https://... — include "Available at:" before the address');
+    }
+    if (fields.includes('accessed')) {
+        hints.push('Accessed: (Accessed: Day Month Year). — full stop after the closing bracket');
+    }
+    if (fields.includes('episode')) {
+        hints.push("Episode title in single quotes ending with comma: 'Episode title',");
+    }
+    if (fields.includes('podcast')) {
+        hints.push('Podcast name in italics, followed by a comma');
+    }
+    if (fields.includes('publisher')) {
+        hints.push('Publisher ends with full stop: HMSO.');
+    }
+    if (fields.includes('production')) {
+        hints.push('Production company ends with full stop: BBC Films.');
+    }
+    if (fields.includes('platform')) {
+        hints.push('Platform ends with full stop: YouTube.');
+    }
+    if (fields.includes('type')) {
+        hints.push('Type in square brackets with full stop: [Large language model].');
+    }
+    if (fields.includes('version')) {
+        hints.push('Version in brackets: (4)');
+    }
+
+    return hints;
 }
 
 function checkIntermediateAnswer() {
@@ -867,14 +1280,24 @@ console.log('Correct:', JSON.stringify(correctPlainText));
     }
 
     if (studentPlainText !== correctPlainText) {
-        feedbackDiv.classList.add('show');
-        feedbackDiv.className = 'feedback show incorrect';
-        feedbackDiv.innerHTML = `
-            <strong>✗ Not quite.</strong> Check your punctuation, spacing, and formatting carefully.
+        const hints = getIntermediateHints(question);
+        let hintHTML = '';
+        if (hints.length > 0) {
+            hintHTML = `
             <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
-                💡 Make sure you have the right punctuation in the right places — every comma, full stop, and bracket matters.
-            </div>
-        `;
+                <strong>💡 Check:</strong>
+                <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;">
+                    ${hints.map(h => `<li>${h}</li>`).join('')}
+                </ul>
+            </div>`;
+        } else {
+            hintHTML = `
+            <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                💡 Every comma, full stop, and bracket matters — check spacing too.
+            </div>`;
+        }
+        feedbackDiv.className = 'feedback show incorrect';
+        feedbackDiv.innerHTML = `<strong>✗ Not quite.</strong> Check your punctuation, spacing, and formatting carefully.${hintHTML}`;
         return;
     }
 
@@ -905,12 +1328,17 @@ console.log('Correct:', JSON.stringify(correctPlainText));
     if (allItalicsCorrect) {
         markIntermediateCorrect(richBox, feedbackDiv);
     } else {
-        feedbackDiv.classList.add('show');
+        const missingParts = expectedItalicParts.filter(part =>
+            !studentItalicText.toLowerCase().includes(part.toLowerCase())
+        );
+        const italicDetail = missingParts.length > 0
+            ? `The following should be in italics: <em>${missingParts.join('</em>, <em>')}</em>. Select the text and click the <em>I</em> button.`
+            : 'Make sure the correct text is italicised — select it and click the <em>I</em> button.';
         feedbackDiv.className = 'feedback show incorrect';
         feedbackDiv.innerHTML = `
             <strong>Almost there!</strong> Your text is correct but check your italics.
             <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
-                💡 Select the title and click the <em>I</em> button to italicise it.
+                💡 ${italicDetail}
             </div>
         `;
     }
@@ -967,7 +1395,7 @@ function checkAnswer() {
     const question = currentQuestions[currentQuestionIndex];
      if (question.options) {
         const selectedRadio = document.querySelector('input[name="answer"]:checked');
-        
+
         if (!selectedRadio) {
             const feedbackDiv = document.getElementById('feedback');
             feedbackDiv.classList.add('show');
@@ -975,17 +1403,17 @@ function checkAnswer() {
             feedbackDiv.innerHTML = '<strong>⚠️ Please select an answer</strong>';
             return;
         }
-        
+
         const userAnswer = selectedRadio.value;
         const correctAnswer = question.correctAnswers.answer;
         const feedbackDiv = document.getElementById('feedback');
         feedbackDiv.classList.add('show');
-        
+
         // Disable all radio buttons
         document.querySelectorAll('input[name="answer"]').forEach(radio => {
             radio.disabled = true;
             const label = radio.closest('label');
-            
+
             if (radio.value === correctAnswer) {
                 label.style.borderColor = '#28a745';
                 label.style.backgroundColor = '#d4edda';
@@ -994,7 +1422,7 @@ function checkAnswer() {
                 label.style.backgroundColor = '#f8d7da';
             }
         });
-        
+
         if (userAnswer === correctAnswer) {
             feedbackDiv.className = 'feedback show correct';
             feedbackDiv.innerHTML = '<strong>✓ Correct!</strong> Click "Next Question".';
@@ -1006,24 +1434,24 @@ function checkAnswer() {
             feedbackDiv.className = 'feedback show incorrect';
             feedbackDiv.innerHTML = '<strong>✗ Incorrect.</strong> Try again or show the answer.';
         }
-        
+
         return; // Exit function - don't run the fill-in-the-blank code
     }
     let allCorrect = true;
     let allTips = [];
-    
+
    for (const field of question.fields) {
     if (field === 'quote') continue;
-    
+
     const input = document.getElementById(`field-${field}`);
     const userAnswer = input.tagName === 'SELECT' ? input.value.trim() : input.value.trim();
     const correctAnswer = question.correctAnswers[field];
-    
+
     // Case-sensitive check for title fields, case-insensitive for others
-    const isCorrect = field === 'title' 
+    const isCorrect = field === 'title'
         ? userAnswer === correctAnswer  // Exact match for titles (case-sensitive)
         : userAnswer.toLowerCase() === correctAnswer.toLowerCase();  // Case-insensitive for others
-    
+
     if (isCorrect) {
         input.style.borderColor = '#28a745';
         input.style.backgroundColor = '#d4edda';
@@ -1036,10 +1464,10 @@ function checkAnswer() {
             input.value = '';
         }
     }
-    
+
     const feedbackDiv = document.getElementById('feedback');
     feedbackDiv.classList.add('show');
-    
+
     if (allCorrect) {
     feedbackDiv.className = 'feedback show correct';
     feedbackDiv.innerHTML = '<strong>✓ Correct!</strong> Click "Next Question".';
@@ -1116,39 +1544,39 @@ function showAnswer() {
     // Handle multiple choice questions
      if (question.options) {
         const correctAnswer = question.correctAnswers.answer;
-        
+
         // Highlight correct answer
         document.querySelectorAll('input[name="answer"]').forEach(radio => {
             radio.disabled = true;
             const label = radio.closest('label');
-            
+
             if (radio.value === correctAnswer) {
                 label.style.borderColor = '#28a745';
                 label.style.backgroundColor = '#d4edda';
             }
         });
-        
+
         // Show which option is correct
         const optionsList = question.options.split(/(?=[A-D]\))/);
         const correctOption = optionsList.find(opt => opt.trim().startsWith(correctAnswer + ')'));
-        
+
         answerContent.innerHTML = `<div style="background: white; padding: 15px; border-radius: 5px;">
             <p><strong>Correct Answer:</strong></p>
             <p style="color: #28a745; font-weight: bold;">${correctOption.trim()}</p>
         </div>`;
-        
+
         answerDisplay.classList.remove('hidden');
         event.target.disabled = true;
         event.target.style.opacity = '0.5';
         document.getElementById('next-button').classList.remove('hidden');
         document.getElementById('skip-button').classList.add('hidden');
-        
+
         return; // Exit function
     }
-    
+
     // Build the correct answer string based on the fields
     let correctAnswerHTML = '<div style="background: white; padding: 15px; border-radius: 5px;">';
-    
+
     // Handle different question types
     if (question.fields.includes('position1')) {
         // Alphabetical ordering questions
@@ -1179,21 +1607,21 @@ function showAnswer() {
             let authorPart = '';
             let yearPart = '';
             let pagePart = '';
-            
+
             if (question.correctAnswers.author) {
                 authorPart = question.correctAnswers.author;
             } else if (question.correctAnswers.authors) {
                 authorPart = question.correctAnswers.authors;
             }
-            
+
             if (question.correctAnswers.year) {
                 yearPart = question.correctAnswers.year;
             }
-            
+
             if (question.correctAnswers.page) {
                 pagePart = question.correctAnswers.page;
             }
-            
+
             correctAnswerHTML += `<p>${quoteAnswer} (${authorPart} ${yearPart} ${pagePart}).</p>`;
         }
     }  else {
@@ -1210,23 +1638,23 @@ function showAnswer() {
             correctAnswerHTML += `<p>${parts.join(' ')}</p>`;
         }
     }
-    
+
     correctAnswerHTML += '</div>';
     answerContent.innerHTML = correctAnswerHTML;
-    
+
     // Show the answer display
     answerDisplay.classList.remove('hidden');
-    
+
     // Disable submit button and show answer button
     event.target.disabled = true;
     event.target.style.opacity = '0.5';
-    
+
     // Show next button
     document.getElementById('next-button').classList.remove('hidden');
-    
+
     // Hide skip button
     document.getElementById('skip-button').classList.add('hidden');
-    
+
     // Fill in all fields with correct answers and disable them
     question.fields.forEach(field => {
         const input = document.getElementById(`field-${field}`);

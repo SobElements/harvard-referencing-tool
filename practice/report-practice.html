@@ -20,24 +20,46 @@
         </header>
 
         <main>
-            <!-- Progress Bar -->
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+
+            <!-- MODE SELECTOR - shown first, hidden once a mode is chosen -->
+            <div id="mode-selector" style="text-align: center; padding: 40px 20px;">
+                <h2 style="color: #2c3e50; margin-bottom: 10px;">Choose your practice mode</h2>
+                <p style="color: #7f8c8d; margin-bottom: 40px;">Select the level that suits you</p>
+
+                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
+
+                    <button class="section-button" onclick="startPractice('beginner')" style="max-width: 280px; padding: 30px 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🟢</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;">Beginner</div>
+                        <div style="font-size: 0.95rem; font-weight: normal;">Fill in the labelled fields — the structure is provided for you</div>
+                    </button>
+
+                    <button class="section-button" onclick="startPractice('intermediate')" style="max-width: 280px; padding: 30px 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🟡</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;">Intermediate</div>
+                        <div style="font-size: 0.95rem; font-weight: normal;">Type the full reference yourself — including correct punctuation and italics</div>
+                    </button>
+
                 </div>
             </div>
 
-            <!-- Questions Container -->
-            <div id="questions-container"></div>
+            <!-- PROGRESS BAR - hidden until practice starts -->
+            <div id="progress-bar" style="display: none; background-color: #e0e0e0; height: 8px; border-radius: 4px; margin-bottom: 30px;">
+                <div id="progress-fill" style="background-color: #667eea; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 4px;"></div>
+            </div>
 
-            <!-- Results Container (hidden initially) -->
+            <!-- QUESTIONS - hidden until practice starts -->
+            <div id="questions-container" style="display: none;">
+            </div>
+
+            <!-- RESULTS - hidden until all questions answered -->
             <div id="results-container" class="hidden">
-                <div class="results-box">
-                    <h2>🎉 Practice Complete!</h2>
-                    <p>Great work! You've completed all the reports and government documents questions.</p>
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px;">Practice Complete!</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 30px;">You've completed all questions.</p>
                     <div class="section-buttons">
-                        <button class="section-button" onclick="window.location.reload()">
-                            🔄 Practice Again
+                        <button class="section-button" onclick="location.reload()">
+                            🔄 Try Again
                         </button>
                         <button class="section-button" onclick="window.location.href='../tutorials/report-tutorial.html'">
                             📚 Review Tutorial
@@ -48,21 +70,26 @@
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 
     <script src="../src/scripts/navbar.js"></script>
     <script src="../src/scripts/practice-handler.js"></script>
     <script>
-        // Initialize the practice session for reports
-        // 2 in-text + 2 gov reports + 2 gov reports with number + 2 international + 2 think tank = 10 total
-        initializePractice('reports', {
-            inTextCitations: 5,
-            governmentReports: 5,
-            governmentReportsWithNumber: 5,
-            internationalOrganisations: 5,
-            thinkTankReports: 5
-        });
+        function startPractice(mode) {
+            document.getElementById('mode-selector').style.display = 'none';
+            document.getElementById('progress-bar').style.display = 'block';
+            document.getElementById('questions-container').style.display = 'block';
+
+            initializePractice('reports', {
+                inTextCitations: 5,
+                governmentReports: 5,
+                governmentReportsWithNumber: 5,
+                internationalOrganisations: 5,
+                thinkTankReports: 5
+            }, mode);
+        }
     </script>
 </body>
 </html>

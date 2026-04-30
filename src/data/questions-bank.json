@@ -1268,7 +1268,7 @@
         "scenario": "Include this direct quote from research with two authors: \"Collaborative leadership models improve organisational outcomes significantly.\"",
         "source": {
           "authors": "Dr. Rachel Davidson and Dr. Kevin Turner",
-          "article": "Leadership strategies in modern organizations",
+          "article": "Leadership strategies in modern organisations",
           "journal": "Business Management Quarterly",
           "year": 2021,
           "page": 145
@@ -2296,52 +2296,52 @@
       {
         "id": "reflist_format_1",
         "scenario": "Format this reference with multiple authors correctly:",
-        "incorrectReference": "Anderson, M. and Thompson, K. and Williams, R. (2021). Digital transformation. Journal of Educational Technology, 28(4), 156-189.",
+        "incorrectReference": "Anderson, M. and Thompson, K. and Williams, R. (2021) 'Digital transformation', Journal of Educational Technology, 28(4), pp. 156–189.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Anderson, M., Thompson, K. & Williams, R. (2021). Digital transformation. Journal of Educational Technology, 28(4), 156-189."
+          "correctedReference": "Anderson, M., Thompson, K. and Williams, R. (2021) 'Digital transformation', Journal of Educational Technology, 28(4), pp. 156–189."
         },
-        "note": "Remember: Use commas between authors, and '&' before the final author"
+        "note": "Remember: Use commas between all authors except between the penultimate and final author, where 'and' is used"
       },
       {
         "id": "reflist_format_2",
         "scenario": "Format this reference with multiple authors correctly:",
-        "incorrectReference": "Brown, A. S. and Davis, K. (2020). Teaching methods. Academic Books.",
+        "incorrectReference": "Brown, A. S. & Davis, K. (2020) Teaching methods. Academic Books.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Brown, A. S. & Davis, K. (2020). Teaching methods. Academic Books."
+          "correctedReference": "Brown, A. S. and Davis, K. (2020) Teaching methods. Academic Books."
         },
-        "note": "Remember: Use '&' instead of 'and' between two authors"
+        "note": "Remember: In Harvard referencing, use 'and' (not '&') between authors"
       },
       {
         "id": "reflist_format_3",
         "scenario": "Format this reference with multiple authors correctly:",
-        "incorrectReference": "Chen, W., Martinez, S., O'Brien, M., and Foster, A. (2021). Climate policy research. Environmental Studies, 45(2), 78-95.",
+        "incorrectReference": "Chen, W., Martinez, S., O'Brien, M., and Foster, A. (2021) 'Climate policy research', Environmental Studies, 45(2), pp. 78–95.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Chen, W., Martinez, S., O'Brien, M. & Foster, A. (2021). Climate policy research. Environmental Studies, 45(2), 78-95."
+          "correctedReference": "Chen, W., Martinez, S., O'Brien, M. and Foster, A. (2021) 'Climate policy research', Environmental Studies, 45(2), pp. 78–95."
         },
-        "note": "Remember: Use commas between authors, and '&' before the final author (not 'and')"
+        "note": "Remember: In Harvard, do not use a comma before 'and' when listing the final author"
       },
       {
         "id": "reflist_format_4",
         "scenario": "Format this reference with multiple authors correctly:",
-        "incorrectReference": "Ramirez, L. and Foster, A. (2020). Sustainability practices. Greenfield Books.",
+        "incorrectReference": "Ramirez, L. & Foster, A. (2020) Sustainability practices. Greenfield Books.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Ramirez, L. & Foster, A. (2020). Sustainability practices. Greenfield Books."
+          "correctedReference": "Ramirez, L. and Foster, A. (2020) Sustainability practices. Greenfield Books."
         },
-        "note": "Remember: Use '&' instead of 'and' between authors"
+        "note": "Remember: In Harvard referencing, use 'and' (not '&') between authors"
       },
       {
         "id": "reflist_format_5",
         "scenario": "Format this reference with multiple authors correctly:",
-        "incorrectReference": "Zhang, Y., Campbell, L. and Martinez, S. (2019). Political theory perspectives. Capitol Publishers.",
+        "incorrectReference": "Zhang, Y., Campbell, L. & Martinez, S. (2019) Political theory perspectives. Capitol Publishers.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Zhang, Y., Campbell, L. & Martinez, S. (2019). Political theory perspectives. Capitol Publishers."
+          "correctedReference": "Zhang, Y., Campbell, L. and Martinez, S. (2019) Political theory perspectives. Capitol Publishers."
         },
-        "note": "Remember: Use commas between authors, and '&' before the final author"
+        "note": "Remember: In Harvard referencing, use 'and' (not '&') before the final author"
       }
     ],
     "capitalisationFixing": [
@@ -2402,14 +2402,14 @@
         "scenario": "Create reference list entries for these diverse sources:",
         "sources": {
           "book": "Book: 'Psychology Today' by Dr. Lisa Chen, 2021, Mind Press",
-          "website": "Website: 'Mental Health Awareness' by Wellness Alliance, April 20, 2021, Wellness Network, URL: https://wellness.org/mental-health",
+          "website": "Website: 'Mental Health Awareness' by Wellness Alliance, April 20, 2021, Wellness Network, URL: https://wellness.org/mental-health, accessed 1 June 2021",
           "journal": "Journal: 'Cognitive Therapy' by Roberts, P. in Therapy Review, vol 12, issue 4, pages 89-105, 2020"
         },
         "fields": ["bookEntry", "websiteEntry", "journalEntry"],
         "correctAnswers": {
-          "bookEntry": "Chen, L. (2021). Psychology today. Mind Press.",
-          "websiteEntry": "Wellness Alliance. (2021, April 20). Mental health awareness. Wellness Network. https://wellness.org/mental-health",
-          "journalEntry": "Roberts, P. (2020). Cognitive therapy. Therapy Review, 12(4), 89-105."
+          "bookEntry": "Chen, L. (2021) Psychology today. Mind Press.",
+          "websiteEntry": "Wellness Alliance (2021) Mental health awareness. Wellness Network. Available at: https://wellness.org/mental-health (Accessed: 1 June 2021).",
+          "journalEntry": "Roberts, P. (2020) 'Cognitive therapy', Therapy Review, 12(4), pp. 89–105."
         }
       },
       {
@@ -2418,28 +2418,28 @@
         "sources": {
           "journal": "Journal: 'Remote Work Trends' by Davidson, R. in Business Quarterly, vol 34, issue 2, pages 45-67, 2021",
           "book": "Book: 'Digital Communication' by Thomas Blackwell, 2019, Horizon Press",
-          "website": "Website: 'Future of Education' by Henderson, K., March 15, 2021, EdTech Hub, URL: https://edtechhub.com/future"
+          "website": "Website: 'Future of Education' by Henderson, K., March 15, 2021, EdTech Hub, URL: https://edtechhub.com/future, accessed 20 April 2021"
         },
         "fields": ["journalEntry", "bookEntry", "websiteEntry"],
         "correctAnswers": {
-          "journalEntry": "Davidson, R. (2021). Remote work trends. Business Quarterly, 34(2), 45-67.",
-          "bookEntry": "Blackwell, T. (2019). Digital communication. Horizon Press.",
-          "websiteEntry": "Henderson, K. (2021, March 15). Future of education. EdTech Hub. https://edtechhub.com/future"
+          "journalEntry": "Davidson, R. (2021) 'Remote work trends', Business Quarterly, 34(2), pp. 45–67.",
+          "bookEntry": "Blackwell, T. (2019) Digital communication. Horizon Press.",
+          "websiteEntry": "Henderson, K. (2021) Future of education. EdTech Hub. Available at: https://edtechhub.com/future (Accessed: 20 April 2021)."
         }
       },
       {
         "id": "reflist_mixed_3",
         "scenario": "Create reference list entries for these diverse sources:",
         "sources": {
-          "website": "Website: 'Climate Data Analysis' by Environmental Research Institute, July 20, 2021, Climate Portal, URL: https://climateportal.org/data",
+          "website": "Website: 'Climate Data Analysis' by Environmental Research Institute, July 20, 2021, Climate Portal, URL: https://climateportal.org/data, accessed 10 August 2021",
           "book": "Book: 'Environmental Stewardship' by Luis Ramirez, 2020, Greenfield Books",
           "journal": "Journal: 'Renewable Energy Economics' by Kowalski, P. in Sustainable Review, vol 15, issue 3, pages 67-89, 2019"
         },
         "fields": ["websiteEntry", "bookEntry", "journalEntry"],
         "correctAnswers": {
-          "websiteEntry": "Environmental Research Institute. (2021, July 20). Climate data analysis. Climate Portal. https://climateportal.org/data",
-          "bookEntry": "Ramirez, L. (2020). Environmental stewardship. Greenfield Books.",
-          "journalEntry": "Kowalski, P. (2019). Renewable energy economics. Sustainable Review, 15(3), 67-89."
+          "websiteEntry": "Environmental Research Institute (2021) Climate data analysis. Climate Portal. Available at: https://climateportal.org/data (Accessed: 10 August 2021).",
+          "bookEntry": "Ramirez, L. (2020) Environmental stewardship. Greenfield Books.",
+          "journalEntry": "Kowalski, P. (2019) 'Renewable energy economics', Sustainable Review, 15(3), pp. 67–89."
         }
       },
       {
@@ -2448,13 +2448,13 @@
         "sources": {
           "book": "Book with 2 authors: 'Sustainability Practices' by Ramirez, L. and Foster, A., 2020, Greenfield Books",
           "journal": "Journal with DOI: 'Social Inequality' by Okafor, C. in Sociology Today, vol 42, issue 1, pages 234-256, 2021, DOI: 10.3456/st.2021.01.018",
-          "website": "Website with no author: 'Solar Power Trends', December 5, 2020, Renewable Energy Portal, URL: https://renewportal.org/solar"
+          "website": "Website with no author: 'Solar Power Trends', December 5, 2020, Renewable Energy Portal, URL: https://renewportal.org/solar, accessed 15 January 2021"
         },
         "fields": ["bookEntry", "journalEntry", "websiteEntry"],
         "correctAnswers": {
-          "bookEntry": "Ramirez, L. & Foster, A. (2020). Sustainability practices. Greenfield Books.",
-          "journalEntry": "Okafor, C. (2021). Social inequality. Sociology Today, 42(1), 234-256. https://doi.org/10.3456/st.2021.01.018",
-          "websiteEntry": "Solar power trends. (2020, December 5). Renewable Energy Portal. https://renewportal.org/solar"
+          "bookEntry": "Ramirez, L. and Foster, A. (2020) Sustainability practices. Greenfield Books.",
+          "journalEntry": "Okafor, C. (2021) 'Social inequality', Sociology Today, 42(1), pp. 234–256. doi:10.3456/st.2021.01.018",
+          "websiteEntry": "Anon. (2020) Solar power trends. Renewable Energy Portal. Available at: https://renewportal.org/solar (Accessed: 15 January 2021)."
         }
       },
       {
@@ -2462,14 +2462,14 @@
         "scenario": "Create reference list entries for these diverse sources:",
         "sources": {
           "journal": "Journal: 'Quantum Computing' by Tanaka, Y. in Computer Science Advances, vol 19, issue 2, pages 78-102, 2020",
-          "website": "Website: 'Digital Learning' by Henderson, K., March 15, 2021, EdTech Hub, URL: https://edtechhub.com/learning",
+          "website": "Website: 'Digital Learning' by Henderson, K., March 15, 2021, EdTech Hub, URL: https://edtechhub.com/learning, accessed 30 April 2021",
           "book": "Book with edition: 'Political Science Intro' by Montgomery, J., 2017, 4th edition, Capitol Publishers"
         },
         "fields": ["journalEntry", "websiteEntry", "bookEntry"],
         "correctAnswers": {
-          "journalEntry": "Tanaka, Y. (2020). Quantum computing. Computer Science Advances, 19(2), 78-102.",
-          "websiteEntry": "Henderson, K. (2021, March 15). Digital learning. EdTech Hub. https://edtechhub.com/learning",
-          "bookEntry": "Montgomery, J. (2017). Political science intro (4th ed.). Capitol Publishers."
+          "journalEntry": "Tanaka, Y. (2020) 'Quantum computing', Computer Science Advances, 19(2), pp. 78–102.",
+          "websiteEntry": "Henderson, K. (2021) Digital learning. EdTech Hub. Available at: https://edtechhub.com/learning (Accessed: 30 April 2021).",
+          "bookEntry": "Montgomery, J. (2017) Political science intro (4th edn). Capitol Publishers."
         }
       }
     ]
@@ -3268,7 +3268,7 @@
     "fields": ["quote", "department", "year"],
     "correctAnswers": {
       "quote": "\"Public health investment has increased significantly over the past five years.\"",
-      "department": "Department of Health,",
+      "department": "Department of Health",
       "year": "2021"
     }
   },
@@ -3284,7 +3284,7 @@
     "fields": ["quote", "department", "year"],
     "correctAnswers": {
       "quote": "\"Population growth has slowed across most urban regions.\"",
-      "department": "Office for National Statistics,",
+      "department": "Office for National Statistics",
       "year": "2021"
     }
   },
@@ -3292,7 +3292,7 @@
     "id": "report_cite_3",
     "scenario": "Include this information from an organisation report in your essay: \"Global vaccination rates have improved substantially in recent years.\"",
     "source": {
-      "organisation": "World Health Organization",
+      "organisation": "World Health Organisation",
       "title": "Global immunisation coverage report",
       "year": "2021"
     },
@@ -3300,7 +3300,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Global vaccination rates have improved substantially in recent years.\"",
-      "organisation": "World Health Organization,",
+      "organisation": "World Health Organisation",
       "year": "2021"
     }
   },
@@ -3316,7 +3316,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Economic recovery varies significantly across different sectors.\"",
-      "organisation": "OECD,",
+      "organisation": "OECD",
       "year": "2021"
     }
   },
@@ -3332,7 +3332,7 @@
     "fields": ["quote", "organisation", "year"],
     "correctAnswers": {
       "quote": "\"Educational inequality continues to impact social mobility outcomes.\"",
-      "organisation": "Brookings Institution,",
+      "organisation": "Brookings Institution",
       "year": "2021"
     }
   }
@@ -3439,8 +3439,8 @@
     "correctAnswers": {
       "department": "Office for National Statistics",
       "year": "(2021)",
-      "title": "UK population statistics 2021",
-      "reportNumber": "(Report No. ONS-2021-15).",
+      "title": "UK population statistics 2021.",
+      "reportNumber": "Report no. ONS-2021-15.",
       "publisher": "HMSO."
     }
   },
@@ -3458,8 +3458,8 @@
     "correctAnswers": {
       "department": "Department of Health",
       "year": "(2020)",
-      "title": "National health survey results",
-      "reportNumber": "(Report No. DH-2020-08).",
+      "title": "National health survey results.",
+      "reportNumber": "Report no. DH-2020-08.",
       "publisher": "HMSO."
     }
   },
@@ -3477,8 +3477,8 @@
     "correctAnswers": {
       "department": "Ministry of Environmental Protection",
       "year": "(2021)",
-      "title": "Air quality monitoring report",
-      "reportNumber": "(Report No. MEP-2021-12).",
+      "title": "Air quality monitoring report.",
+      "reportNumber": "Report no. MEP-2021-12.",
       "publisher": "Government Publishing Office."
     }
   },
@@ -3496,8 +3496,8 @@
     "correctAnswers": {
       "department": "Department of Education",
       "year": "(2020)",
-      "title": "School performance analysis",
-      "reportNumber": "(Report No. DE-2020-04).",
+      "title": "School performance analysis.",
+      "reportNumber": "Report no. DE-2020-04.",
       "publisher": "HMSO."
     }
   },
@@ -3515,8 +3515,8 @@
     "correctAnswers": {
       "department": "Office of Economic Development",
       "year": "(2021)",
-      "title": "Employment trends analysis",
-      "reportNumber": "(Report No. OED-2021-06).",
+      "title": "Employment trends analysis.",
+      "reportNumber": "Report no. OED-2021-06.",
       "publisher": "Government Publishing Office."
     }
   }
@@ -3526,14 +3526,14 @@
     "id": "report_int_1",
     "scenario": "Create a reference list entry for this international organisation report:",
     "source": {
-      "organisation": "World Health Organization",
+      "organisation": "World Health Organisation",
       "year": "2021",
       "title": "Global health observatory data",
       "publisher": "WHO Press"
     },
     "fields": ["organisation", "year", "title", "publisher"],
     "correctAnswers": {
-      "organisation": "World Health Organization",
+      "organisation": "World Health Organisation",
       "year": "(2021)",
       "title": "Global health observatory data.",
       "publisher": "WHO Press."
@@ -3616,16 +3616,14 @@
       "organisation": "Brookings Institution",
       "year": "2021",
       "title": "Economic policy in post-pandemic era",
-      "publisher": "Brookings Institution",
       "url": "https://www.brookings-research.example/economic-policy-2021",
       "accessed": "15 March 2021"
     },
-    "fields": ["organisation", "year", "title", "publisher", "url", "accessed"],
+    "fields": ["organisation", "year", "title", "url", "accessed"],
     "correctAnswers": {
       "organisation": "Brookings Institution",
       "year": "(2021)",
       "title": "Economic policy in post-pandemic era.",
-      "publisher": "Brookings Institution.",
       "url": "Available at: https://www.brookings-research.example/economic-policy-2021",
       "accessed": "(Accessed: 15 March 2021)."
     }
@@ -3637,16 +3635,14 @@
       "organisation": "Institute for Policy Studies",
       "year": "2020",
       "title": "Social inequality research report",
-      "publisher": "Institute for Policy Studies",
       "url": "https://www.ips-research.example/inequality-report-2020",
       "accessed": "22 August 2020"
     },
-    "fields": ["organisation", "year", "title", "publisher", "url", "accessed"],
+    "fields": ["organisation", "year", "title", "url", "accessed"],
     "correctAnswers": {
       "organisation": "Institute for Policy Studies",
       "year": "(2020)",
       "title": "Social inequality research report.",
-      "publisher": "Institute for Policy Studies.",
       "url": "Available at: https://www.ips-research.example/inequality-report-2020",
       "accessed": "(Accessed: 22 August 2020)."
     }
@@ -3658,16 +3654,14 @@
       "organisation": "Centre for Economic Policy Research",
       "year": "2021",
       "title": "Digital economy transformation study",
-      "publisher": "Centre for Economic Policy Research",
       "url": "https://www.cepr-research.example/digital-economy-2021",
       "accessed": "10 June 2021"
     },
-    "fields": ["organisation", "year", "title", "publisher", "url", "accessed"],
+    "fields": ["organisation", "year", "title", "url", "accessed"],
     "correctAnswers": {
       "organisation": "Centre for Economic Policy Research",
       "year": "(2021)",
       "title": "Digital economy transformation study.",
-      "publisher": "Centre for Economic Policy Research.",
       "url": "Available at: https://www.cepr-research.example/digital-economy-2021",
       "accessed": "(Accessed: 10 June 2021)."
     }
@@ -3679,16 +3673,14 @@
       "organisation": "Oxfam",
       "year": "2021",
       "title": "Global inequality report 2021",
-      "publisher": "Oxfam International",
       "url": "https://www.oxfam-reports.example/inequality-report",
       "accessed": "5 April 2021"
     },
-    "fields": ["organisation", "year", "title", "publisher", "url", "accessed"],
+    "fields": ["organisation", "year", "title", "url", "accessed"],
     "correctAnswers": {
       "organisation": "Oxfam",
       "year": "(2021)",
       "title": "Global inequality report 2021.",
-      "publisher": "Oxfam International.",
       "url": "Available at: https://www.oxfam-reports.example/inequality-report",
       "accessed": "(Accessed: 5 April 2021)."
     }
@@ -3700,16 +3692,14 @@
       "organisation": "Urban Development Institute",
       "year": "2020",
       "title": "Sustainable cities initiative report",
-      "publisher": "Urban Development Institute",
       "url": "https://www.urbandev-institute.example/sustainable-cities-2020",
       "accessed": "18 November 2020"
     },
-    "fields": ["organisation", "year", "title", "publisher", "url", "accessed"],
+    "fields": ["organisation", "year", "title", "url", "accessed"],
     "correctAnswers": {
       "organisation": "Urban Development Institute",
       "year": "(2020)",
       "title": "Sustainable cities initiative report.",
-      "publisher": "Urban Development Institute.",
       "url": "Available at: https://www.urbandev-institute.example/sustainable-cities-2020",
       "accessed": "(Accessed: 18 November 2020)."
     }
@@ -3732,7 +3722,7 @@
     "fields": ["quote", "creator", "year"],
     "correctAnswers": {
       "quote": "\"Innovation in technology is fundamentally changing the way we live and work.\"",
-      "creator": "TED,",
+      "creator": "TED",
       "year": "2021"
     }
   },
@@ -3748,7 +3738,7 @@
     "fields": ["quote", "host", "year"],
     "correctAnswers": {
       "quote": "\"Leadership development requires consistent practice and genuine self-reflection.\"",
-      "host": "Richardson,",
+      "host": "Richardson",
       "year": "2020"
     }
   },
@@ -3764,7 +3754,7 @@
     "fields": ["quote", "director", "year"],
     "correctAnswers": {
       "quote": "\"Climate change represents the defining challenge of our generation.\"",
-      "director": "Mitchell,",
+      "director": "Mitchell",
       "year": "2021"
     }
   },
@@ -3779,7 +3769,7 @@
     "fields": ["quote", "programme", "year"],
     "correctAnswers": {
       "quote": "\"Artificial intelligence is transforming every aspect of modern business.\"",
-      "programme": "Digital Future Today,",
+      "programme": "Digital Future Today",
       "year": "2020"
     }
   },
@@ -3795,7 +3785,7 @@
     "fields": ["quote", "creator", "year"],
     "correctAnswers": {
       "quote": "\"Effective communication skills are essential for professional success.\"",
-      "creator": "Education Channel Network,",
+      "creator": "Education Channel Network",
       "year": "2021"
     }
   }
@@ -4021,7 +4011,7 @@
     },
     "fields": ["director", "year", "title", "production"],
     "correctAnswers": {
-      "director": "Mitchell, S. (dir.)",
+      "director": "Mitchell, S.",
       "year": "(2021)",
       "title": "Climate change: the real story.",
       "production": "Documentary Films International."
@@ -4038,7 +4028,7 @@
     },
     "fields": ["director", "year", "title", "production"],
     "correctAnswers": {
-      "director": "Richardson, T. (dir.)",
+      "director": "Richardson, T.",
       "year": "(2020)",
       "title": "The digital revolution.",
       "production": "Technology Media Productions."
@@ -4055,7 +4045,7 @@
     },
     "fields": ["director", "year", "title", "production"],
     "correctAnswers": {
-      "director": "Chen, P. (dir.)",
+      "director": "Chen, P.",
       "year": "(2021)",
       "title": "Understanding the human brain.",
       "production": "Science Documentary Network."
@@ -4072,7 +4062,7 @@
     },
     "fields": ["director", "year", "title", "production"],
     "correctAnswers": {
-      "director": "Foster, A. (dir.)",
+      "director": "Foster, A.",
       "year": "(2020)",
       "title": "Ocean ecosystems under threat.",
       "production": "Nature Films Collective."
@@ -4089,7 +4079,7 @@
     },
     "fields": ["director", "year", "title", "production"],
     "correctAnswers": {
-      "director": "Thompson, M. (dir.)",
+      "director": "Thompson, M.",
       "year": "(2021)",
       "title": "Innovation and society.",
       "production": "Educational Broadcasting Trust."
@@ -4110,7 +4100,7 @@
     },
     "fields": ["director", "year", "title", "platform", "url", "accessed"],
     "correctAnswers": {
-      "director": "Henderson, L. (dir.)",
+      "director": "Henderson, L.",
       "year": "(2021)",
       "title": "The future of education.",
       "platform": "Educational Streaming Service.",
@@ -4131,7 +4121,7 @@
     },
     "fields": ["director", "year", "title", "platform", "url", "accessed"],
     "correctAnswers": {
-      "director": "Peterson, S. (dir.)",
+      "director": "Peterson, S.",
       "year": "(2020)",
       "title": "Renewable energy innovations.",
       "platform": "Science Stream Network.",
@@ -4152,7 +4142,7 @@
     },
     "fields": ["director", "year", "title", "platform", "url", "accessed"],
     "correctAnswers": {
-      "director": "Roberts, M. (dir.)",
+      "director": "Roberts, M.",
       "year": "(2021)",
       "title": "Digital transformation in business.",
       "platform": "Business Media Hub.",
@@ -4173,7 +4163,7 @@
     },
     "fields": ["director", "year", "title", "platform", "url", "accessed"],
     "correctAnswers": {
-      "director": "Thompson, D. (dir.)",
+      "director": "Thompson, D.",
       "year": "(2021)",
       "title": "Understanding quantum mechanics.",
       "platform": "Academic Streaming Portal.",
@@ -4194,7 +4184,7 @@
     },
     "fields": ["director", "year", "title", "platform", "url", "accessed"],
     "correctAnswers": {
-      "director": "Martinez, A. (dir.)",
+      "director": "Martinez, A.",
       "year": "(2020)",
       "title": "Healthcare technology advances.",
       "platform": "Medical Innovation Stream.",
@@ -4779,7 +4769,7 @@
       "fields": ["quote", "ai", "year"],
       "correctAnswers": {
         "quote": "\"Machine learning algorithms improve through iterative training on large datasets.\"",
-        "ai": "OpenAI,",
+        "ai": "ChatGPT",
         "year": "2024"
       }
     },
@@ -4794,7 +4784,7 @@
       "fields": ["quote", "ai", "year"],
       "correctAnswers": {
         "quote": "\"Climate change requires immediate global action and policy reform.\"",
-        "ai": "Anthropic,",
+        "ai": "Claude",
         "year": "2024"
       }
     },
@@ -4809,7 +4799,7 @@
       "fields": ["quote", "ai", "year"],
       "correctAnswers": {
         "quote": "\"Economic theory suggests market equilibrium through supply and demand forces.\"",
-        "ai": "Google,",
+        "ai": "Google Gemini",
         "year": "2024"
       }
     },
@@ -4824,7 +4814,7 @@
       "fields": ["quote", "ai", "year"],
       "correctAnswers": {
         "quote": "\"Sustainable development balances economic growth with environmental protection.\"",
-        "ai": "Microsoft,",
+        "ai": "Microsoft Copilot",
         "year": "2024"
       }
     },
@@ -4839,7 +4829,7 @@
       "fields": ["quote", "ai", "year"],
       "correctAnswers": {
         "quote": "\"Historical analysis reveals patterns in societal development over time.\"",
-        "ai": "Perplexity AI,",
+        "ai": "Perplexity AI",
         "year": "2024"
       }
     }
@@ -4854,7 +4844,7 @@
       },
       "fields": ["ai", "year"],
       "correctAnswers": {
-        "ai": "OpenAI,",
+        "ai": "ChatGPT",
         "year": "2024"
       }
     },
@@ -4867,7 +4857,7 @@
       },
       "fields": ["ai", "year"],
       "correctAnswers": {
-        "ai": "Anthropic,",
+        "ai": "Claude",
         "year": "2024"
       }
     },
@@ -4880,7 +4870,7 @@
       },
       "fields": ["ai", "year"],
       "correctAnswers": {
-        "ai": "Google,",
+        "ai": "Google Gemini",
         "year": "2024"
       }
     },
@@ -4893,7 +4883,7 @@
       },
       "fields": ["ai", "year"],
       "correctAnswers": {
-        "ai": "Microsoft,",
+        "ai": "Microsoft Copilot",
         "year": "2024"
       }
     },
@@ -4906,7 +4896,7 @@
       },
       "fields": ["ai", "year"],
       "correctAnswers": {
-        "ai": "Perplexity AI,",
+        "ai": "Perplexity AI",
         "year": "2024"
       }
     }
@@ -4921,16 +4911,18 @@
         "aiName": "ChatGPT",
         "version": "4",
         "type": "Large language model",
-        "url": "https://chat.openai.com"
+        "url": "https://chat.openai.com",
+        "accessed": "15 March 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "OpenAI",
         "year": "(2024)",
         "aiName": "ChatGPT",
         "version": "(4)",
         "type": "[Large language model].",
-        "url": "https://chat.openai.com"
+        "url": "Available at: https://chat.openai.com",
+        "accessed": "(Accessed: 15 March 2024)."
       }
     },
     {
@@ -4942,16 +4934,18 @@
         "aiName": "ChatGPT",
         "version": "3.5",
         "type": "Large language model",
-        "url": "https://chat.openai.com"
+        "url": "Available at: https://chat.openai.com",
+        "accessed": "15 March 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "OpenAI",
         "year": "(2024)",
         "aiName": "ChatGPT",
         "version": "(3.5)",
         "type": "[Large language model].",
-        "url": "https://chat.openai.com"
+        "url": "Available at: https://chat.openai.com",
+        "accessed": "(Accessed: 15 March 2024)."
       }
     },
     {
@@ -4963,16 +4957,18 @@
         "aiName": "ChatGPT Plus",
         "version": "4",
         "type": "Large language model",
-        "url": "https://chat.openai.com"
+        "url": "https://chat.openai.com",
+        "accessed": "15 March 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "OpenAI",
         "year": "(2024)",
         "aiName": "ChatGPT Plus",
         "version": "(4)",
         "type": "[Large language model].",
-        "url": "https://chat.openai.com"
+        "url": "Available at: https://chat.openai.com",
+        "accessed": "(Accessed: 15 March 2024)."
       }
     },
     {
@@ -4984,16 +4980,18 @@
         "aiName": "ChatGPT Enterprise",
         "version": "4",
         "type": "Large language model",
-        "url": "https://chat.openai.com/enterprise"
+        "url": "https://chat.openai.com/enterprise",
+        "accessed": "15 March 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "OpenAI",
         "year": "(2024)",
         "aiName": "ChatGPT Enterprise",
         "version": "(4)",
         "type": "[Large language model].",
-        "url": "https://chat.openai.com/enterprise"
+        "url": "Available at: https://chat.openai.com/enterprise",
+        "accessed": "(Accessed: 15 March 2024)."
       }
     },
     {
@@ -5004,15 +5002,17 @@
         "year": "2024",
         "aiName": "ChatGPT",
         "type": "Large language model",
-        "url": "https://chat.openai.com"
+        "url": "https://chat.openai.com",
+        "accessed": "15 March 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "OpenAI",
         "year": "(2024)",
         "aiName": "ChatGPT",
         "type": "[Large language model].",
-        "url": "https://chat.openai.com"
+        "url": "Available at: https://chat.openai.com",
+        "accessed": "(Accessed: 15 March 2024)."
       }
     }
   ],
@@ -5026,16 +5026,18 @@
         "aiName": "Claude",
         "version": "3",
         "type": "Large language model",
-        "url": "https://claude.ai"
+        "url": "https://claude.ai",
+        "accessed": "12 June 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Anthropic",
         "year": "(2024)",
         "aiName": "Claude",
         "version": "(3)",
         "type": "[Large language model].",
-        "url": "https://claude.ai"
+        "url": "Available at: https://claude.ai",
+        "accessed": "(Accessed: 12 June 2024)."
       }
     },
     {
@@ -5047,16 +5049,18 @@
         "aiName": "Claude",
         "version": "3.5",
         "type": "Large language model",
-        "url": "https://claude.ai"
+        "url": "https://claude.ai",
+        "accessed": "12 June 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Anthropic",
         "year": "(2024)",
         "aiName": "Claude",
         "version": "(3.5)",
         "type": "[Large language model].",
-        "url": "https://claude.ai"
+        "url": "Available at: https://claude.ai",
+        "accessed": "(Accessed: 12 June 2024)."
       }
     },
     {
@@ -5068,16 +5072,18 @@
         "aiName": "Claude Pro",
         "version": "3",
         "type": "Large language model",
-        "url": "https://claude.ai"
+        "url": "https://claude.ai",
+        "accessed": "12 June 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Anthropic",
         "year": "(2024)",
         "aiName": "Claude Pro",
         "version": "(3)",
         "type": "[Large language model].",
-        "url": "https://claude.ai"
+        "url": "Available at: https://claude.ai",
+        "accessed": "(Accessed: 12 June 2024)."
       }
     },
     {
@@ -5089,16 +5095,18 @@
         "aiName": "Claude Sonnet",
         "version": "3.5",
         "type": "Large language model",
-        "url": "https://claude.ai"
+        "url": "https://claude.ai",
+        "accessed": "12 June 2024"
       },
-      "fields": ["company", "year", "aiName", "version", "type", "url"],
+      "fields": ["company", "year", "aiName", "version", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Anthropic",
         "year": "(2024)",
         "aiName": "Claude Sonnet",
         "version": "(3.5)",
         "type": "[Large language model].",
-        "url": "https://claude.ai"
+        "url": "Available at: https://claude.ai",
+        "accessed": "(Accessed: 12 June 2024)."
       }
     },
     {
@@ -5109,15 +5117,17 @@
         "year": "2024",
         "aiName": "Claude",
         "type": "Large language model",
-        "url": "https://claude.ai"
+        "url": "https://claude.ai",
+        "accessed": "12 June 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Anthropic",
         "year": "(2024)",
         "aiName": "Claude",
         "type": "[Large language model].",
-        "url": "https://claude.ai"
+        "url": "Available at: https://claude.ai",
+        "accessed": "(Accessed: 12 June 2024)."
       }
     }
   ],
@@ -5130,15 +5140,17 @@
         "year": "2024",
         "aiName": "Gemini",
         "type": "Large language model",
-        "url": "https://gemini.google.com"
+        "url": "https://gemini.google.com",
+        "accessed": "20 September 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Google",
         "year": "(2024)",
         "aiName": "Gemini",
         "type": "[Large language model].",
-        "url": "https://gemini.google.com"
+        "url": "Available at: https://gemini.google.com",
+        "accessed": "(Accessed: 20 September 2024)."
       }
     },
     {
@@ -5149,15 +5161,17 @@
         "year": "2024",
         "aiName": "Microsoft Copilot",
         "type": "AI assistant",
-        "url": "https://copilot.microsoft.com"
+        "url": "https://copilot.microsoft.com",
+        "accessed": "14 October 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Microsoft",
         "year": "(2024)",
         "aiName": "Microsoft Copilot",
         "type": "[AI assistant].",
-        "url": "https://copilot.microsoft.com"
+        "url": "Available at: https://copilot.microsoft.com",
+        "accessed": "(Accessed: 14 October 2024)."
       }
     },
     {
@@ -5168,15 +5182,17 @@
         "year": "2024",
         "aiName": "Perplexity",
         "type": "AI search engine",
-        "url": "https://www.perplexity.ai"
+        "url": "https://www.perplexity.ai",
+        "accessed": "8 November 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Perplexity AI",
         "year": "(2024)",
         "aiName": "Perplexity",
         "type": "[AI search engine].",
-        "url": "https://www.perplexity.ai"
+        "url": "Available at: https://www.perplexity.ai",
+        "accessed": "(Accessed: 8 November 2024)."
       }
     },
     {
@@ -5187,15 +5203,17 @@
         "year": "2024",
         "aiName": "Jasper",
         "type": "AI writing assistant",
-        "url": "https://www.jasper.ai"
+        "url": "https://www.jasper.ai",
+        "accessed": "22 November 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "Jasper AI",
         "year": "(2024)",
         "aiName": "Jasper",
         "type": "[AI writing assistant].",
-        "url": "https://www.jasper.ai"
+        "url": "Available at: https://www.jasper.ai",
+        "accessed": "(Accessed: 22 November 2024)."
       }
     },
     {
@@ -5206,15 +5224,17 @@
         "year": "2024",
         "aiName": "GitHub Copilot",
         "type": "AI code assistant",
-        "url": "https://github.com/features/copilot"
+        "url": "https://github.com/features/copilot",
+        "accessed": "5 December 2024"
       },
-      "fields": ["company", "year", "aiName", "type", "url"],
+      "fields": ["company", "year", "aiName", "type", "url", "accessed"],
       "correctAnswers": {
         "company": "GitHub",
         "year": "(2024)",
         "aiName": "GitHub Copilot",
         "type": "[AI code assistant].",
-        "url": "https://github.com/features/copilot"
+        "url": "Available at: https://github.com/features/copilot",
+        "accessed": "(Accessed: 5 December 2024)."
       }
     }
   ],

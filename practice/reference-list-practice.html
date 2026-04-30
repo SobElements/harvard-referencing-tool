@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reference List Practice</title>
+    <title>Reference List Practice - Harvard Referencing</title>
     <link rel="stylesheet" href="../src/styles/styles.css">
     <script src="../src/scripts/style-loader.js"></script>
 </head>
@@ -20,14 +20,39 @@
         </header>
 
         <main>
-            <div id="progress-bar" style="background-color: #e0e0e0; height: 8px; border-radius: 4px; margin-bottom: 30px;">
+
+            <!-- MODE SELECTOR - shown first, hidden once a mode is chosen -->
+            <div id="mode-selector" style="text-align: center; padding: 40px 20px;">
+                <h2 style="color: #2c3e50; margin-bottom: 10px;">Choose your practice mode</h2>
+                <p style="color: #7f8c8d; margin-bottom: 40px;">Select the level that suits you</p>
+
+                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
+
+                    <button class="section-button" onclick="startPractice('beginner')" style="max-width: 280px; padding: 30px 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🟢</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;">Beginner</div>
+                        <div style="font-size: 0.95rem; font-weight: normal;">Fill in the labelled fields — the structure is provided for you</div>
+                    </button>
+
+                    <button class="section-button" onclick="startPractice('intermediate')" style="max-width: 280px; padding: 30px 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🟡</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;">Intermediate</div>
+                        <div style="font-size: 0.95rem; font-weight: normal;">Type the full reference yourself — including correct punctuation and italics</div>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR - hidden until practice starts -->
+            <div id="progress-bar" style="display: none; background-color: #e0e0e0; height: 8px; border-radius: 4px; margin-bottom: 30px;">
                 <div id="progress-fill" style="background-color: #667eea; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 4px;"></div>
             </div>
 
-            <div id="questions-container">
-                <!-- Questions will be loaded here by JavaScript -->
+            <!-- QUESTIONS - hidden until practice starts -->
+            <div id="questions-container" style="display: none;">
             </div>
 
+            <!-- RESULTS - hidden until all questions answered -->
             <div id="results-container" class="hidden">
                 <div style="text-align: center; padding: 40px;">
                     <h2 style="color: #2c3e50; margin-bottom: 20px;">Practice Complete!</h2>
@@ -45,29 +70,25 @@
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 
-    <!-- Load the practice script -->
     <script src="../src/scripts/navbar.js"></script>
     <script src="../src/scripts/practice-handler.js"></script>
     <script>
-        console.log('=== DEBUGGING ===');
-        console.log('Script loaded');
-        console.log('initializePractice function exists?', typeof initializePractice);
-        
-        // Initialize the practice session for referenceList
-        // 2 direct quotes, 2 paraphrasing, 1 reference list = 5 questions total
-        initializePractice('referenceList', {
-            alphabeticalOrdering: 5,
-            formattingMultipleAuthors: 5,
-            capitalisationFixing: 5,
-            mixedSourceTypes: 5
-        }).then(() => {
-            console.log('Practice initialized successfully');
-        }).catch((error) => {
-            console.error('Error during initialization:', error);
-        });
+        function startPractice(mode) {
+            document.getElementById('mode-selector').style.display = 'none';
+            document.getElementById('progress-bar').style.display = 'block';
+            document.getElementById('questions-container').style.display = 'block';
+
+            initializePractice('referenceList', {
+                alphabeticalOrdering: 5,
+                formattingMultipleAuthors: 5,
+                capitalisationFixing: 5,
+                mixedSourceTypes: 5
+            }, mode);
+        }
     </script>
 </body>
 </html>
