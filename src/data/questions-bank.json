@@ -111,6 +111,7 @@
       {
         "id": "book_para_1",
         "scenario": "You want to paraphrase ideas about digital innovation from this book:",
+        "paraphrase": "The rise of digital platforms has significantly altered how individuals exchange information and maintain social connections.",
         "source": {
           "author": "Thomas Blackwell",
           "title": "Digital Communication in the Modern Era",
@@ -128,6 +129,7 @@
       {
         "id": "book_para_2",
         "scenario": "You want to paraphrase ideas about global economics from this book:",
+        "paraphrase": "Economic activity across national borders has become increasingly interdependent, making it difficult for any single country to insulate itself from global market shifts.",
         "source": {
           "author": "Margaret Thornton",
           "title": "Global Economics and Interconnected Markets",
@@ -145,6 +147,7 @@
       {
         "id": "book_para_3",
         "scenario": "You want to paraphrase ideas about environmental protection from this book:",
+        "paraphrase": "Protecting natural ecosystems requires both individual responsibility and coordinated action at the community level.",
         "source": {
           "author": "Luis Ramirez",
           "title": "Environmental Stewardship and Community Action",
@@ -162,6 +165,7 @@
       {
         "id": "book_para_4",
         "scenario": "You want to paraphrase ideas about political participation from this book:",
+        "paraphrase": "A healthy democracy depends on citizens actively engaging in political processes rather than remaining passive.",
         "source": {
           "author": "James Montgomery",
           "title": "Democracy and Civic Engagement",
@@ -179,6 +183,7 @@
       {
         "id": "book_para_5",
         "scenario": "You want to paraphrase ideas about machine learning from this book:",
+        "paraphrase": "Advances in machine learning are set to transform operations across a wide range of industries, from healthcare to manufacturing.",
         "source": {
           "author": "Wei Chen",
           "title": "Artificial Intelligence in Modern Industry",
@@ -817,7 +822,7 @@
     "directQuotes": [
       {
         "id": "journal_dq_1",
-        "scenario": "Include this direct quote in your essay: \"Remote working arrangements have permanently altered organisational structures.\"",
+        "scenario": "Include this direct quote in your essay: \"Remote working has permanently altered organisational structures.\"",
         "source": {
           "author": "Rachel Davidson",
           "title": "Organisational Transformation in the Remote Work Era",
@@ -825,15 +830,15 @@
           "year": 2021,
           "page": 56
         },
-        "quote": "Remote working arrangements have permanently altered organisational structures.",
+        "quote": "Remote working has permanently altered organisational structures.",
         "fields": ["quote", "author", "year", "page"],
         "correctAnswers": {
-          "quote": "\"Remote working arrangements have permanently altered organisational structures.\"",
+          "quote": "\"Remote working has permanently altered organisational structures.\"",
           "author": "Davidson",
           "year": "2021",
           "page": "56"
         },
-        "correctAnswerFull": "\"Remote working arrangements have permanently altered organisational structures.\" (Davidson, 2021, p. 56).",
+        "correctAnswerFull": "\"Remote working has permanently altered organisational structures.\" (Davidson, 2021, p. 56).",
         "italicFields": []
       },
       {
@@ -925,6 +930,7 @@
       {
         "id": "journal_para_1",
         "scenario": "Paraphrase research findings about remote work:",
+        "paraphrase": "Employees working remotely often report comparable or higher levels of productivity than those based in traditional office environments.",
         "source": {
           "author": "Rachel Davidson",
           "journal": "Business Management Quarterly",
@@ -941,6 +947,7 @@
       {
         "id": "journal_para_2",
         "scenario": "Paraphrase research findings about brain adaptation:",
+        "paraphrase": "The brain retains the ability to form new neural connections throughout adulthood, challenging earlier assumptions about cognitive decline.",
         "source": {
           "author": "Dr. Helen Fletcher",
           "journal": "Journal of Neuroscience Research",
@@ -957,6 +964,7 @@
       {
         "id": "journal_para_3",
         "scenario": "Paraphrase research findings about renewable energy:",
+        "paraphrase": "The transition to renewable energy sources offers both environmental benefits and long-term economic advantages for governments and businesses alike.",
         "source": {
           "author": "Dr. Peter Kowalski",
           "journal": "Sustainable Development Review",
@@ -973,6 +981,7 @@
       {
         "id": "journal_para_4",
         "scenario": "Paraphrase research findings about social inequality:",
+        "paraphrase": "Structural inequalities embedded in social institutions continue to limit opportunities for marginalised groups, perpetuating cycles of disadvantage.",
         "source": {
           "author": "Dr. Chioma Okafor",
           "journal": "Sociology Today",
@@ -989,6 +998,7 @@
       {
         "id": "journal_para_5",
         "scenario": "Paraphrase research findings about quantum computing:",
+        "paraphrase": "Quantum computing represents a fundamental shift in processing capability that could render many current encryption methods obsolete.",
         "source": {
           "author": "Dr. Yuki Tanaka",
           "journal": "Computer Science Advances",
@@ -1597,6 +1607,8 @@
       "scenario": "Cite this website article with an organisation as author:",
       "source": {
         "organisation": "Digital Rights Foundation",
+        "title": "Online privacy in the digital age",
+        "website": "Digital Rights Hub",
         "year": "2021"
       },
       "fields": ["organisation", "year"],
@@ -1612,6 +1624,8 @@
       "scenario": "Cite this website article with an organisation as author:",
       "source": {
         "organisation": "Wellness Alliance",
+        "title": "Managing stress in modern workplaces",
+        "website": "Wellness Network",
         "year": "2020"
       },
       "fields": ["organisation", "year"],
@@ -1627,6 +1641,8 @@
       "scenario": "Cite this website article with an organisation as author:",
       "source": {
         "organisation": "Environmental Research Institute",
+        "title": "Carbon emissions and climate impact",
+        "website": "Climate Research Portal",
         "year": "2021"
       },
       "fields": ["organisation", "year"],
@@ -1642,6 +1658,8 @@
       "scenario": "Cite this website article with an organisation as author:",
       "source": {
         "organisation": "Commerce Development Council",
+        "title": "Small business growth strategies",
+        "website": "Business Development Hub",
         "year": "2020"
       },
       "fields": ["organisation", "year"],
@@ -1657,6 +1675,8 @@
       "scenario": "Cite this website article with an organisation as author:",
       "source": {
         "organisation": "Learning Innovation Network",
+        "title": "Digital tools in modern education",
+        "website": "EdTech Resources Online",
         "year": "2021"
       },
       "fields": ["organisation", "year"],
@@ -2205,17 +2225,17 @@
         "id": "reflist_order_1",
         "scenario": "Put these sources in correct alphabetical order for a reference list:",
         "sources": [
-          "Wilson, K. (2020). Digital learning. Education Press.",
-          "Brown, A. (2019). Teaching methods. Academic Books.",
-          "Anderson, M. (2021). Online education. Learning Today, 15(3), 45-67.",
-          "Thompson, J. (2020, May 15). Future of schools. Education News. https://ednews.com/future"
+          "Wilson, K. (2020). <em>Digital learning.</em> Education Press.",
+          "Brown, A. (2019). <em>Teaching methods.</em> Academic Books.",
+          "Anderson, M. (2021). 'Online education', <em>Learning Today</em>, 15(3), 45-67.",
+          "Thompson, J. (2020, May 15). 'Future of schools'. <em>Education News</em>. https://ednews.com/future"
         ],
         "fields": ["position1", "position2", "position3", "position4"],
         "correctAnswers": {
-          "position1": "Anderson, M. (2021). Online education. Learning Today, 15(3), 45-67.",
-          "position2": "Brown, A. (2019). Teaching methods. Academic Books.",
-          "position3": "Thompson, J. (2020, May 15). Future of schools. Education News. https://ednews.com/future",
-          "position4": "Wilson, K. (2020). Digital learning. Education Press."
+          "position1": "Anderson, M. (2021). 'Online education', <em>Learning Today</em>, 15(3), 45-67.",
+          "position2": "Brown, A. (2019). <em>Teaching methods.</em> Academic Books.",
+          "position3": "Thompson, J. (2020, May 15). 'Future of schools'. <em>Education News</em>. https://ednews.com/future",
+          "position4": "Wilson, K. (2020). <em>Digital learning.</em> Education Press."
         },
         "note": "Remember: Alphabetical order is by author surname, then initial if surnames match"
       },
@@ -2223,17 +2243,17 @@
         "id": "reflist_order_2",
         "scenario": "Put these sources in correct alphabetical order for a reference list:",
         "sources": [
-          "Ramirez, L. (2020). Environmental science. Greenfield Books.",
-          "Chen, W. (2021). Artificial intelligence. TechVision Press.",
-          "Montgomery, J. (2017). Political engagement. Capitol Publishers.",
-          "Blackwell, T. (2019). Digital communication. Horizon Press."
+          "Ramirez, L. (2020). <em>Environmental science.</em> Greenfield Books.",
+          "Chen, W. (2021). <em>Artificial intelligence.</em> TechVision Press.",
+          "Montgomery, J. (2017). <em>Political engagement.</em> Capitol Publishers.",
+          "Blackwell, T. (2019). <em>Digital communication.</em> Horizon Press."
         ],
         "fields": ["position1", "position2", "position3", "position4"],
         "correctAnswers": {
-          "position1": "Blackwell, T. (2019). Digital communication. Horizon Press.",
-          "position2": "Chen, W. (2021). Artificial intelligence. TechVision Press.",
-          "position3": "Montgomery, J. (2017). Political engagement. Capitol Publishers.",
-          "position4": "Ramirez, L. (2020). Environmental science. Greenfield Books."
+          "position1": "Blackwell, T. (2019). <em>Digital communication.</em> Horizon Press.",
+          "position2": "Chen, W. (2021). <em>Artificial intelligence.</em> TechVision Press.",
+          "position3": "Montgomery, J. (2017). <em>Political engagement.</em> Capitol Publishers.",
+          "position4": "Ramirez, L. (2020). <em>Environmental science.</em> Greenfield Books."
         },
         "note": "Remember: Alphabetical order is by author surname, then initial if surnames match"
       },
@@ -2241,17 +2261,17 @@
         "id": "reflist_order_3",
         "scenario": "Put these sources in correct alphabetical order for a reference list:",
         "sources": [
-          "Fletcher, H. (2020). Brain development. Neuroscience Journal, 28(4), 123-145.",
-          "Davidson, R. (2021). Remote work strategies. Business Quarterly, 34(2), 45-67.",
-          "Okafor, C. (2021). Social inequality. Sociology Today, 42(1), 234-256.",
-          "Tanaka, Y. (2020). Quantum computing. Computer Science, 19(2), 78-102."
+          "Fletcher, H. (2020). 'Brain development', <em>Neuroscience Journal</em>, 28(4), 123-145.",
+          "Davidson, R. (2021). 'Remote work strategies', <em>Business Quarterly</em>, 34(2), 45-67.",
+          "Okafor, C. (2021). 'Social inequality', <em>Sociology Today</em>, 42(1), 234-256.",
+          "Tanaka, Y. (2020). 'Quantum computing', <em>Computer Science</em>, 19(2), 78-102."
         ],
         "fields": ["position1", "position2", "position3", "position4"],
         "correctAnswers": {
-          "position1": "Davidson, R. (2021). Remote work strategies. Business Quarterly, 34(2), 45-67.",
-          "position2": "Fletcher, H. (2020). Brain development. Neuroscience Journal, 28(4), 123-145.",
-          "position3": "Okafor, C. (2021). Social inequality. Sociology Today, 42(1), 234-256.",
-          "position4": "Tanaka, Y. (2020). Quantum computing. Computer Science, 19(2), 78-102."
+          "position1": "Davidson, R. (2021). 'Remote work strategies', <em>Business Quarterly</em>, 34(2), 45-67.",
+          "position2": "Fletcher, H. (2020). 'Brain development', <em>Neuroscience Journal</em>, 28(4), 123-145.",
+          "position3": "Okafor, C. (2021). 'Social inequality', <em>Sociology Today</em>, 42(1), 234-256.",
+          "position4": "Tanaka, Y. (2020). 'Quantum computing', <em>Computer Science</em>, 19(2), 78-102."
         },
         "note": "Remember: Alphabetical order is by author surname, then initial if surnames match"
       },
@@ -2259,17 +2279,17 @@
         "id": "reflist_order_4",
         "scenario": "Put these sources in correct alphabetical order for a reference list:",
         "sources": [
-          "Wellness Alliance. (2020, September 8). Mental health resources. Wellness Network. https://wellnessnetwork.org",
-          "Henderson, K. (2021, March 15). Online learning evolution. EdTech Hub. https://edtechhub.com",
-          "Digital Rights Foundation. (2021, April 12). Privacy concerns. Digital Rights Hub. https://digitalrightshub.org",
-          "Morales, A. (2021, June 10). Sustainable transport. City Network. https://citynetwork.com"
+          "Wellness Alliance. (2020, September 8). 'Mental health resources'. <em>Wellness Network</em>. https://wellnessnetwork.org",
+          "Henderson, K. (2021, March 15). 'Online learning evolution'. <em>EdTech Hub</em>. https://edtechhub.com",
+          "Digital Rights Foundation. (2021, April 12). 'Privacy concerns'. <em>Digital Rights Hub</em>. https://digitalrightshub.org",
+          "Morales, A. (2021, June 10). 'Sustainable transport'. <em>City Network</em>. https://citynetwork.com"
         ],
         "fields": ["position1", "position2", "position3", "position4"],
         "correctAnswers": {
-          "position1": "Digital Rights Foundation. (2021, April 12). Privacy concerns. Digital Rights Hub. https://digitalrightshub.org",
-          "position2": "Henderson, K. (2021, March 15). Online learning evolution. EdTech Hub. https://edtechhub.com",
-          "position3": "Morales, A. (2021, June 10). Sustainable transport. City Network. https://citynetwork.com",
-          "position4": "Wellness Alliance. (2020, September 8). Mental health resources. Wellness Network. https://wellnessnetwork.org"
+          "position1": "Digital Rights Foundation. (2021, April 12). 'Privacy concerns'. <em>Digital Rights Hub</em>. https://digitalrightshub.org",
+          "position2": "Henderson, K. (2021, March 15). 'Online learning evolution'. <em>EdTech Hub</em>. https://edtechhub.com",
+          "position3": "Morales, A. (2021, June 10). 'Sustainable transport'. <em>City Network</em>. https://citynetwork.com",
+          "position4": "Wellness Alliance. (2020, September 8). 'Mental health resources'. <em>Wellness Network</em>. https://wellnessnetwork.org"
         },
         "note": "Remember: Alphabetical order is by author surname (organisations count as authors)"
       },
@@ -2277,17 +2297,17 @@
         "id": "reflist_order_5",
         "scenario": "Put these sources in correct alphabetical order for a reference list:",
         "sources": [
-          "Zhang, Y. (2021). Neural networks. In T. Anderson (Ed.), Computer science innovations (pp. 156-189). TechVision Press.",
-          "Campbell, L. (2018). Voter behaviour. In P. Sullivan (Ed.), Political theory (pp. 78-95). Capitol Publishers.",
-          "Martinez, S. (2019). Climate policy. In A. Foster (Ed.), Environmental perspectives (pp. 112-134). Greenfield Books.",
-          "O'Brien, M. (2019). Market regulation. In D. Walsh (Ed.), Economic challenges (pp. 203-225). Sterling House."
+          "Zhang, Y. (2021). 'Neural networks'. In T. Anderson (Ed.), <em>Computer science innovations</em> (pp. 156-189). TechVision Press.",
+          "Campbell, L. (2018). 'Voter behaviour'. In P. Sullivan (Ed.), <em>Political theory</em> (pp. 78-95). Capitol Publishers.",
+          "Martinez, S. (2019). 'Climate policy'. In A. Foster (Ed.), <em>Environmental perspectives</em> (pp. 112-134). Greenfield Books.",
+          "O'Brien, M. (2019). 'Market regulation'. In D. Walsh (Ed.), <em>Economic challenges</em> (pp. 203-225). Sterling House."
         ],
         "fields": ["position1", "position2", "position3", "position4"],
         "correctAnswers": {
-          "position1": "Campbell, L. (2018). Voter behaviour. In P. Sullivan (Ed.), Political theory (pp. 78-95). Capitol Publishers.",
-          "position2": "Martinez, S. (2019). Climate policy. In A. Foster (Ed.), Environmental perspectives (pp. 112-134). Greenfield Books.",
-          "position3": "O'Brien, M. (2019). Market regulation. In D. Walsh (Ed.), Economic challenges (pp. 203-225). Sterling House.",
-          "position4": "Zhang, Y. (2021). Neural networks. In T. Anderson (Ed.), Computer science innovations (pp. 156-189). TechVision Press."
+          "position1": "Campbell, L. (2018). 'Voter behaviour'. In P. Sullivan (Ed.), <em>Political theory</em> (pp. 78-95). Capitol Publishers.",
+          "position2": "Martinez, S. (2019). 'Climate policy'. In A. Foster (Ed.), <em>Environmental perspectives</em> (pp. 112-134). Greenfield Books.",
+          "position3": "O'Brien, M. (2019). 'Market regulation'. In D. Walsh (Ed.), <em>Economic challenges</em> (pp. 203-225). Sterling House.",
+          "position4": "Zhang, Y. (2021). 'Neural networks'. In T. Anderson (Ed.), <em>Computer science innovations</em> (pp. 156-189). TechVision Press."
         },
         "note": "Remember: For chapters, alphabetise by chapter author, not the editor"
       }
@@ -2299,7 +2319,7 @@
         "incorrectReference": "Anderson, M. and Thompson, K. and Williams, R. (2021) 'Digital transformation', Journal of Educational Technology, 28(4), pp. 156–189.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Anderson, M., Thompson, K. and Williams, R. (2021) 'Digital transformation', Journal of Educational Technology, 28(4), pp. 156–189."
+          "correctedReference": "Anderson, M., Thompson, K. and Williams, R. (2021) 'Digital transformation', <em>Journal of Educational Technology</em>, 28(4), pp. 156–189."
         },
         "note": "Remember: Use commas between all authors except between the penultimate and final author, where 'and' is used"
       },
@@ -2309,7 +2329,7 @@
         "incorrectReference": "Brown, A. S. & Davis, K. (2020) Teaching methods. Academic Books.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Brown, A. S. and Davis, K. (2020) Teaching methods. Academic Books."
+          "correctedReference": "Brown, A. S. and Davis, K. (2020) <em>Teaching methods.</em> Academic Books."
         },
         "note": "Remember: In Harvard referencing, use 'and' (not '&') between authors"
       },
@@ -2319,7 +2339,7 @@
         "incorrectReference": "Chen, W., Martinez, S., O'Brien, M., and Foster, A. (2021) 'Climate policy research', Environmental Studies, 45(2), pp. 78–95.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Chen, W., Martinez, S., O'Brien, M. and Foster, A. (2021) 'Climate policy research', Environmental Studies, 45(2), pp. 78–95."
+          "correctedReference": "Chen, W., Martinez, S., O'Brien, M. and Foster, A. (2021) 'Climate policy research', <em>Environmental Studies</em>, 45(2), pp. 78–95."
         },
         "note": "Remember: In Harvard, do not use a comma before 'and' when listing the final author"
       },
@@ -2329,7 +2349,7 @@
         "incorrectReference": "Ramirez, L. & Foster, A. (2020) Sustainability practices. Greenfield Books.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Ramirez, L. and Foster, A. (2020) Sustainability practices. Greenfield Books."
+          "correctedReference": "Ramirez, L. and Foster, A. (2020) <em>Sustainability practices.</em> Greenfield Books."
         },
         "note": "Remember: In Harvard referencing, use 'and' (not '&') between authors"
       },
@@ -2339,7 +2359,7 @@
         "incorrectReference": "Zhang, Y., Campbell, L. & Martinez, S. (2019) Political theory perspectives. Capitol Publishers.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Zhang, Y., Campbell, L. and Martinez, S. (2019) Political theory perspectives. Capitol Publishers."
+          "correctedReference": "Zhang, Y., Campbell, L. and Martinez, S. (2019) <em>Political theory perspectives.</em> Capitol Publishers."
         },
         "note": "Remember: In Harvard referencing, use 'and' (not '&') before the final author"
       }
@@ -2351,7 +2371,7 @@
         "incorrectReference": "Smith, J. (2021). The Impact Of Social Media On Modern Communication Patterns. Digital Studies Press.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Smith, J. (2021). The impact of social media on modern communication patterns. Digital Studies Press."
+          "correctedReference": "Smith, J. (2021). <em>The impact of social media on modern communication patterns.</em> Digital Studies Press."
         },
         "note": "Remember: Only the first word of the title and subtitle (after colon) should be capitalised, plus proper nouns"
       },
@@ -2361,7 +2381,7 @@
         "incorrectReference": "Brown, A. (2020). Understanding Climate Change: A Comprehensive Guide For Policy Makers. Environmental Press.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Brown, A. (2020). Understanding climate change: A comprehensive guide for policy makers. Environmental Press."
+          "correctedReference": "Brown, A. (2020). <em>Understanding climate change: A comprehensive guide for policy makers.</em> Environmental Press."
         },
         "note": "Remember: Only the first word of the title and subtitle (after colon) should be capitalised, plus proper nouns"
       },
@@ -2371,7 +2391,7 @@
         "incorrectReference": "Chen, W. (2021). Artificial Intelligence In Healthcare: Transforming Medical Practice Through Technology. TechVision Press.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Chen, W. (2021). Artificial intelligence in healthcare: Transforming medical practice through technology. TechVision Press."
+          "correctedReference": "Chen, W. (2021). <em>Artificial intelligence in healthcare: Transforming medical practice through technology.</em> TechVision Press."
         },
         "note": "Remember: Only the first word of the title and subtitle (after colon) should be capitalised, plus proper nouns"
       },
@@ -2381,7 +2401,7 @@
         "incorrectReference": "Montgomery, J. (2017). Democratic Participation And Civic Engagement In The Twenty-First Century. Capitol Publishers.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Montgomery, J. (2017). Democratic participation and civic engagement in the twenty-first century. Capitol Publishers."
+          "correctedReference": "Montgomery, J. (2017). <em>Democratic participation and civic engagement in the twenty-first century.</em> Capitol Publishers."
         },
         "note": "Remember: Only the first word of the title and subtitle (after colon) should be capitalised, plus proper nouns"
       },
@@ -2391,7 +2411,7 @@
         "incorrectReference": "Ramirez, L. (2020). Sustainable Development Goals: Implementing Environmental Protection At The Community Level. Greenfield Books.",
         "fields": ["correctedReference"],
         "correctAnswers": {
-          "correctedReference": "Ramirez, L. (2020). Sustainable development goals: Implementing environmental protection at the community level. Greenfield Books."
+          "correctedReference": "Ramirez, L. (2020). <em>Sustainable development goals: Implementing environmental protection at the community level.</em> Greenfield Books."
         },
         "note": "Remember: Only the first word of the title and subtitle (after colon) should be capitalised, plus proper nouns"
       }
@@ -4717,7 +4737,7 @@
       "fields": ["answer"],
       "options": "A) Yes, always cite any AI use B) No, minor grammar checking does not require citation C) Only if you made major changes D) Only if your institution requires it",
       "correctAnswers": {
-        "answer": "B"
+        "answer": "D"
       }
     },
     {
@@ -4771,7 +4791,8 @@
         "quote": "\"Machine learning algorithms improve through iterative training on large datasets.\"",
         "ai": "ChatGPT",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "\"Machine learning algorithms improve through iterative training on large datasets.\" (ChatGPT, 2024)."
     },
     {
       "id": "ai_quote_2",
@@ -4786,7 +4807,8 @@
         "quote": "\"Climate change requires immediate global action and policy reform.\"",
         "ai": "Claude",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "\"Climate change requires immediate global action and policy reform.\" (Claude, 2024)."
     },
     {
       "id": "ai_quote_3",
@@ -4801,7 +4823,8 @@
         "quote": "\"Economic theory suggests market equilibrium through supply and demand forces.\"",
         "ai": "Google Gemini",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "\"Economic theory suggests market equilibrium through supply and demand forces.\" (Google Gemini, 2024)."
     },
     {
       "id": "ai_quote_4",
@@ -4816,7 +4839,8 @@
         "quote": "\"Sustainable development balances economic growth with environmental protection.\"",
         "ai": "Microsoft Copilot",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "\"Sustainable development balances economic growth with environmental protection.\" (Microsoft Copilot, 2024)."
     },
     {
       "id": "ai_quote_5",
@@ -4831,13 +4855,15 @@
         "quote": "\"Historical analysis reveals patterns in societal development over time.\"",
         "ai": "Perplexity AI",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "\"Historical analysis reveals patterns in societal development over time.\" (Perplexity AI, 2024)."
     }
   ],
   "paraphrasing": [
     {
       "id": "ai_para_1",
       "scenario": "You paraphrased ChatGPT's explanation of digital marketing strategies.",
+      "paraphrase": "Effective digital marketing typically combines content creation, audience targeting, and performance analysis across multiple platforms.",
       "source": {
         "ai": "ChatGPT (OpenAI)",
         "year": "2024"
@@ -4846,11 +4872,13 @@
       "correctAnswers": {
         "ai": "ChatGPT",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "(ChatGPT, 2024)."
     },
     {
       "id": "ai_para_2",
       "scenario": "You paraphrased Claude's explanation of neural networks.",
+      "paraphrase": "Neural networks are modelled on the way biological neurons process information, allowing computers to recognise patterns and make decisions with increasing accuracy.",
       "source": {
         "ai": "Claude (Anthropic)",
         "year": "2024"
@@ -4859,11 +4887,13 @@
       "correctAnswers": {
         "ai": "Claude",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "(Claude, 2024)."
     },
     {
       "id": "ai_para_3",
       "scenario": "You used Google Gemini's analysis of social media trends in your own words.",
+      "paraphrase": "Social media platforms increasingly shape public opinion, with algorithmic curation playing a central role in determining what content users see and engage with.",
       "source": {
         "ai": "Google Gemini",
         "year": "2024"
@@ -4872,11 +4902,13 @@
       "correctAnswers": {
         "ai": "Google Gemini",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "(Google Gemini, 2024)."
     },
     {
       "id": "ai_para_4",
       "scenario": "You paraphrased Microsoft Copilot's explanation of quantum computing.",
+      "paraphrase": "Quantum computers use phenomena such as superposition and entanglement to process information in ways that traditional computers cannot replicate.",
       "source": {
         "ai": "Microsoft Copilot",
         "year": "2024"
@@ -4885,11 +4917,13 @@
       "correctAnswers": {
         "ai": "Microsoft Copilot",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "(Microsoft Copilot, 2024)."
     },
     {
       "id": "ai_para_5",
       "scenario": "You used Perplexity AI's research findings in your own words.",
+      "paraphrase": "AI-assisted research tools have the potential to accelerate academic discovery by efficiently processing large volumes of literature.",
       "source": {
         "ai": "Perplexity AI",
         "year": "2024"
@@ -4898,7 +4932,8 @@
       "correctAnswers": {
         "ai": "Perplexity AI",
         "year": "2024"
-      }
+      },
+      "correctAnswerFull": "(Perplexity AI, 2024)."
     }
   ],
   "chatgptReferences": [

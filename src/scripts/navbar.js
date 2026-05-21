@@ -23,9 +23,8 @@ function createNavbar() {
 
     // Quick links
     const quickLinks = [
-        { label: 'Home', href: '../index.html' },
-        { label: 'Learn', href: '../pages/book.html' },
-    ];
+    
+    ]; 
 
     quickLinks.forEach(link => {
         const a = document.createElement('a');

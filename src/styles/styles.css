@@ -208,8 +208,13 @@ h1 {
     transition: transform 0.3s ease;
 }
 
-.section-button:hover {
+.section-button:hover:not(:disabled) {
     transform: scale(1.05);
+}
+
+.section-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Accordion Styles */

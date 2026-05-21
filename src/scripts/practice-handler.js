@@ -198,7 +198,11 @@ function displayQuestion(question) {
                     <span style="color: #7f8c8d; font-size: 0.9rem;">${getCategoryLabel(question.id)}</span>
                 </div>
 
-                <p style="margin-bottom: 20px; font-size: 1.1rem;"><strong>Scenario:</strong> ${question.scenario}</p>
+                ${question.paraphrase
+                    ? `<p style="margin-bottom: 10px; font-size: 1.1rem;"><strong>Write the in-text citation for this paraphrase:</strong></p>
+                       <blockquote style="margin: 0 0 20px 0; padding: 12px 16px; background: #f8f9fa; border-left: 4px solid #667eea; border-radius: 0 6px 6px 0; font-size: 1.05rem;">${question.paraphrase} <strong>[citation]</strong></blockquote>`
+                    : `<p style="margin-bottom: 20px; font-size: 1.1rem;"><strong>Scenario:</strong> ${question.scenario}</p>`
+                }
         `;
 
         if (question.source) {
@@ -207,7 +211,7 @@ function displayQuestion(question) {
 
         questionHTML += `
             <div style="margin-bottom: 25px;">
-                <p style="margin-bottom: 15px;"><strong>Type the full reference below. Select any text and click <em>I</em> to make it italic.</strong></p>
+                <p style="margin-bottom: 15px;"><strong>Type the full citation below.</strong></p>
 
                 <!-- Italic toolbar -->
                 <div style="margin-bottom: 8px;">
@@ -251,11 +255,8 @@ function displayQuestion(question) {
             </div>
 
             <div style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="section-button" onclick="checkIntermediateAnswer()" style="flex: 1; min-width: 150px;">
+                <button class="section-button" id="submit-button" onclick="checkIntermediateAnswer()" style="flex: 1; min-width: 150px;">
                     ✓ Submit Answer
-                </button>
-                <button class="section-button" id="skip-button" onclick="skipQuestion()" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
-                    ⏭️ Skip Question
                 </button>
                 <button class="section-button" id="show-answer-button" onclick="showIntermediateAnswer()" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
                     💡 Show Answer
@@ -323,8 +324,16 @@ function displayQuestion(question) {
         `;
     } else if (question.fields.includes('position1')) {
 
+        // Build numbered sources list (rendered as HTML so italics display correctly)
+        let sourcesListHTML = '<p style="margin-bottom: 10px;"><strong>Sources:</strong></p><div style="padding: 15px; background-color: #f8f9fa; border-radius: 6px; margin-bottom: 20px;">';
+        question.sources.forEach((source, idx) => {
+            sourcesListHTML += `<p style="margin-bottom: ${idx < question.sources.length - 1 ? '10px' : '0'}"><strong>Source ${idx + 1}:</strong> ${source}</p>`;
+        });
+        sourcesListHTML += '</div>';
+
         questionHTML += `
             <div style="margin-bottom: 25px;">
+                ${sourcesListHTML}
                 <p style="margin-bottom: 15px;"><strong>Select the correct source for each position:</strong></p>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
         `;
@@ -339,7 +348,7 @@ function displayQuestion(question) {
             `;
 
             question.sources.forEach((source, sourceIndex) => {
-                questionHTML += `<option value="${source}">Source ${sourceIndex + 1}: ${source}</option>`;
+                questionHTML += `<option value="${source}">Source ${sourceIndex + 1}</option>`;
             });
 
             questionHTML += `
@@ -359,7 +368,20 @@ function displayQuestion(question) {
                 <p style="margin-bottom: 15px;"><strong>Current (incorrect):</strong></p>
                 <p style="padding: 15px; background-color: #fff3cd; border-radius: 6px; font-style: italic; margin-bottom: 20px;">${question.incorrectReference}</p>
                 <p style="margin-bottom: 15px;"><strong>Type the corrected reference:</strong></p>
-                <input type="text" id="field-correctedReference" placeholder="Corrected reference" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <div style="margin-bottom: 8px;">
+                    <button
+                        onclick="document.execCommand('italic', false, null); document.getElementById('rich-corrected').focus();"
+                        style="font-style: italic; font-weight: bold; font-size: 1rem; width: 36px; height: 36px; border: 2px solid #ccc; border-radius: 4px; background: white; cursor: pointer; font-family: Georgia, serif;"
+                        title="Italic (select text first, then click)"
+                    >I</button>
+                </div>
+                <div
+                    id="rich-corrected"
+                    contenteditable="true"
+                    style="width: 100%; min-height: 60px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-family: inherit; line-height: 1.6; box-sizing: border-box; outline: none;"
+                    placeholder="Type your corrected reference here..."
+                ></div>
+                <p style="margin-top: 8px; color: #7f8c8d; font-size: 0.85rem;">💡 Tip: Type your reference, then select any titles and click <em>I</em> to italicise them.</p>
                 ${question.note ? `<p style="margin-top: 15px; color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 6px; font-size: 0.9rem;"><strong>Note:</strong> ${question.note}</p>` : ''}
             </div>
         `;
@@ -520,13 +542,14 @@ function displayQuestion(question) {
                           question.fields.includes('organisation') ?
                             `<input type="text" id="field-organisation" placeholder="Organisation." style="width: 250px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
                             ''}
-                        ${question.fields.includes('title') ?
-                            `<input type="text" id="field-title" placeholder="Title of webpage." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
-                            ''}
+                        ${question.fields.includes('date') ?
+                            `<input type="text" id="field-date" placeholder="(no date)" style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">` :
+                            `<input type="text" id="field-year" placeholder="(Year)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">`}
                     </div>
+                    ${question.fields.includes('title') ? `
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="field-year" placeholder="(Year)." style="width: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
-                    </div>
+                        <input type="text" id="field-title" placeholder="Title of webpage." style="flex: 1; min-width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                    </div>` : ''}
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <input type="text" id="field-website" placeholder="Website Name." style="width: 300px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem; font-style: italic;">
                     </div>
@@ -829,7 +852,7 @@ function displayQuestion(question) {
     const isMultipleAuthors = question.id.includes('_multi_');
     const hasAuthor = question.fields.includes('author');
     const authorPlaceholder = isMultipleAuthors
-        ? "Authors (Surname, I. & Surname, I.)"
+        ? "Authors (Surname, I. and Surname, I.)"
         : "Author (Surname, I.)";
 
     questionHTML += `
@@ -936,11 +959,8 @@ function displayQuestion(question) {
 
    questionHTML += `
     <div style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
-        <button class="section-button" onclick="checkAnswer()" style="flex: 1; min-width: 150px;">
+        <button class="section-button" id="submit-button" onclick="checkAnswer()" style="flex: 1; min-width: 150px;">
             ✓ Submit Answer
-        </button>
-        <button class="section-button" id="skip-button" onclick="skipQuestion()" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
-            ⏭️ Skip Question
         </button>
         <button class="section-button" id="show-answer-button" onclick="showAnswer()" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
             💡 Show Answer
@@ -979,12 +999,21 @@ function getTipsForField(field, userAnswer, correctAnswer) {
     }
 
     if (field === 'author') {
-        if (isMultipleAuthors) {
-            if (!userAnswer.includes(',')) tips.push('Author format: Surname, I. & Surname, I.');
-            if (!userAnswer.includes('&')) tips.push('Use ampersand (&) to separate authors, not "and"');
-            if (userAnswer.includes('&') && userAnswer !== correctAnswer) tips.push('Ensure authors are listed in alphabetical order by surname');
-        } else {
+        const isMultiAuthorAnswer = correctAnswer && correctAnswer.includes(' and ');
+        if (isMultipleAuthors || isMultiAuthorAnswer) {
+            if (!userAnswer.includes(',')) tips.push('Author format: Surname, I. and Surname, I.');
+            if (userAnswer.includes('&')) tips.push('Use "and" not "&" to separate authors');
+            if (userAnswer.includes(' and ') && userAnswer.includes(',') && userAnswer !== correctAnswer) tips.push('Ensure authors are listed in alphabetical order by surname');
+        } else if (correctAnswer && correctAnswer.includes(',')) {
+            // Reference list context: needs Surname, I.
             if (!userAnswer.includes(',')) tips.push('Author format: Surname, I.');
+        } else {
+            // In-text citation context: surname only
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                tips.push('Check the capitalisation of the surname');
+            } else {
+                tips.push('Use the surname only — no initial needed for in-text citations (e.g., Davidson)');
+            }
         }
     }
 
@@ -999,6 +1028,8 @@ function getTipsForField(field, userAnswer, correctAnswer) {
             tips.push('Year needs brackets: (2024)');
         } else if (!correctAnswer.includes('(') && userAnswer.includes('(')) {
             tips.push('In-text citations use the year without brackets: 2024');
+        } else {
+            tips.push('Check the year — make sure you are using the publication year shown in the source');
         }
     }
 
@@ -1011,7 +1042,11 @@ function getTipsForField(field, userAnswer, correctAnswer) {
                 tips.push("Title should end with a comma after the closing quote: 'Article title',");
             }
         } else {
-            if (!userAnswer.includes('.')) tips.push('Add a full stop at the end of the title');
+            if (correctAnswer.endsWith(',')) {
+                if (!userAnswer.endsWith(',')) tips.push('Title should end with a comma in this context');
+            } else if (!userAnswer.includes('.')) {
+                tips.push('Add a full stop at the end of the title');
+            }
             if (userAnswer !== correctAnswer && userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 tips.push('Title should be in sentence case (only first word and proper nouns capitalised)');
                 tips.push(`Correct: "${correctAnswer}"`);
@@ -1057,7 +1092,9 @@ function getTipsForField(field, userAnswer, correctAnswer) {
     }
 
     if (field === 'date') {
-        if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
+        if (correctAnswer === '(no date)') {
+            tips.push('When there is no publication date, use: (no date)');
+        } else if (correctAnswer.endsWith(',') && !userAnswer.endsWith(',')) {
             tips.push('Date should end with a comma: 15 March,');
         } else if (correctAnswer.endsWith('.') && !userAnswer.endsWith('.')) {
             tips.push('Date should end with a full stop: 15 March.');
@@ -1065,10 +1102,11 @@ function getTipsForField(field, userAnswer, correctAnswer) {
     }
 
     if (field === 'page') {
-        if (!userAnswer.toLowerCase().includes('p.')) {
-            tips.push('Single page format: p. 4. (use "p." not "pp.")');
+        if (userAnswer.toLowerCase().includes('p.') || userAnswer.includes(')')) {
+            tips.push('Enter just the page number — "p." and the brackets are already shown for you (e.g., type 56, not p. 56)');
+        } else {
+            tips.push('Enter just the page number (e.g., 56)');
         }
-        if (!userAnswer.endsWith('.')) tips.push('Page number should end with a full stop: p. 4.');
     }
 
     if (field === 'pages') {
@@ -1079,13 +1117,13 @@ function getTipsForField(field, userAnswer, correctAnswer) {
     }
 
     if (field === 'doi') {
-        if (!userAnswer.startsWith('doi:')) tips.push('DOI format: doi:10.xxxx/xxxxx — must start with doi: (no https://)');
+        if (!userAnswer.startsWith('doi:')) tips.push('DOI format: doi:10.xxxx/xxxxx. Must start with doi: (no https://)');
     }
 
     if (field === 'volume') {
         if (question.fields.includes('doi') || question.fields.includes('journal')) {
             if (!userAnswer.includes('(') || !userAnswer.includes(')')) {
-                tips.push('Volume format: 34(2), — issue number in brackets, followed by a comma');
+                tips.push('Volume format: 34(2), issue number in brackets, followed by a comma');
             }
             if (userAnswer.includes('(') && !userAnswer.endsWith(',')) {
                 tips.push('Volume should end with a comma: 34(2),');
@@ -1101,7 +1139,7 @@ function getTipsForField(field, userAnswer, correctAnswer) {
 
     if (field === 'accessed') {
         if (!userAnswer.startsWith('(Accessed:')) {
-            tips.push('Format: (Accessed: Day Month Year). — begin with "(Accessed:"');
+            tips.push('Format: (Accessed: Day Month Year). Begin with "(Accessed:"');
         } else if (!userAnswer.endsWith(').')) {
             tips.push('End with closing bracket and full stop: (Accessed: 15 March 2024).');
         }
@@ -1123,7 +1161,7 @@ function getTipsForField(field, userAnswer, correctAnswer) {
 
     if (field === 'authors') {
         if (!userAnswer.includes('and')) tips.push('Format for two authors: Surname1 and Surname2,');
-        if (userAnswer.includes('&')) tips.push('Use "and" not "&" in citations (ampersand is only for reference lists)');
+        if (userAnswer.includes('&')) tips.push('Use "and" not "&"');
         if (!userAnswer.includes(',')) tips.push("Don't forget the comma after the authors");
     }
 
@@ -1155,7 +1193,7 @@ function getTipsForField(field, userAnswer, correctAnswer) {
 
     if (field === 'person') {
         if (!userAnswer.includes('.') && !userAnswer.includes(',')) {
-            tips.push('Name format: Initial. Surname, — e.g. S. Johnson,');
+            tips.push('Name format: Initial. Surname, e.g. S. Johnson,');
         } else if (!userAnswer.endsWith(',')) {
             tips.push('Person name should end with a comma: S. Johnson,');
         }
@@ -1172,7 +1210,7 @@ function getTipsForField(field, userAnswer, correctAnswer) {
 
     if (field === 'ai') {
         if (userAnswer.includes('(') || userAnswer.includes(')')) {
-            tips.push('Just the AI tool name here — no brackets: ChatGPT');
+            tips.push('Just the AI tool name here, no brackets: ChatGPT');
         }
         if (/openai|anthropic|google|microsoft/i.test(userAnswer)) {
             tips.push('Use the tool name (e.g. ChatGPT), not the company name (e.g. OpenAI)');
@@ -1194,10 +1232,18 @@ function getIntermediateHints(question) {
     const hints = [];
 
     if (fields.includes('author') || fields.includes('authors')) {
-        hints.push('Author: Surname, I. — check comma and initial placement');
+        const isInText = question.correctAnswerFull &&
+            (question.correctAnswerFull.startsWith('"') || question.correctAnswerFull.startsWith('('));
+        hints.push(isInText
+            ? 'Author: surname only, no initial — e.g. (Blackwell, ...'
+            : 'Author: Surname, I. — check comma and initial placement');
     }
     if (fields.includes('creator') || fields.includes('host') || fields.includes('director')) {
-        hints.push('Creator/Host/Director: Surname, I. — same format as author');
+        hints.push('Creator/Host/Director: Surname, I. Same format as author');
+    }
+     
+    if (fields.includes('editor')) {
+        hints.push('Write editor Surname and initial followed by (ed.). e.g., Smith, J. (ed.).');
     }
     if (fields.includes('year')) {
         const needsBrackets = question.correctAnswers && question.correctAnswers.year && question.correctAnswers.year.includes('(');
@@ -1209,7 +1255,12 @@ function getIntermediateHints(question) {
         hints.push("Article title in single quotes ending with full stop: 'Article title.'");
         hints.push('Journal name in italics, followed by a comma');
     } else if (fields.includes('title')) {
-        hints.push('Title: sentence case, full stop at end — italicise book/journal/newspaper/media titles');
+        const noAuthor = !fields.includes('author') && !fields.includes('authors');
+        if (noAuthor) {
+            hints.push('Title: sentence case, no full stop after the title — the year bracket follows directly. Italicise the title');
+        } else {
+            hints.push('Title: sentence case, full stop at end. Italicise book/journal/newspaper/media titles');
+        }
     }
     if (fields.includes('newspaper') && !fields.includes('title')) {
         hints.push('Newspaper name in italics, followed by a comma');
@@ -1219,22 +1270,26 @@ function getIntermediateHints(question) {
         hints.push(dateCorrAns.endsWith(',') ? 'Date ends with a comma: 15 March,' : 'Date ends with a full stop: 15 March.');
     }
     if (fields.includes('page')) {
-        hints.push('Single page: p. 4. — "p." prefix, full stop at end');
+        const isInText = question.correctAnswerFull &&
+            (question.correctAnswerFull.startsWith('"') || question.correctAnswerFull.startsWith('('));
+        hints.push(isInText
+            ? 'Page inside brackets: p. 67 — "p." prefix, no full stop after the number'
+            : 'Single page: p. 12. — "p." prefix, full stop at end');
     }
     if (fields.includes('pages')) {
-        hints.push('Page range: pp.45-68. — "pp." prefix, full stop at end');
+        hints.push('Page range: pp. 45–68. — "pp." prefix, full stop at end');
     }
     if (fields.includes('volume')) {
-        hints.push('Volume and issue: 34(2), — issue in brackets, comma after');
+        hints.push('Volume and issue: 34(2), issue in brackets, comma after');
     }
     if (fields.includes('doi')) {
-        hints.push('DOI: doi:10.xxxx/... — must start with doi: (no https://)');
+        hints.push('DOI: doi:10.xxxx/... must start with doi: (no https://)');
     }
     if (fields.includes('url')) {
-        hints.push('URL: Available at: https://... — include "Available at:" before the address');
+        hints.push('URL: Available at: https://... include "Available at:" before the address');
     }
     if (fields.includes('accessed')) {
-        hints.push('Accessed: (Accessed: Day Month Year). — full stop after the closing bracket');
+        hints.push('Accessed: (Accessed: Day Month Year). full stop after the closing bracket');
     }
     if (fields.includes('episode')) {
         hints.push("Episode title in single quotes ending with comma: 'Episode title',");
@@ -1266,12 +1321,8 @@ function checkIntermediateAnswer() {
     const richBox = document.getElementById('rich-answer');
     const feedbackDiv = document.getElementById('feedback');
 
-    const studentPlainText = normaliseQuotes(richBox.innerText).replace(/\.$/, '');
-const correctPlainText = normaliseQuotes(question.correctAnswerFull || '').replace(/\.$/, '');
-
-//debugging logs to check the values being compared
-console.log('Student:', JSON.stringify(studentPlainText));
-console.log('Correct:', JSON.stringify(correctPlainText));
+    const studentPlainText = normaliseQuotes(richBox.innerText).replace(/\s+/g, ' ').replace(/\.$/, '').trim();
+    const correctPlainText = normaliseQuotes(question.correctAnswerFull || '').replace(/\s+/g, ' ').replace(/\.$/, '').trim();
 
     if (!correctPlainText) {
         feedbackDiv.className = 'feedback show incorrect';
@@ -1293,7 +1344,7 @@ console.log('Correct:', JSON.stringify(correctPlainText));
         } else {
             hintHTML = `
             <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
-                💡 Every comma, full stop, and bracket matters — check spacing too.
+                💡 Every comma, full stop, and bracket matters. Check spacing too.
             </div>`;
         }
         feedbackDiv.className = 'feedback show incorrect';
@@ -1301,39 +1352,81 @@ console.log('Correct:', JSON.stringify(correctPlainText));
         return;
     }
 
-    // Text is correct — now check italics if any are required
+    // Text is correct - now check italics using computed styles on the live rendered element
     const requiredItalicFields = question.italicFields || [];
-
-    if (requiredItalicFields.length === 0) {
-        markIntermediateCorrect(richBox, feedbackDiv);
-        return;
-    }
-
-    // Check whether the correct words have been italicised
-    const studentHTML = richBox.innerHTML;
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = studentHTML;
-    const italicElements = tempDiv.querySelectorAll('em, i');
-    const studentItalicText = Array.from(italicElements).map(el => el.innerText).join(' ').trim();
 
     const expectedItalicParts = requiredItalicFields.map(field => {
         const val = question.correctAnswers[field] || '';
         return val.replace(/[.,]$/, '').trim();
     });
 
-    const allItalicsCorrect = expectedItalicParts.every(part =>
+    // Collect all italic text by walking the rendered richBox and checking computed font-style
+    const italicTextParts = [];
+    const walker = document.createTreeWalker(richBox, NodeFilter.SHOW_TEXT);
+    let textNode;
+    while ((textNode = walker.nextNode())) {
+        if (!textNode.parentElement) continue;
+        const computed = window.getComputedStyle(textNode.parentElement);
+        if (computed.fontStyle === 'italic') {
+            const text = textNode.textContent.trim();
+            if (text) italicTextParts.push(text);
+        }
+    }
+    const studentItalicText = italicTextParts.join(' ').trim();
+
+    // Check for unexpected italics: remove each expected italic part from the joined italic text;
+    // if meaningful non-punctuation text remains, extra things have been italicised
+    let remainingItalic = studentItalicText.toLowerCase();
+    for (const part of expectedItalicParts) {
+        remainingItalic = remainingItalic.replace(part.toLowerCase(), '');
+    }
+    const hasUnexpectedItalics = remainingItalic.replace(/[\s.,()[\]'"]/g, '').length > 0;
+
+    if (requiredItalicFields.length === 0) {
+        if (studentItalicText.length > 0) {
+            feedbackDiv.className = 'feedback show incorrect';
+            feedbackDiv.innerHTML = `
+                <strong>Almost there!</strong> Your text is correct but check your italics.
+                <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                    💡 Nothing should be in italics for this citation. Select any italicised text and click the <em>I</em> button to remove italics.
+                </div>
+            `;
+        } else {
+            markIntermediateCorrect(richBox, feedbackDiv);
+        }
+        return;
+    }
+
+    const allExpectedItalicised = expectedItalicParts.every(part =>
         studentItalicText.toLowerCase().includes(part.toLowerCase())
     );
 
-    if (allItalicsCorrect) {
-        markIntermediateCorrect(richBox, feedbackDiv);
-    } else {
+    if (hasUnexpectedItalics && !allExpectedItalicised) {
+        const missingParts = expectedItalicParts.filter(part =>
+            !studentItalicText.toLowerCase().includes(part.toLowerCase())
+        );
+        feedbackDiv.className = 'feedback show incorrect';
+        feedbackDiv.innerHTML = `
+            <strong>Almost there!</strong> Your text is correct but check your italics.
+            <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                💡 Only <em>${missingParts.join('</em> and <em>')}</em> should be in italics — and it must be italicised. Remove italics from anything else by selecting it and clicking the <em>I</em> button.
+            </div>
+        `;
+    } else if (hasUnexpectedItalics) {
+        feedbackDiv.className = 'feedback show incorrect';
+        feedbackDiv.innerHTML = `
+            <strong>Almost there!</strong> Your text is correct but check your italics.
+            <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                💡 Only <em>${expectedItalicParts.join('</em> and <em>')}</em> should be in italics. Remove italics from any other text by selecting it and clicking the <em>I</em> button.
+            </div>
+        `;
+    } else if (!allExpectedItalicised) {
         const missingParts = expectedItalicParts.filter(part =>
             !studentItalicText.toLowerCase().includes(part.toLowerCase())
         );
         const italicDetail = missingParts.length > 0
             ? `The following should be in italics: <em>${missingParts.join('</em>, <em>')}</em>. Select the text and click the <em>I</em> button.`
-            : 'Make sure the correct text is italicised — select it and click the <em>I</em> button.';
+            : 'Make sure the correct text is italicised. Select it and click the <em>I</em> button.';
         feedbackDiv.className = 'feedback show incorrect';
         feedbackDiv.innerHTML = `
             <strong>Almost there!</strong> Your text is correct but check your italics.
@@ -1341,7 +1434,21 @@ console.log('Correct:', JSON.stringify(correctPlainText));
                 💡 ${italicDetail}
             </div>
         `;
+    } else {
+        markIntermediateCorrect(richBox, feedbackDiv);
     }
+}
+
+function markCorrectedReferenceCorrect(richBox, feedbackDiv) {
+    feedbackDiv.className = 'feedback show correct';
+    feedbackDiv.innerHTML = '<strong>✓ Correct!</strong> Click "Next Question".';
+    richBox.contentEditable = false;
+    richBox.style.backgroundColor = '#d4edda';
+    richBox.style.borderColor = '#28a745';
+    document.getElementById('next-button').classList.remove('hidden');
+
+    document.getElementById('show-answer-button').classList.add('hidden');
+    event.target.disabled = true;
 }
 
 function markIntermediateCorrect(richBox, feedbackDiv) {
@@ -1351,7 +1458,7 @@ function markIntermediateCorrect(richBox, feedbackDiv) {
     richBox.style.backgroundColor = '#d4edda';
     richBox.style.borderColor = '#28a745';
     document.getElementById('next-button').classList.remove('hidden');
-    document.getElementById('skip-button').classList.add('hidden');
+
     document.getElementById('show-answer-button').classList.add('hidden');
 }
 
@@ -1384,8 +1491,8 @@ function showIntermediateAnswer() {
 
     document.getElementById('show-answer-button').disabled = true;
     document.getElementById('show-answer-button').style.opacity = '0.5';
+    document.getElementById('submit-button').disabled = true;
     document.getElementById('next-button').classList.remove('hidden');
-    document.getElementById('skip-button').classList.add('hidden');
 }
 
 // Check the user's answer in BEGINNER mode (individual fields)
@@ -1427,16 +1534,104 @@ function checkAnswer() {
             feedbackDiv.className = 'feedback show correct';
             feedbackDiv.innerHTML = '<strong>✓ Correct!</strong> Click "Next Question".';
             document.getElementById('next-button').classList.remove('hidden');
-            document.getElementById('skip-button').classList.add('hidden');
+        
             document.getElementById('show-answer-button').classList.add('hidden');
             event.target.disabled = true;
         } else {
             feedbackDiv.className = 'feedback show incorrect';
-            feedbackDiv.innerHTML = '<strong>✗ Incorrect.</strong> Try again or show the answer.';
+            feedbackDiv.innerHTML = '<strong>✗ Incorrect.</strong> The correct answer is highlighted above.';
+            document.getElementById('next-button').classList.remove('hidden');
+        
+            document.getElementById('show-answer-button').classList.add('hidden');
+            event.target.disabled = true;
         }
 
         return; // Exit function - don't run the fill-in-the-blank code
     }
+
+    // Handle correctedReference with rich text + italics checking
+    if (question.fields.includes('correctedReference')) {
+        const richBox = document.getElementById('rich-corrected');
+        const feedbackDiv = document.getElementById('feedback');
+        feedbackDiv.classList.add('show');
+
+        const correctFull = question.correctAnswers.correctedReference || '';
+        const correctPlainText = normaliseQuotes(correctFull.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+        const studentPlainText = normaliseQuotes(richBox.innerText).replace(/\s+/g, ' ').trim();
+
+        if (studentPlainText !== correctPlainText) {
+            let hintHTML = '';
+            if (question.note) {
+                hintHTML = `<div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">💡 ${question.note}</div>`;
+            }
+            feedbackDiv.className = 'feedback show incorrect';
+            feedbackDiv.innerHTML = `<strong>✗ Not quite.</strong> Check your text carefully.${hintHTML}`;
+            return;
+        }
+
+        // Text is correct — now check italics
+        const emMatches = correctFull.match(/<em>(.*?)<\/em>/g) || [];
+        const expectedItalicParts = emMatches.map(m => m.replace(/<\/?em>/g, '').replace(/[.,]$/, '').trim()).filter(Boolean);
+
+        const italicTextParts = [];
+        const walker = document.createTreeWalker(richBox, NodeFilter.SHOW_TEXT);
+        let textNode;
+        while ((textNode = walker.nextNode())) {
+            if (!textNode.parentElement) continue;
+            if (window.getComputedStyle(textNode.parentElement).fontStyle === 'italic') {
+                const text = textNode.textContent.trim();
+                if (text) italicTextParts.push(text);
+            }
+        }
+        const studentItalicText = italicTextParts.join(' ').trim();
+
+        let remainingItalic = studentItalicText.toLowerCase();
+        for (const part of expectedItalicParts) {
+            remainingItalic = remainingItalic.replace(part.toLowerCase(), '');
+        }
+        const hasUnexpectedItalics = remainingItalic.replace(/[\s.,()[\]'"]/g, '').length > 0;
+
+        if (expectedItalicParts.length === 0) {
+            if (studentItalicText.length > 0) {
+                feedbackDiv.className = 'feedback show incorrect';
+                feedbackDiv.innerHTML = `<strong>Almost there!</strong> Your text is correct but nothing should be in italics here.
+                    <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                        💡 Select the italicised text and click the <em>I</em> button to remove italics.
+                    </div>`;
+            } else {
+                markCorrectedReferenceCorrect(richBox, feedbackDiv);
+            }
+            return;
+        }
+
+        const allExpectedItalicised = expectedItalicParts.every(p => studentItalicText.toLowerCase().includes(p.toLowerCase()));
+
+        if (hasUnexpectedItalics && !allExpectedItalicised) {
+            const missingParts = expectedItalicParts.filter(p => !studentItalicText.toLowerCase().includes(p.toLowerCase()));
+            feedbackDiv.className = 'feedback show incorrect';
+            feedbackDiv.innerHTML = `<strong>Almost there!</strong> Your text is correct but check your italics.
+                <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                    💡 Only <em>${missingParts.join('</em> and <em>')}</em> should be in italics — and it must be italicised. Remove italics from anything else.
+                </div>`;
+        } else if (hasUnexpectedItalics) {
+            feedbackDiv.className = 'feedback show incorrect';
+            feedbackDiv.innerHTML = `<strong>Almost there!</strong> Your text is correct but check your italics.
+                <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                    💡 Only <em>${expectedItalicParts.join('</em> and <em>')}</em> should be in italics. Remove italics from any other text.
+                </div>`;
+        } else if (!allExpectedItalicised) {
+            const missingParts = expectedItalicParts.filter(p => !studentItalicText.toLowerCase().includes(p.toLowerCase()));
+            feedbackDiv.className = 'feedback show incorrect';
+            feedbackDiv.innerHTML = `<strong>Almost there!</strong> Your text is correct but check your italics.
+                <div style="margin-top: 10px; padding: 10px; background-color: #fff3cd; border-radius: 6px;">
+                    💡 <em>${missingParts.join('</em> and <em>')}</em> should be in italics. Select it and click the <em>I</em> button.
+                </div>`;
+        } else {
+            markCorrectedReferenceCorrect(richBox, feedbackDiv);
+        }
+        return;
+    }
+
     let allCorrect = true;
     let allTips = [];
 
@@ -1447,10 +1642,7 @@ function checkAnswer() {
     const userAnswer = input.tagName === 'SELECT' ? input.value.trim() : input.value.trim();
     const correctAnswer = question.correctAnswers[field];
 
-    // Case-sensitive check for title fields, case-insensitive for others
-    const isCorrect = field === 'title'
-        ? userAnswer === correctAnswer  // Exact match for titles (case-sensitive)
-        : userAnswer.toLowerCase() === correctAnswer.toLowerCase();  // Case-insensitive for others
+    const isCorrect = userAnswer === correctAnswer;
 
     if (isCorrect) {
         input.style.borderColor = '#28a745';
@@ -1472,7 +1664,7 @@ function checkAnswer() {
     feedbackDiv.className = 'feedback show correct';
     feedbackDiv.innerHTML = '<strong>✓ Correct!</strong> Click "Next Question".';
     document.getElementById('next-button').classList.remove('hidden');
-    document.getElementById('skip-button').classList.add('hidden');
+
     document.getElementById('show-answer-button').classList.add('hidden'); // Add this line
     event.target.disabled = true;
 } else {
@@ -1507,32 +1699,6 @@ function nextQuestion() {
 // SECTION 5: NAVIGATION & SKIPPING
 // ============================================================================
 
-// Skip the current question and move to the next one
-// Called when user clicks "Skip Question" button
-function skipQuestion() {
-    const feedbackDiv = document.getElementById('feedback');
-    feedbackDiv.className = 'feedback show';
-    feedbackDiv.style.backgroundColor = '#e2e3e5';
-    feedbackDiv.style.borderColor = '#6c757d';
-    feedbackDiv.innerHTML = '<strong>⏭️ Question skipped.</strong> Moving to next question...';
-
-    // Hide skip button, show next button
-    document.getElementById('skip-button').classList.add('hidden');
-    document.getElementById('next-button').classList.remove('hidden');
-
-    // Disable all inputs so user can't change their answer
-    const question = currentQuestions[currentQuestionIndex];
-    question.fields.forEach(field => {
-        const input = document.getElementById(`field-${field}`);
-        if (input) {
-            input.disabled = true;
-            input.style.backgroundColor = '#e9ecef';
-        }
-    });
-
-    // Disable submit button
-    event.target.disabled = true;
-}
 
 // Show the correct answer to the user
 // Called when user clicks "Show Answer" button
@@ -1568,8 +1734,8 @@ function showAnswer() {
         answerDisplay.classList.remove('hidden');
         event.target.disabled = true;
         event.target.style.opacity = '0.5';
+        document.getElementById('submit-button').disabled = true;
         document.getElementById('next-button').classList.remove('hidden');
-        document.getElementById('skip-button').classList.add('hidden');
 
         return; // Exit function
     }
@@ -1587,6 +1753,14 @@ function showAnswer() {
     } else if (question.fields.includes('correctedReference')) {
         // Correction questions
         correctAnswerHTML += `<p>${question.correctAnswers.correctedReference}</p>`;
+        // Fill and lock the rich text box
+        const richBox = document.getElementById('rich-corrected');
+        if (richBox) {
+            richBox.innerHTML = question.correctAnswers.correctedReference;
+            richBox.contentEditable = false;
+            richBox.style.backgroundColor = '#fff3cd';
+            richBox.style.borderColor = '#ffc107';
+        }
     } else if (question.fields.includes('bookEntry') || question.fields.includes('journalEntry') || question.fields.includes('websiteEntry')) {
         // Mixed sources questions
         if (question.correctAnswers.bookEntry) {
@@ -1648,12 +1822,10 @@ function showAnswer() {
     // Disable submit button and show answer button
     event.target.disabled = true;
     event.target.style.opacity = '0.5';
+    document.getElementById('submit-button').disabled = true;
 
     // Show next button
     document.getElementById('next-button').classList.remove('hidden');
-
-    // Hide skip button
-    document.getElementById('skip-button').classList.add('hidden');
 
     // Fill in all fields with correct answers and disable them
     question.fields.forEach(field => {
